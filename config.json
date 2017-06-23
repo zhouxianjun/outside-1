@@ -1,0 +1,37 @@
+{
+  "server_url": "http://alone.ngrok.cc",
+  "base_path": "/web",
+  "port": 3000,
+  "session_ttl": 300000,
+  "ignoreUrl": [
+    "/web/user/login",
+    "/web/user/logout",
+    "/",
+    "/web",
+    "/web/resources/qiniuCallback",
+    "/web/api/boxLogin"
+  ],
+  "loginUrl": [
+    "/web/permissions/menus",
+    "/web/user/info",
+    "/web/user/update",
+    "/web/resources/uptoken",
+    "/web/resources/qiniuDownload"
+  ],
+  "qiniu": {
+    "ACCESS_KEY": "qZq3Y85XBAWIWvwZpbl-REEd3SfSlOrjc55gcgxO",
+    "SECRET_KEY": "kdW-1Ynd-1H5nw-gfHi-BKgDodsVSdcaZi_GUhpZ"
+  },
+  "zookeeper": "127.0.0.1:2181",
+  "db": {
+    "database": "lts",
+    "user": "root",
+    "password": "abcd1234",
+    "option": {
+      "dialect": "mysql",
+      "host": "192.168.1.114",
+      "port": 3306,
+      "timezone": "+08:00"
+    }
+  }
+}
