@@ -6,6 +6,7 @@ const Utils = require('./Utils');
 const logger = require('tracer-logger');
 const Result = require('./dto/Result');
 const config = require('../config.json');
+const path = require('path');
 const Router = require('koa-router');
 const Static = require('koa-static');
 const bodyParser = require('koa-bodyparser');
@@ -37,7 +38,7 @@ app.use(session({
     cookie: {
         path: (!config.base_path || config.base_path === '') ? '/' : config.base_path
     },
-    beforeSave: async function (ctx, session) {
+    beforeSave: async function (ctx, session) { // 单例登录
         if (session.user) {
             let roles = session.user.roles;
             if (!roles) return;
@@ -71,34 +72,34 @@ app.use(async (ctx, next) => {
 });
 
 app.use(async (ctx, next) => {
-    if (ctx.path.indexOf('.') !== -1){
+    if (ctx.path === '/') {
+        if (ctx.session['user']) {
+            ctx.redirect(path.normalize(`${config.base_path}/index.html#index`));
+            return;
+        }
+        ctx.redirect(path.normalize(`${config.base_path}/index.html#login`));
+        return;
+    }
+    // 文件 || 过滤 || 登录
+    if (ctx.path.indexOf('.') > -1 || ignoreUrl.indexOf(ctx.path) > -1 || (loginUrl.indexOf(ctx.path) > -1 && ctx.session['user'])){
         await next();
     } else {
-        if (ignoreUrl.indexOf(ctx.path) === -1 && !ctx.session.user) {
+        if (!ctx.session['user']) {
             ctx.body = new Result(Result.CODE.NO_LOGIN).json;
             return;
         }
-        if (loginUrl.indexOf(ctx.path) !== -1 && ctx.session.user) {
-            await next();
-            return;
-        }
-        if (ignoreUrl.indexOf(ctx.path) === -1) {
-            let have = false;
-            ctx.session.interfaces.forEach(auth => {
-                if (auth.auth === ctx.path) {
-                    have = true;
-                    return false;
-                }
-            });
-            if (!have) {
+
+        for (let auth of ctx.session['interfaces']) {
+            if (auth.auth === ctx.path) {
                 ctx.body = new Result(Result.CODE.NO_ACCESS).json;
                 return;
             }
-            await next();
         }
+        await next();
     }
 });
 
+// 404
 app.use(async (ctx, next) => {
     await next();
     if (404 !== ctx.status) return;
@@ -109,6 +110,7 @@ app.use(async (ctx, next) => {
     }
 });
 
+// 异常
 app.use(async (ctx, next) => {
     try {
         await next();

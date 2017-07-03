@@ -228,7 +228,7 @@
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <img :src="img.user2x160" class="user-image" alt="User Image">
-                                <span class="hidden-xs">Alone</span>
+                                <span class="hidden-xs" v-html="user.name"></span>
                             </a>
                             <ul class="dropdown-menu">
                                 <!-- User image -->
@@ -236,8 +236,8 @@
                                     <img :src="img.user2x160" class="img-circle" alt="User Image">
 
                                     <p>
-                                        <span id="real_name_text">Alone</span>
-                                        <small>系统管理员</small>
+                                        <span id="real_name_text" v-html="user.real_name"></span>
+                                        <small v-html="user['role_name']"></small>
                                     </p>
                                 </li>
                                 <!-- Menu Body -->
@@ -271,7 +271,7 @@
                         <img :src="img.user2x160" class="img-circle" alt="User Image">
                     </div>
                     <div class="pull-left info">
-                        <p>Admin</p>
+                        <p v-html="user.name"></p>
                         <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                     </div>
                 </div>

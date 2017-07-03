@@ -1,23 +1,15 @@
 {
   "server_url": "http://alone.ngrok.cc",
-  "base_path": "/web",
+  "base_path": "/",
   "port": 3000,
   "session_ttl": 300000,
   "ignoreUrl": [
-    "/web/user/login",
-    "/web/user/logout",
+    "/permissions/user/logout",
+    "/permissions/user/login",
     "/",
-    "/web",
-    "/web/resources/qiniuCallback",
-    "/web/api/boxLogin"
+    "/resources/qiniuCallback"
   ],
-  "loginUrl": [
-    "/web/permissions/menus",
-    "/web/user/info",
-    "/web/user/update",
-    "/web/resources/uptoken",
-    "/web/resources/qiniuDownload"
-  ],
+  "loginUrl": [],
   "qiniu": {
     "ACCESS_KEY": "qZq3Y85XBAWIWvwZpbl-REEd3SfSlOrjc55gcgxO",
     "SECRET_KEY": "kdW-1Ynd-1H5nw-gfHi-BKgDodsVSdcaZi_GUhpZ"

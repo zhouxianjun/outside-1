@@ -6,13 +6,8 @@ const path = require('path');
 const watch = require('watch');
 const walk = require('walk');
 const logger = require('tracer-logger');
+const thrift = require('thrift');
 module.exports = class Utils {
-    static objVal2Array(obj) {
-        let array = [];
-        Reflect.ownKeys(obj).forEach(key => {array.push(obj[key])});
-        return array;
-    }
-
     static load(root, fileStat) {
         let base = path.join(root, fileStat.name);
         if(fileStat.name.endsWith('.js')) {
@@ -65,66 +60,33 @@ module.exports = class Utils {
         });
     }
 
-    static loadEntity(sequelize, root, filter) {
-        let walker = walk.walk(root, {
-            followLinks: true,
-            filters: filter || ['node_modules']
-        });
-        walker.on("file", async (root, fileStat, next) => {
-            try {
-                let result = Utils.load(root, fileStat);
-                let model = result.object;
-                if (typeof model === 'function') {
-                    let Entity = sequelize.import(result.path);
-                    await Entity.sync({force: true});
-                    let prototype = Reflect.getPrototypeOf(Entity);
-                    let keys = Reflect.ownKeys(prototype);
-                    for (let method of keys) {
-                        let descriptor = Reflect.getOwnPropertyDescriptor(prototype, method);
-                        if (method !== 'constructor' && !descriptor.get && !descriptor.set && typeof descriptor.value === 'function') {
-                            Reflect.set(prototype, method, new Proxy(prototype[method], {
-                                apply(target, that, args) {
-                                    Reflect.apply(target, that, args);
-                                }
-                            }));
-                        }
-                    }
-                }
-            } catch (err) {
-                logger.error('加载Entity:%s:%s异常.', fileStat.name, root, err);
-            }
-            next();
-        });
-        walker.on("errors", (root, nodeStatsArray, next) => {
-            nodeStatsArray.forEach(n => {
-                logger.error("[ERROR] ", n);
+    static makeTree(array, pid, prop_parent, prop_id, prop_child, renderer) {
+        let result = [] , temp;
+        for(let item of array){
+            Reflect.ownKeys(item).forEach(key => {
+                if (item[key] instanceof thrift.Int64)
+                    item[key] = `${item[key].toNumber()}`;
             });
-            next();
-        });
-        walker.on("end", () => {
-            logger.info('文件Entity加载完成!');
-        });
-    }
-
-    static writeResult(ctx, result) {
-        if (ctx.path.startsWith(`/login`)) {
-            return;
-        }
-        switch (ctx.accepts('html', 'json')) {
-            case 'html':
-                if (result.code === 99) {
-                    ctx.redirect('/login');
-                    return;
+            if(item[prop_parent] === pid){
+                result.push(item);
+                temp = Utils.makeTree(array, item[prop_id], prop_parent, prop_id, prop_child);
+                if(temp.length > 0){
+                    item[prop_child] = temp;
                 }
-                ctx.type = 'html';
-                ctx.body = `<p>${JSON.stringify(result.json)}</p>`;
-                break;
-            case 'json':
-                ctx.body = result.json;
-                break;
-            default:
-                ctx.type = 'text';
-                ctx.body = JSON.stringify(result.json);
+            }
+            if (typeof renderer === 'function') {
+                renderer(item);
+            }
         }
+        return result;
+    }
+    static makeList(array) {
+        for(let item of array){
+            Reflect.ownKeys(item).forEach(key => {
+                if (item[key] instanceof thrift.Int64)
+                    item[key] = `${item[key].toNumber()}`;
+            });
+        }
+        return array;
     }
 };

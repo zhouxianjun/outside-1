@@ -15,55 +15,27 @@ export default {
                 id: 0,
                 name: '我的主页',
                 icon: 'fa-home',
-                path: '/home',
+                path: '/index/home',
                 show: false,
                 closeable: false
-            }, {
-                id: 1,
-                icon: 'ios-navigate',
-                name: '服务治理',
-                show: true,
-                sub: [{
-                    id: 2,
-                    icon: 'ios-navigate',
-                    name: '提供者',
-                    path: '/provider',
-                    pid: 1,
-                    show: true
-                }, {
-                    id: 3,
-                    icon: 'ios-navigate',
-                    name: '消费者',
-                    path: '/consumer',
-                    pid: 1,
-                    show: true
-                }, {
-                    id: 4,
-                    icon: 'ios-navigate',
-                    name: '路由规则',
-                    path: '/router',
-                    pid: 1,
-                    show: true
-                }]
-            }, {
-                id: 6,
-                name: 'test2',
-                show: true,
-                sub: [{
-                    id: 7,
-                    name: 'test22',
-                    show: true
-                }]
             }],
-            tabs: []
+            tabs: [],
+            user: {}
         }
     },
-    created() {
+    async created() {
         this.tabs.push(this.menus[0]);
+        let menus = await this.fetch('/permissions/menu/list');
+        menus.tree.forEach(m => this.menus.push(m));
+        this.user = menus.user;
     },
-    async mounted() {
+    async ready() {
+        $.AdminLTE.layout && $.AdminLTE.layout.fix();
         let menu = this.findMenuForPath(this.menus, this.$route.path);
         this.selectedMenu(menu ? menu.id : 0);
+    },
+    async mounted() {
+
     },
     components: {
         SelfMenu
@@ -98,7 +70,7 @@ export default {
             let menu = this.findMenu(this.menus, selected);
             let matched = menu.path ? this.$router.getMatchedComponents(menu.path): [];
             if (!matched.length) {
-                alert('未实现');
+                alert('未实现' + menu.path);
                 this.$refs['menus'].active = this.active;
                 return;
             }
