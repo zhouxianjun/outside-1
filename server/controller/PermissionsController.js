@@ -120,26 +120,14 @@ module.exports = class PermissionsController {
         let roles = await roleService.rolesByUser(ctx.session.user.id);
         ctx.body = new Result(true, {
             key: 'tree',
-            value: Utils.makeTree(roles, ctx.session.user.id, 'pid', 'id', 'rows', item => {
-                if (item.rows && item.rows.length) {
-                    item.tree = {
-                        image: 'folder.gif'
-                    }
-                }
-            })
+            value: Utils.makeTree(roles, ctx.session.user.id, 'pid', 'id', 'children', item => Utils.makeTreeItemPoptip(item))
         }).json;
     }
     static async rolesBySetUser(ctx) {
         let roles = await roleService.rolesBySetUser(ctx.query.id, ctx.session.user.id);
         ctx.body = new Result(true, {
             key: 'tree',
-            value: Utils.makeTree(roles, ctx.session.user.id, 'pid', 'id', 'rows', item => {
-                if (item.rows && item.rows.length) {
-                    item.tree = {
-                        image: 'folder.gif'
-                    }
-                }
-            })
+            value: Utils.makeTree(roles, ctx.session.user.id, 'pid', 'id', 'children', item => Utils.makeTreeItemPoptip(item))
         }).json;
     }
     static async addRole(ctx) {
@@ -169,26 +157,14 @@ module.exports = class PermissionsController {
         let menus = await menuService.menus();
         ctx.body = new Result(true, {
             key: 'tree',
-            value: Utils.makeTree(menus, 0, 'pid', 'id', 'rows', item => {
-                if (item.rows && item.rows.length) {
-                    item.tree = {
-                        image: 'folder.gif'
-                    }
-                }
-            })
+            value: Utils.makeTree(menus, 0, 'pid', 'id', 'children', item => item.title = Utils.makeTreeItemPoptip(item))
         }).json;
     }
     static async menusBySetRole(ctx) {
         let menus = await menuService.menusBySetRole(ctx.session.user.id, ctx.query.role);
         ctx.body = new Result(true, {
             key: 'tree',
-            value: Utils.makeTree(menus, 0, 'pid', 'id', 'rows', item => {
-                if (item.rows && item.rows.length) {
-                    item.tree = {
-                        image: 'folder.gif'
-                    }
-                }
-            })
+            value: Utils.makeTree(menus, 0, 'pid', 'id', 'children', item => Utils.makeTreeItemPoptip(item))
         }).json;
     }
     static async addMenu(ctx) {
@@ -226,13 +202,7 @@ module.exports = class PermissionsController {
         let users = await userService.usersByUser(userId);
         ctx.body = new Result(true, {
             key: 'tree',
-            value: Utils.makeTree(users, userId, 'pid', 'id', 'rows', item => {
-                if (item.rows && item.rows.length) {
-                    item.tree = {
-                        image: 'folder.gif'
-                    }
-                }
-            })
+            value: Utils.makeTree(users, userId, 'pid', 'id', 'children', item => Utils.makeTreeItemPoptip(item))
         }).json;
     }
     static async addUser(ctx) {

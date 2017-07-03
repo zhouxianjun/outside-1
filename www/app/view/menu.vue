@@ -8,7 +8,7 @@
                 </button>
             </div>
             <div class="panel-body">
-                <Tree :data="tree.data" show-checkbox></Tree>
+                <Tree style="margin-left: 20px;margin-top: 10px;" :data="tree.data"></Tree>
             </div>
         </div>
         <Modal v-model="model" :title="modelTitle" @on-ok="addOrUpdate">

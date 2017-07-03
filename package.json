@@ -37,7 +37,6 @@
     "underscore": "^1.8.3",
     "vue-router": "^2.5.3",
     "vue-tagsinput": "^2.0.1",
-    "vue-treegrid": "0.0.1",
     "walk": "^2.3.9",
     "watch": "^1.0.2"
   },
