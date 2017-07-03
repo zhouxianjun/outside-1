@@ -12,15 +12,27 @@
             </div>
         </div>
         <Modal v-model="model" :title="modelTitle" @on-ok="addOrUpdate">
-            <Form ref="form" :model="vo" :label-width="80" :rules="interfaceValidate">
+            <Form ref="form" :model="vo" :label-width="80" :rules="menuValidate">
                 <Form-item label="名称" prop="name">
-                    <Input v-model="vo.name" placeholder="请输入接口名"/>
+                    <Input v-model="vo.name" placeholder="请输入菜单名"/>
                 </Form-item>
-                <Form-item label="接口" prop="auth">
-                    <Input v-model="vo.auth" placeholder="请输入接口地址"/>
+                <Form-item label="路径" prop="path">
+                    <Input v-model="vo.auth" placeholder="请输入菜单路径"/>
+                </Form-item>
+                <Form-item label="图标" prop="icon">
+                    <Input v-model="vo.icon" placeholder="请输入菜单图标"/>
+                </Form-item>
+                <Form-item label="序号" prop="seq">
+                    <Input-number :min="0" :max="99" v-model="vo.seq" placeholder="请输入菜单排序序号"></Input-number>
                 </Form-item>
                 <Form-item label="描述" prop="description">
-                    <Input v-model="vo.description" placeholder="请输入接口描述"/>
+                    <Input v-model="vo.description" placeholder="请输入菜单描述"/>
+                </Form-item>
+                <Form-item label="显示" prop="show">
+                    <i-switch v-model="vo.show" size="large">
+                        <span slot="open">显示</span>
+                        <span slot="close">隐藏</span>
+                    </i-switch>
                 </Form-item>
                 <Form-item label="状态" prop="status">
                     <i-switch v-model="vo.status" size="large">
@@ -29,6 +41,9 @@
                     </i-switch>
                 </Form-item>
             </Form>
+        </Modal>
+        <Modal v-model="interfaceModel" title="设置接口" @on-ok="setInterface">
+            <Table :columns="table.columns" :data="table.data" @on-selection-change="selectionChange"></Table>
         </Modal>
     </div>
 </template>
