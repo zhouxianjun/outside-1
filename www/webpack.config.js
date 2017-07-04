@@ -77,6 +77,6 @@ module.exports = {
             template: './index.ejs',
             inject: false
         }),
-        new webpack.ProvidePlugin({$: "jquery", jQuery: 'jquery', DataTable: 'datatables'})
+        new webpack.ProvidePlugin({$: "jquery", jQuery: 'jquery'})
     ]
 };

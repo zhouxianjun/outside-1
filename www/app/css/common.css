@@ -29,3 +29,6 @@
 .i-panel-default>.panel-body {
     padding: 0;
 }
+.objbox {
+    overflow: hidden;
+}

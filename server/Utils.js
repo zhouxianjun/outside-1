@@ -74,6 +74,11 @@ module.exports = class Utils {
                     item[prop_child] = temp;
                 }
             }
+            if (item[prop_child] && item[prop_child].length) {
+                item.tree = {
+                    image: 'folder.gif'
+                }
+            }
             if (typeof renderer === 'function') {
                 renderer(item);
             }
@@ -88,8 +93,5 @@ module.exports = class Utils {
             });
         }
         return array;
-    }
-    static makeTreeItemPoptip(item) {
-        return `<Poptip trigger="hover" title="详细信息" content="提示内容">${item.name}</Poptip>`;
     }
 };

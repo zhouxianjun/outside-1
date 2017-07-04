@@ -2,7 +2,6 @@
  * Created by alone on 17-5-12.
  */
 "use strict";
-import tableToolSwf from 'admin-lte/plugins/datatables/extensions/TableTools/swf/copy_csv_xls_pdf.swf';
 import moment from 'moment';
 // 重构Popper
 import Popper from 'popper.js';
@@ -55,6 +54,9 @@ const Common = {
     dateFormat(val, format = 'YYYY-MM-DD HH:mm:ss') {
         return moment(Number(val)).format(format);
     },
+    statusFormat(val, trueTxt = '启用', falseTxt = '禁用') {
+        return `<span class="${val === true ? 'text-green' : 'text-green'}">${val === true ? trueTxt : falseTxt}</span>`;
+    },
     RENDER: {
         DATE(h, params) {
             return h('span', Common.dateFormat(params.row[params.column.key]));
@@ -71,6 +73,16 @@ const Common = {
                 this.clearVo(keys[key]);
             }
             Reflect.set(vo, key, null);
+        }
+    },
+    renderTree(data, fn) {
+        if (Array.isArray(data)) {
+            data.forEach(item => {
+                Reflect.apply(fn, data, [item]);
+                if (item.children && Array.isArray(item.children)) {
+                    this.renderTree(item.children, fn);
+                }
+            });
         }
     }
 };

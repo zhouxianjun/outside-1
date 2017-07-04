@@ -8,7 +8,21 @@
                 </button>
             </div>
             <div class="panel-body">
-                <Tree style="margin-left: 20px;margin-top: 10px;" :data="tree.data"></Tree>
+                <table id="menu-grid" class="fancytree-connectors" width="100%">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>序号</th>
+                            <th>图标</th>
+                            <th>路径</th>
+                            <th>显示</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
             </div>
         </div>
         <Modal v-model="model" :title="modelTitle" @on-ok="addOrUpdate">
