@@ -55,6 +55,16 @@ Vue.prototype.fetch = async (url, config, showError = true, error) => {
         return false;
     }
 };
+Vue.prototype.compile = (template, option) => {
+    let res = Vue.compile(template);
+    option = option || {};
+    option.data = option.data || {};
+    let component = new Vue(Object.assign(option, {
+        render: res.render,
+        staticRenderFns: res.staticRenderFns
+    }));
+    return component.$mount().$el;
+};
 
 const app = new Vue({
     el: '#app',

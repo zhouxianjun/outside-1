@@ -4,7 +4,6 @@
 'use strict';
 import Table from "../../components/i-table.vue";
 import Common from '../common';
-import Vue from 'vue';
 import 'jquery-ui';
 import 'jquery.fancytree/dist/skin-lion/ui.fancytree.min.css';
 import 'jquery.fancytree/dist/jquery.fancytree-all-deps.min';
@@ -18,6 +17,10 @@ export default {
             treeHeight: 100,
             table: {
                 columns: [{
+                    type: 'selection',
+                    width: 60,
+                    align: 'center'
+                }, {
                     title: '名称',
                     key: 'name'
                 }, {
@@ -84,6 +87,13 @@ export default {
                 }
             });
         },
+        async showInterface(id) {
+            this.interfaceModel = true;
+            let list = await this.fetch('/permissions/interface/list/set', {params: {menu: id}});
+            list && (this.table.data = list.interfaces);
+            this.table.data.forEach(item => item['_checked'] = item.ow);
+            this.waitSetMenuId = id;
+        },
         async setInterface() {
             let success = await this.fetch('/permissions/menu/interface/set', {method: 'post', data: {
                 id: this.waitSetMenuId,
@@ -94,11 +104,12 @@ export default {
                 return;
             }
             this.selectItem = null;
-            this.model = false;
+            this.interfaceModel = false;
             setTimeout(() => this.doQuery(), 500);
         },
         selectionChange(selection) {
-            this.selectedInterface = selection;
+            this.selectedInterface = [];
+            selection.forEach(item => this.selectedInterface.push(item.id));
         },
         async doQuery() {
             Common.clearVo(this.vo);
@@ -119,13 +130,8 @@ export default {
                     $tdList.eq(3).text(node.data.path);
                     $tdList.eq(4).html(Common.statusFormat(node.data.show, '显示', '隐藏'));
                     $tdList.eq(5).html(Common.statusFormat(node.data.status));
-                    let res = Vue.compile(`<div><template><Button type="primary">Primary</Button></template></div>`);
-                    let component = new Vue({
-                        data: {},
-                        render: res.render,
-                        staticRenderFns: res.staticRenderFns
-                    });
-                    $tdList.eq(6).html(component.$mount().$el);
+                    $tdList.eq(6).html(`<button type="button" class="btn btn-primary btn-sm">设置接口</button>`);
+                    $('button', $tdList.eq(6)).on('click', () => this.showInterface(node.data.id));
                 }
             });
             this.loadingBtn = false;

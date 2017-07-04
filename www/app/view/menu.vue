@@ -56,8 +56,8 @@
                 </Form-item>
             </Form>
         </Modal>
-        <Modal v-model="interfaceModel" title="设置接口" @on-ok="setInterface">
-            <Table :columns="table.columns" :data="table.data" @on-selection-change="selectionChange"></Table>
+        <Modal v-model="interfaceModel" :width="800" title="设置接口" class="no-padding" @on-ok="setInterface">
+            <Table :height="300" :columns="table.columns" :data="table.data" @on-selection-change="selectionChange"></Table>
         </Modal>
     </div>
 </template>

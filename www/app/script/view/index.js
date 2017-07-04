@@ -25,17 +25,18 @@ export default {
     },
     async created() {
         this.tabs.push(this.menus[0]);
+    },
+    async ready() {
+    },
+    async mounted() {
         let menus = await this.fetch('/permissions/menu/list');
         menus.tree.forEach(m => this.menus.push(m));
         this.user = menus.user;
-    },
-    async ready() {
-        $.AdminLTE.layout && $.AdminLTE.layout.fix();
-        let menu = this.findMenuForPath(this.menus, this.$route.path);
-        this.selectedMenu(menu ? menu.id : 0);
-    },
-    async mounted() {
-
+        this.$nextTick(() => {
+            let menu = this.findMenuForPath(this.menus, this.$route.path);
+            this.selectedMenu(menu ? menu.id : 0);
+            $.AdminLTE.layout && $.AdminLTE.layout.fix();
+        });
     },
     components: {
         SelfMenu

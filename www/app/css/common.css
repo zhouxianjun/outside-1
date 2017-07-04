@@ -29,6 +29,16 @@
 .i-panel-default>.panel-body {
     padding: 0;
 }
-.objbox {
-    overflow: hidden;
+.fancytree-container tr {
+    border-bottom: 1px solid #cccccc;
+    line-height: 35px;
+}
+#fancytree-drop-marker, span.fancytree-checkbox, span.fancytree-drag-helper-img, span.fancytree-empty, span.fancytree-expander, span.fancytree-icon, span.fancytree-vline {
+    vertical-align: middle;
+}
+table.fancytree-ext-table tbody tr.fancytree-active {
+    background-color: #ebf7ff;
+}
+.no-padding .ivu-modal-body {
+    padding: 0;
 }

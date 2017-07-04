@@ -2,7 +2,7 @@
   "server_url": "http://alone.ngrok.cc",
   "base_path": "/",
   "port": 3000,
-  "session_ttl": 300000,
+  "session_ttl": 30000,
   "ignoreUrl": [
     "/permissions/user/logout",
     "/permissions/user/login",

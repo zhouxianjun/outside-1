@@ -122,7 +122,6 @@ app.use(async (ctx, next) => {
 
 //static
 app.use(Static('./www/public'));
-app.use(Static('./www/app/plugins'));
 
 app.on('error', (err, ctx) => {
     logger.error('server error', err, ctx);
