@@ -7,13 +7,25 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-    entry: './app/main.js',
+    entry: {
+        main: './app/main.js',
+        vendor: ['vue', 'iview', 'vue-router', 'jquery', 'jquery-ui', 'bootstrap', 'admin-lte', 'axios']
+    },
     output: {
         path: path.resolve(__dirname, './public'),
         filename: '[name].js'
     },
     module: {
         rules: [{
+            test: require.resolve('jquery'),
+            use: [{
+                loader: 'expose-loader',
+                options: 'jQuery'
+            },{
+                loader: 'expose-loader',
+                options: '$'
+            }]
+        }, {
             test: /\.vue$/,
             loader: 'vue-loader',
             options: {
@@ -77,6 +89,9 @@ module.exports = {
             template: './index.ejs',
             inject: false
         }),
-        new webpack.ProvidePlugin({$: "jquery", jQuery: 'jquery'})
+        new webpack.optimize.CommonsChunkPlugin({
+            name: 'vendor',
+            filename: 'vendor.js'
+        })
     ]
 };

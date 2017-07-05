@@ -89,11 +89,10 @@ app.use(async (ctx, next) => {
             return;
         }
 
-        for (let auth of ctx.session['interfaces']) {
-            if (auth.auth === ctx.path) {
-                ctx.body = new Result(Result.CODE.NO_ACCESS).json;
-                return;
-            }
+        let auth = Utils.haveAuth(ctx.session['interfaces'], ctx.path);
+        if (!auth) {
+            ctx.body = new Result(Result.CODE.NO_ACCESS).json;
+            return;
         }
         await next();
     }

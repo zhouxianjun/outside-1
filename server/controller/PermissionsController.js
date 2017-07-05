@@ -6,6 +6,7 @@ const Utils = require('../Utils');
 const Result = require('../dto/Result');
 const config = require('../../config.json');
 const trc = require('trc');
+const path = require('path');
 const logger = require('tracer-logger');
 const userService = trc.ServerProvider.instance(require('../thrift/UserService'));
 const roleService = trc.ServerProvider.instance(require('../thrift/RoleService'));
@@ -30,6 +31,10 @@ module.exports = class PermissionsController {
             method: 'post',
             path: '/permissions/role/update',
             value: PermissionsController.updateRole
+        }, {
+            method: 'post',
+            path: '/permissions/role/del',
+            value: PermissionsController.delRole
         }, {
             method: 'post',
             path: '/permissions/role/menu/set',
@@ -132,7 +137,7 @@ module.exports = class PermissionsController {
     }
     static async addRole(ctx) {
         let params = ctx.request.body;
-        let res = await roleService.add(params.name, params.pid);
+        let res = await roleService.add(new PublicStruct.RoleStruct(params));
         ctx.body = new Result(!!res, {
             key: 'id',
             value: res
@@ -140,7 +145,7 @@ module.exports = class PermissionsController {
     }
     static async updateRole(ctx) {
         let params = ctx.request.body;
-        let res = await roleService.update(params.id, params.name, params.status, params.pid);
+        let res = await roleService.update(new PublicStruct.RoleStruct(params));
         ctx.body = new Result(!!res).json;
     }
     static async setMenus(ctx) {
@@ -151,6 +156,11 @@ module.exports = class PermissionsController {
     static async updateRoleStatus(ctx) {
         let params = ctx.request.body;
         let res = await roleService.updateStatus(params.ids);
+        ctx.body = new Result(!!res).json;
+    }
+    static async delRole(ctx) {
+        let params = ctx.request.body;
+        let res = await roleService.delRole(params.id);
         ctx.body = new Result(!!res).json;
     }
     static async menusByMgr(ctx) {
@@ -234,7 +244,7 @@ module.exports = class PermissionsController {
             ctx.session.user = JSON.parse(user);
             let list = await interfaceService.interfacesByUser(ctx.session.user.id);
             if (list) {
-                list.forEach(item => item.auth = `${config.base_path}${item.auth}`);
+                list.forEach(item => item.auth = path.join(config.base_path, item.auth));
                 ctx.session.interfaces = list;
             }
             ctx.body = new Result(true).json;

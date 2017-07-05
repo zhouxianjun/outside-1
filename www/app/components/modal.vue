@@ -22,6 +22,7 @@
     </div><!-- /.modal -->
 </template>
 <script>
+    import $ from 'jquery';
     export default {
         name: 'modal',
         data() {

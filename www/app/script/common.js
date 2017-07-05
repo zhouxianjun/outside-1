@@ -3,6 +3,7 @@
  */
 "use strict";
 import moment from 'moment';
+import $ from 'jquery';
 // 重构Popper
 import Popper from 'popper.js';
 const _getPosition = Popper.prototype._getPosition;
@@ -55,7 +56,7 @@ const Common = {
         return moment(Number(val)).format(format);
     },
     statusFormat(val, trueTxt = '启用', falseTxt = '禁用') {
-        return `<span class="${val === true ? 'text-green' : 'text-green'}">${val === true ? trueTxt : falseTxt}</span>`;
+        return `<span class="${val === true ? 'text-green' : 'text-muted'}">${val === true ? trueTxt : falseTxt}</span>`;
     },
     RENDER: {
         DATE(h, params) {
@@ -63,7 +64,7 @@ const Common = {
         },
         STATUS(h, params) {
             let status = params.row[params.column.key];
-            return h('span', {class: status === true ? 'text-green' : 'text-green'}, status === true ? '启用' : '禁用');
+            return h('span', {class: status === true ? 'text-green' : 'text-muted'}, status === true ? '启用' : '禁用');
         }
     },
     clearVo(vo) {

@@ -17,7 +17,6 @@ export default {
                     auth: ''
                 }
             },
-            selectItem: null,
             loadingBtn: false,
             modelTitle: '',
             table: {
@@ -54,7 +53,6 @@ export default {
                                 on: {
                                     click: async () => {
                                         this.modelTitle = '修改接口';
-                                        this.selectItem = params.row;
                                         Object.keys(this.vo).forEach(key => this.vo[key] = params.row[key]);
                                         this.model = true;
                                     }
@@ -102,7 +100,6 @@ export default {
                         this.loadingBtn = false;
                         return;
                     }
-                    this.selectItem = null;
                     this.model = false;
                     setTimeout(() => this.doQuery(), 500);
                 } else {

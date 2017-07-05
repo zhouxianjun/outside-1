@@ -1,5 +1,6 @@
 <script>
     import table from 'iview/src/components/table';
+    import $ from 'jquery';
     export default {
         name: 'Table',
         props: {

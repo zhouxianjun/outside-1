@@ -94,4 +94,11 @@ module.exports = class Utils {
         }
         return array;
     }
+
+    static haveAuth(interfaces, url) {
+        for (let u of interfaces) {
+            if (u.auth === url) return true;
+        }
+        return false;
+    }
 };

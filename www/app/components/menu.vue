@@ -6,6 +6,7 @@
 </template>
 <script>
     import SelfMenuItem from './menu-item.vue';
+    import $ from 'jquery';
     export default {
         name: 'self-menu',
         data() {

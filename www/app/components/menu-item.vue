@@ -16,6 +16,7 @@
     </li>
 </template>
 <script>
+    import $ from 'jquery';
     export default {
         name: 'self-menu-item',
         props: {

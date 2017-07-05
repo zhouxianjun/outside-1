@@ -6,6 +6,7 @@ import Index from '../view/index.vue';
 import Home from '../view/home.vue';
 import Interface from '../view/interface.vue';
 import Menu from '../view/menu.vue';
+import Role from '../view/role.vue';
 export default [{
     path: '/login',
     component: Login
@@ -21,5 +22,8 @@ export default [{
     }, {
         path: 'menu',
         component: Menu
+    }, {
+        path: 'role',
+        component: Role
     }]
 }]
