@@ -4,6 +4,7 @@
 "use strict";
 import moment from 'moment';
 import $ from 'jquery';
+import 'admin-lte/plugins/slimScroll/jquery.slimscroll.min';
 // 重构Popper
 import Popper from 'popper.js';
 const _getPosition = Popper.prototype._getPosition;
@@ -58,6 +59,9 @@ const Common = {
     statusFormat(val, trueTxt = '启用', falseTxt = '禁用') {
         return `<span class="${val === true ? 'text-green' : 'text-muted'}">${val === true ? trueTxt : falseTxt}</span>`;
     },
+    emailFormat(val) {
+        return `<a href="mailto:${val}">${val}</a>`;
+    },
     RENDER: {
         DATE(h, params) {
             return h('span', Common.dateFormat(params.row[params.column.key]));
@@ -85,6 +89,12 @@ const Common = {
                 }
             });
         }
+    },
+    slimScroll(el, options = {}) {
+        $(el).slimScroll(Object.assign({
+            height: '100%', //可滚动区域高度
+            disableFadeOut: true
+        }, options));
     }
 };
 export default Common;

@@ -90,6 +90,7 @@ export default {
             this.model = true;
             this.modelTitle = '新增接口';
             Common.clearVo(this.vo);
+            this.vo.status = false;
         },
         addOrUpdate() {
             this.$refs['form'].validate(async (valid) => {

@@ -63,6 +63,7 @@ export default {
     async mounted() {
         this.initTree();
         await this.doQuery();
+        Common.slimScroll($('.ivu-table-body', this.$refs['table'].$el));
     },
     components: {
         Table
@@ -74,6 +75,8 @@ export default {
             this.loadingBtn = true;
             Common.clearVo(this.vo);
             this.vo.pid = isNaN(pid) ? 0 : pid;
+            this.vo.show = false;
+            this.vo.status = false;
         },
         update(data) {
             this.modelTitle = '修改接口';

@@ -85,6 +85,10 @@ module.exports = class PermissionsController {
             value: PermissionsController.updateUser
         }, {
             method: 'post',
+            path: '/permissions/user/del',
+            value: PermissionsController.delUser
+        }, {
+            method: 'post',
             path: '/permissions/user/role/set',
             value: PermissionsController.setRoles
         }, {
@@ -226,6 +230,11 @@ module.exports = class PermissionsController {
     static async updateUser(ctx) {
         let params = ctx.request.body;
         let res = await userService.update(new PublicStruct.UserStruct(params));
+        ctx.body = new Result(!!res).json;
+    }
+    static async delUser(ctx) {
+        let params = ctx.request.body;
+        let res = await userService.delUser(params.id);
         ctx.body = new Result(!!res).json;
     }
     static async setRoles(ctx) {

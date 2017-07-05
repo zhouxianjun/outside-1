@@ -44,7 +44,7 @@
             </Form>
         </Modal>
         <Modal v-model="menuModel" title="设置菜单" :loading="loadingBtn" @on-ok="setMenu">
-            <Tree ref="tree" :data="tree" :show-checkbox="true" :multiple="true"></Tree>
+            <Tree ref="tree" :data="tree" style="max-height: 400px;overflow: hidden" :show-checkbox="true" :multiple="true"></Tree>
         </Modal>
         <Modal v-model="removeModal" width="360">
             <p slot="header" style="color:#f60;text-align:center">
