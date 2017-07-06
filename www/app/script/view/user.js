@@ -91,11 +91,14 @@ export default {
             Common.clearVo(this.vo);
             this.vo.pid = isNaN(pid) ? 1 : pid;
             this.vo.status = false;
+            this.userValidate.password.required = true;
         },
         update(data) {
             this.userTitle = '修改用户';
             this.$refs['form'].resetFields();
             Object.keys(this.vo).forEach(key => this.vo[key] = data[key]);
+            this.vo.password = null;
+            this.userValidate.password.required = false;
             this.userModel = true;
             this.loadingBtn = true;
         },

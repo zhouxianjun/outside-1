@@ -155,16 +155,19 @@ module.exports = class PermissionsController {
     static async setMenus(ctx) {
         let params = ctx.request.body;
         let res = await roleService.setMenus(params.id, ctx.session.user.id, params.menus);
+        await PermissionsController.refreshAuth(ctx);
         ctx.body = new Result(!!res).json;
     }
     static async updateRoleStatus(ctx) {
         let params = ctx.request.body;
         let res = await roleService.updateStatus(params.ids);
+        await PermissionsController.refreshAuth(ctx);
         ctx.body = new Result(!!res).json;
     }
     static async delRole(ctx) {
         let params = ctx.request.body;
         let res = await roleService.delRole(params.id);
+        await PermissionsController.refreshAuth(ctx);
         ctx.body = new Result(!!res).json;
     }
     static async menusByMgr(ctx) {
@@ -197,6 +200,7 @@ module.exports = class PermissionsController {
     static async delMenu(ctx) {
         let params = ctx.request.body;
         let res = await menuService.delMenu(params.id);
+        await PermissionsController.refreshAuth(ctx);
         ctx.body = new Result(!!res).json;
     }
     static async menus(ctx) {
@@ -240,6 +244,7 @@ module.exports = class PermissionsController {
     static async setRoles(ctx) {
         let params = ctx.request.body;
         let res = await userService.setRoles(params.id, ctx.session.user.id, params.roles);
+        await PermissionsController.refreshAuth(ctx);
         ctx.body = new Result(!!res).json;
     }
     static async logout(ctx) {
@@ -250,12 +255,9 @@ module.exports = class PermissionsController {
         let param = ctx.request.body;
         try {
             let user = await userService.login(param.username, param.password);
-            ctx.session.user = JSON.parse(user);
-            let list = await interfaceService.interfacesByUser(ctx.session.user.id);
-            if (list) {
-                list.forEach(item => item.auth = path.join(config.base_path, item.auth));
-                ctx.session.interfaces = list;
-            }
+            let parse = JSON.parse(user);
+            let list = await interfaceService.interfacesByUser(parse.id);
+            Utils.refreshAuth(ctx, parse, list);
             ctx.body = new Result(true).json;
         } catch (err) {
            logger.warn(`login error post: ${param.username}-${param.password}`, err);
@@ -296,6 +298,7 @@ module.exports = class PermissionsController {
     static async updateInterface(ctx) {
         let params = ctx.request.body;
         let res = await interfaceService.update(new PublicStruct.InterfaceStruct(params));
+        await PermissionsController.refreshAuth(ctx);
         ctx.body = new Result(!!res).json;
     }
     static async interfacesBySetMenu(ctx) {
@@ -308,6 +311,11 @@ module.exports = class PermissionsController {
     static async setInterfaces(ctx) {
         let params = ctx.request.body;
         let res = await menuService.setInterfaces(params.id, ctx.session.user.id, params.interfaces);
+        await PermissionsController.refreshAuth(ctx);
         ctx.body = new Result(!!res).json;
+    }
+    static async refreshAuth(ctx) {
+        let list = await interfaceService.interfacesByUser(ctx.session.user.id);
+        Utils.refreshAuth(ctx, null, list);
     }
 };

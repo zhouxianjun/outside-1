@@ -7,6 +7,7 @@ const watch = require('watch');
 const walk = require('walk');
 const logger = require('tracer-logger');
 const thrift = require('thrift');
+const config = require('../config.json');
 module.exports = class Utils {
     static load(root, fileStat) {
         let base = path.join(root, fileStat.name);
@@ -95,10 +96,22 @@ module.exports = class Utils {
         return array;
     }
 
-    static haveAuth(interfaces, url) {
-        for (let u of interfaces) {
-            if (u.auth === url) return true;
+    static isOnlyLogin(user) {
+        if (!user.roles) return false;
+        for (let r of user.roles) {
+            if (r.only_login === true) {
+                return true;
+            }
         }
         return false;
+    }
+
+    static refreshAuth(ctx, user, list) {
+        if (user) {
+            ctx.session.user = user;
+        }
+        let auths = [];
+        list && list.forEach(item => auths.push(path.join(config.base_path, item.auth)));
+        ctx.session.interfaces = auths;
     }
 };

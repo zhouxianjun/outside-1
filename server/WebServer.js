@@ -10,7 +10,7 @@ const path = require('path');
 const Router = require('koa-router');
 const Static = require('koa-static');
 const bodyParser = require('koa-bodyparser');
-const session = require('koa-session');
+const session = require('koa-session2');
 const Store = require('./Store');
 const Koa = require('koa');
 const app = new Koa();
@@ -31,36 +31,21 @@ app.use(async (ctx, next) => {
 
 //session
 app.keys = ['session_key'];
-const store = new Store();
 app.use(session({
-    store: store,
-    ttl: config.session_ttl,
-    cookie: {
-        path: (!config.base_path || config.base_path === '') ? '/' : config.base_path
-    },
-    beforeSave: async function (ctx, session) { // 单例登录
-        if (session.user) {
-            let roles = session.user.roles;
-            if (!roles) return;
-            let needOnly = true;
-            roles.forEach(role => {
-                if (!role.only_login) {
-                    needOnly = false;
-                    return false;
+    store: new Store({
+        async before(session, sid) {
+            if (session.user && Utils.isOnlyLogin(session.user)) {
+                let key = await this.user(session.user.id);
+                if (key && key !== sid) {
+                    logger.info('user: %s rep login destroy before session: %s', session.user.id, key);
+                    await this.destroy(key);
                 }
-            });
-            if (needOnly) {
-                let key = `user:${session.user.id}`;
-                let res = await store.get(key);
-                if (res && res !== ctx.sessionId) {
-                    logger.info('user: %s rep login now ip: %s destroy before session: %s', session.user.id, ctx.ip, res);
-                    await store.destroy(res);
-                }
-                await store.set(key, ctx.sessionId, config.session_ttl);
             }
+            return true;
         }
-        return false;
-    }
+    }),
+    maxAge: config.session_ttl,
+    path: (!config.base_path || config.base_path === '') ? '/' : config.base_path
 }, app));
 app.use(async (ctx, next) => {
     await next();
@@ -89,7 +74,7 @@ app.use(async (ctx, next) => {
             return;
         }
 
-        let auth = Utils.haveAuth(ctx.session['interfaces'], ctx.path);
+        let auth = ctx.session['interfaces'].includes(ctx.path);
         if (!auth) {
             ctx.body = new Result(Result.CODE.NO_ACCESS).json;
             return;
