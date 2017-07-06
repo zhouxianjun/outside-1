@@ -136,7 +136,7 @@ export default {
         },
         async showRole(id) {
             this.roleModel = true;
-            let list = await this.fetch('/permissions/role/list/set', {params: {role: id}});
+            let list = await this.fetch('/permissions/role/list/set', {params: {id}});
             Common.renderTree(list.tree, item => {
                 item.title = item.name;
                 item.checked = item.ow;
@@ -149,7 +149,7 @@ export default {
             let roles = [];
             this.$refs['tree'].getCheckedNodes().forEach(n => roles.push(n.id));
             let success = await this.fetch('/permissions/user/role/set', {method: 'post', data: {
-                id: this.waitSetRoleId,
+                id: this.waitSetUserId,
                 roles
             }});
             if (success === false) {

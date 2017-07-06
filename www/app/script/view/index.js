@@ -30,8 +30,10 @@ export default {
     },
     async mounted() {
         let menus = await this.fetch('/permissions/menu/list');
-        menus.tree.forEach(m => this.menus.push(m));
-        this.user = menus.user;
+        if (menus && menus.tree) {
+            menus.tree.forEach(m => this.menus.push(m));
+            this.user = menus.user;
+        }
         this.$nextTick(() => {
             let menu = this.findMenuForPath(this.menus, this.$route.path);
             this.selectedMenu(menu ? menu.id : 0);

@@ -261,7 +261,7 @@ module.exports = class PermissionsController {
             ctx.body = new Result(true).json;
         } catch (err) {
            logger.warn(`login error post: ${param.username}-${param.password}`, err);
-           ctx.body = new Result(false, err.message).json;
+           ctx.body = new Result(false, err.msg).json;
         }
     }
     static async info(ctx) {

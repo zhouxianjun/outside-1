@@ -27,7 +27,7 @@
     "koa-router": "^7.0.1",
     "koa-session2": "^2.2.4",
     "koa-static": "^3.0.0",
-    "minimatch": "latest",
+    "minimatch": "^3.0.4",
     "moment": "^2.18.1",
     "node-aspect": "^1.0.3",
     "node-zookeeper-client": "^0.2.2",

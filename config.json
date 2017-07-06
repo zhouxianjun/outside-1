@@ -3,14 +3,17 @@
   "base_path": "/",
   "port": 3000,
   "session": "SESSION",
-  "session_ttl": 30000,
+  "session_ttl": 1800000,
   "ignoreUrl": [
     "/permissions/user/logout",
     "/permissions/user/login",
     "/",
     "/resources/qiniuCallback"
   ],
-  "loginUrl": [],
+  "loginUrl": [
+    "/permissions/menu/list",
+    "/permissions/user/info"
+  ],
   "qiniu": {
     "ACCESS_KEY": "qZq3Y85XBAWIWvwZpbl-REEd3SfSlOrjc55gcgxO",
     "SECRET_KEY": "kdW-1Ynd-1H5nw-gfHi-BKgDodsVSdcaZi_GUhpZ"

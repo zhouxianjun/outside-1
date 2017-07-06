@@ -66,7 +66,7 @@ app.use(async (ctx, next) => {
         return;
     }
     // 文件 || 过滤 || 登录
-    if (ctx.path.indexOf('.') > -1 || ignoreUrl.indexOf(ctx.path) > -1 || (loginUrl.indexOf(ctx.path) > -1 && ctx.session['user'])){
+    if (ctx.path.indexOf('.') > -1 || Utils.filter(ctx.path, ignoreUrl) || (Utils.filter(ctx.path, loginUrl) && ctx.session['user'])){
         await next();
     } else {
         if (!ctx.session['user']) {

@@ -8,6 +8,7 @@ const walk = require('walk');
 const logger = require('tracer-logger');
 const thrift = require('thrift');
 const config = require('../config.json');
+const minimatch = require('minimatch');
 module.exports = class Utils {
     static load(root, fileStat) {
         let base = path.join(root, fileStat.name);
@@ -113,5 +114,13 @@ module.exports = class Utils {
         let auths = [];
         list && list.forEach(item => auths.push(path.join(config.base_path, item.auth)));
         ctx.session.interfaces = auths;
+    }
+
+    static filter(path, patterns) {
+        for (let pattern of patterns) {
+            if (minimatch(path, pattern))
+                return true;
+        }
+        return false;
     }
 };
