@@ -12,13 +12,25 @@
   ],
   "loginUrl": [
     "/permissions/menu/list",
-    "/permissions/user/info"
+    "/permissions/user/info",
+    "/code/**/*"
+  ],
+  "loggerPath": [
+    "/permissions/**/*"
   ],
   "qiniu": {
     "ACCESS_KEY": "qZq3Y85XBAWIWvwZpbl-REEd3SfSlOrjc55gcgxO",
     "SECRET_KEY": "kdW-1Ynd-1H5nw-gfHi-BKgDodsVSdcaZi_GUhpZ"
   },
   "zookeeper": "127.0.0.1:2181",
+  "mailer": {
+    "service": "QQex",
+    "auth": {
+      "user": "alone@cn-face.com",
+      "pass": "Zxj19910611"
+    },
+    "debug": true
+  },
   "db": {
     "database": "lts",
     "user": "root",

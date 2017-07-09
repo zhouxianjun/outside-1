@@ -241,10 +241,24 @@
                                     </p>
                                 </li>
                                 <!-- Menu Body -->
+                                <!--<li class="user-body">
+                                    <div class="row">
+                                        <div class="col-xs-4 text-center">
+                                            <a href="#">Followers</a>
+                                        </div>
+                                        <div class="col-xs-4 text-center">
+                                            <a href="#">Sales</a>
+                                        </div>
+                                        <div class="col-xs-4 text-center">
+                                            <a href="#">Friends</a>
+                                        </div>
+                                    </div>
+                                    &lt;!&ndash; /.row &ndash;&gt;
+                                </li>-->
                                 <!-- Menu Footer-->
                                 <li class="user-footer">
                                     <div class="pull-left">
-                                        <a href="#" class="btn btn-default btn-flat">资料</a>
+                                        <a href="javascript:;" class="btn btn-default btn-flat" @click="showModify">修改密码</a>
                                     </div>
                                     <div class="pull-right">
                                         <a href="/permissions/user/logout" class="btn btn-default btn-flat">退出</a>
@@ -539,6 +553,41 @@
              immediately after the control sidebar -->
         <div class="control-sidebar-bg"></div>
 
+        <Modal v-model="modifyModal" title="修改账号密码" :loading="loadingBtn" @on-ok="modifyPassword">
+            <div>
+                <Form ref="form" :model="modify" :label-width="80" :rules="modifyValidate" style="max-height: 400px;overflow: hidden">
+                    <Form-item label="旧密码" prop="oldPassword">
+                        <Input type="password" v-model="modify.oldPassword" placeholder="请输入旧密码"/>
+                    </Form-item>
+                    <Form-item label="验证码" prop="email">
+                        <Row>
+                            <Col span="12" class="margin-r-5"><Input v-model="modify.email" placeholder="请输入邮箱地址"/></Col>
+                            <Col span="10" v-if="!sendEmail"><Button type="primary" @click="sendModifyEmail">发送</Button></Col>
+                            <Col span="10" v-else>
+                            <Row>
+                                <Col span="16" class="margin-r-5">
+                                <Form-item prop="code">
+                                <Input v-model="modify.code" placeholder="请输入验证码"/>
+                                </Form-item>
+                                </Col>
+                                <Col span="6">
+                                <i-circle :size="32" :percent="percent">
+                                    <span>{{ 60 - current }}</span>
+                                </i-circle>
+                                </Col>
+                            </Row>
+                            </Col>
+                        </Row>
+                    </Form-item>
+                    <Form-item label="新密码" prop="newPassword">
+                        <Input type="password" v-model="modify.newPassword" placeholder="请输入新密码"/>
+                    </Form-item>
+                    <Form-item label="确认密码" prop="passwordCheck">
+                        <Input type="password" v-model="modify.passwordCheck" placeholder="请再次输入新密码"/>
+                    </Form-item>
+                </Form>
+            </div>
+        </Modal>
     </div>
 </template>
 <script>

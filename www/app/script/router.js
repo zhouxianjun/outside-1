@@ -8,6 +8,7 @@ import Interface from '../view/interface.vue';
 import Menu from '../view/menu.vue';
 import Role from '../view/role.vue';
 import User from '../view/user.vue';
+import Logger from '../view/logger.vue';
 export default [{
     path: '/login',
     component: Login
@@ -29,5 +30,8 @@ export default [{
     }, {
         path: 'user',
         component: User
+    }, {
+        path: 'logger',
+        component: Logger
     }]
 }]

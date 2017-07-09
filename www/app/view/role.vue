@@ -14,6 +14,7 @@
                             <th></th>
                             <th>登录</th>
                             <th>状态</th>
+                            <th>类型</th>
                             <th>创建时间</th>
                             <th>更新时间</th>
                             <th>操作</th>
@@ -28,6 +29,11 @@
             <Form ref="form" :model="vo" :label-width="80" :rules="roleValidate">
                 <Form-item label="名称" prop="name">
                     <Input v-model="vo.name" placeholder="请输入角色名称"/>
+                </Form-item>
+                <Form-item label="类型" prop="type">
+                    <Select v-model="vo.type" placeholder="请选择角色类型">
+                        <Option v-for="item in RoleType" :value="item.id" :key="item">{{ item.name }}</Option>
+                    </Select>
                 </Form-item>
                 <Form-item label="登录" prop="show">
                     <i-switch v-model="vo.only_login" size="large">

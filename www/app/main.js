@@ -4,6 +4,7 @@
 "use strict";
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import TreeView from "vue-json-tree-view";
 import App from './view/app.vue';
 import Routers from './script/router.js';       // 路由列表
 import iView from 'iview';
@@ -22,6 +23,7 @@ iView['Notice'].config({top: 55});
 iView['Message'].config({top: 55});
 Vue.use(VueRouter);
 Vue.use(iView);
+Vue.use(TreeView);
 /**
  * 拉取服务器信息
  * @param url

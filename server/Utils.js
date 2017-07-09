@@ -3,12 +3,16 @@
  */
 'use strict';
 const path = require('path');
+const util = require('util');
 const watch = require('watch');
 const walk = require('walk');
 const logger = require('tracer-logger');
 const thrift = require('thrift');
 const config = require('../config.json');
 const minimatch = require('minimatch');
+const crypto = require('crypto');
+const mailer = require('nodemailer');
+const transporter = mailer.createTransport(Object.assign({logger}, config.mailer));
 module.exports = class Utils {
     static load(root, fileStat) {
         let base = path.join(root, fileStat.name);
@@ -116,11 +120,37 @@ module.exports = class Utils {
         ctx.session.interfaces = auths;
     }
 
+    static removeUser(ctx, id) {
+        let key = ctx.app['_store'].user(id);
+        if (key) {
+            ctx.app['_store'].destroy(key);
+        }
+    }
+
     static filter(path, patterns) {
         for (let pattern of patterns) {
             if (minimatch(path, pattern))
                 return true;
         }
         return false;
+    }
+
+    static md5(val) {
+        let hash = crypto.createHash('md5');
+        hash.update(val);
+        return hash.digest('hex');
+    }
+
+    static async sendMail(msg) {
+        return new Promise((ok, fail) => {
+            transporter.sendMail(Object.assign({from: config.mailer.auth.user}, msg), (error, info) => {
+                if (error) {
+                    logger.error(`send mail error`, error);
+                    fail(error);
+                    return;
+                }
+                ok();
+            });
+        });
     }
 };

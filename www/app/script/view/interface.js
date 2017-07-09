@@ -99,6 +99,7 @@ export default {
                     let success = await this.fetch(url, {method: 'post', data: this.vo});
                     if (success === false) {
                         this.loadingBtn = false;
+                        this.$nextTick(() => this.loadingBtn = true);
                         return;
                     }
                     this.model = false;

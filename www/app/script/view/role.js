@@ -4,6 +4,7 @@
 'use strict';
 import Table from "../../components/i-table.vue";
 import Common from "../common";
+import {RoleType, getAttribute} from '../dic';
 import $ from "jquery";
 import "jquery-ui";
 import "jquery.fancytree/dist/skin-lion/ui.fancytree.min.css";
@@ -14,6 +15,7 @@ export default {
             loadingBtn: false,
             roleTitle: '',
             tree: [],
+            RoleType,
             table: {
                 columns: [{
                     type: 'selection',
@@ -42,12 +44,14 @@ export default {
                 pid: null,
                 name: null,
                 only_login: null,
-                status: null
+                status: null,
+                type: null
             },
             roleValidate: {
                 name: [{required: true, trigger: 'blur' }],
                 only_login: [{type: 'boolean', required: true, trigger: 'blur' }],
-                status: [{type: 'boolean', required: true, trigger: 'blur' }]
+                status: [{type: 'boolean', required: true, trigger: 'blur' }],
+                type: [{type: 'number', required: true, trigger: 'blur' }]
             }
         }
     },
@@ -82,13 +86,13 @@ export default {
                     let url = this.vo.id ? '/permissions/role/update' : '/permissions/role/add';
                     let success = await this.fetch(url, {method: 'post', data: this.vo});
                     if (success === false) {
-                        this.loadingBtn = false;
+                        this.resetLoadingBtn();
                         return;
                     }
                     this.roleModel = false;
                     setTimeout(() => this.doQuery(), 500);
                 } else {
-                    this.loadingBtn = false;
+                    this.resetLoadingBtn();
                     this.$Message.error('表单验证失败!');
                 }
             });
@@ -97,7 +101,7 @@ export default {
             if (!this.removeItem) return;
             let success = await this.fetch('/permissions/role/del', {method: 'post', data: {id: this.removeItem.id}});
             if (success === false) {
-                this.loadingBtn = false;
+                this.resetLoadingBtn();
                 return;
             }
             this.removeModal = false;
@@ -127,7 +131,7 @@ export default {
                 menus: menus
             }});
             if (success === false) {
-                this.loadingBtn = false;
+                this.resetLoadingBtn();
                 return;
             }
             this.menuModel = false;
@@ -153,16 +157,21 @@ export default {
                         $tdList = $(node.tr).find(">td");
                     $tdList.eq(1).html(Common.statusFormat(node.data.only_login, '单人', '多人'));
                     $tdList.eq(2).html(Common.statusFormat(node.data.status));
-                    $tdList.eq(3).text(Common.dateFormat(node.data.create_time));
-                    $tdList.eq(4).html(Common.dateFormat(node.data.update_time));
-                    $tdList.eq(5).html(`<button type="button" class="btn btn-primary btn-sm margin-r-5">设置菜单</button><button type="button" class="btn btn-warning btn-sm margin-r-5">修改</button><button type="button" class="btn btn-primary btn-sm margin-r-5">新增子角色</button><button type="button" class="btn btn-danger btn-sm">删除</button>`);
-                    let $button = $('button', $tdList.eq(5));
+                    $tdList.eq(3).text(getAttribute(RoleType, 'id', node.data.type).name);
+                    $tdList.eq(4).text(Common.dateFormat(node.data.create_time));
+                    $tdList.eq(5).html(Common.dateFormat(node.data.update_time));
+                    $tdList.eq(6).html(`<button type="button" class="btn btn-primary btn-sm margin-r-5">设置菜单</button><button type="button" class="btn btn-warning btn-sm margin-r-5">修改</button><button type="button" class="btn btn-primary btn-sm margin-r-5">新增子角色</button><button type="button" class="btn btn-danger btn-sm">删除</button>`);
+                    let $button = $('button', $tdList.eq(6));
                     $button.eq(0).on('click', () => this.showMenu(node.data.id));
                     $button.eq(1).on('click', () => this.update(node.data));
                     $button.eq(2).on('click', () => this.add(node.data.id));
                     $button.eq(3).on('click', () => this.showRemove(node.data));
                 }
             });
+        },
+        resetLoadingBtn() {
+            this.loadingBtn = false;
+            this.$nextTick(() => this.loadingBtn = true);
         }
     }
 }

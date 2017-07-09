@@ -9,7 +9,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
     entry: {
         main: './app/main.js',
-        vendor: ['vue', 'iview', 'vue-router', 'jquery', 'jquery-ui', 'bootstrap', 'admin-lte', 'axios']
+        vendor: ['vue', 'iview', 'vue-router', 'jquery', 'jquery-ui', 'bootstrap', 'admin-lte', 'axios', 'vue-json-tree-view']
     },
     output: {
         path: path.resolve(__dirname, './public'),

@@ -91,13 +91,13 @@ export default {
                     let url = this.vo.id ? '/permissions/menu/update' : '/permissions/menu/add';
                     let success = await this.fetch(url, {method: 'post', data: this.vo});
                     if (success === false) {
-                        this.loadingBtn = false;
+                        this.resetLoadingBtn();
                         return;
                     }
                     this.menuModel = false;
                     setTimeout(() => this.doQuery(), 500);
                 } else {
-                    this.loadingBtn = false;
+                    this.resetLoadingBtn();
                     this.$Message.error('表单验证失败!');
                 }
             });
@@ -106,7 +106,7 @@ export default {
             if (!this.removeItem) return;
             let success = await this.fetch('/permissions/menu/del', {method: 'post', data: {id: this.removeItem.id}});
             if (success === false) {
-                this.loadingBtn = false;
+                this.resetLoadingBtn();
                 return;
             }
             this.removeModal = false;
@@ -130,7 +130,7 @@ export default {
                 interfaces: this.selectedInterface
             }});
             if (success === false) {
-                this.loadingBtn = false;
+                this.resetLoadingBtn();
                 return;
             }
             this.interfaceModel = false;
@@ -172,6 +172,10 @@ export default {
                     $button.eq(3).on('click', () => this.showRemove(node.data));
                 }
             });
+        },
+        resetLoadingBtn() {
+            this.loadingBtn = false;
+            this.$nextTick(() => this.loadingBtn = true);
         }
     }
 }

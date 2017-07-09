@@ -19,6 +19,10 @@ const router = new Router(config.base_path);
 const ignoreUrl = config.ignoreUrl;
 const loginUrl = config.loginUrl;
 
+const trc = require('trc');
+const loggerService = trc.ServerProvider.instance(require('./thrift/LoggerService'));
+const PublicStruct = require('./thrift/PublicStruct_types');
+
 //body
 app.use(bodyParser());
 //logger
@@ -27,23 +31,38 @@ app.use(async (ctx, next) => {
     await next();
     const ms = new Date() - start;
     logger.debug(`Web Method: ${ctx.method} Url: ${ctx.url} Time: ${ms}`);
+    if (Utils.filter(ctx.url, config.loggerPath) && ctx.session && ctx.session.user) {
+        loggerService.admin(new PublicStruct.AdminLoggerStruct({
+            user: ctx.session.user.id,
+            ip: ctx.request.ip,
+            path: ctx.path,
+            body: JSON.stringify(ctx.request.body),
+            params: JSON.stringify(ctx.query),
+            method: ctx.method,
+            ms
+        })).catch(err => {
+            logger.warn(`logger admin error`, err);
+        });
+    }
 });
 
 //session
 app.keys = ['session_key'];
-app.use(session({
-    store: new Store({
-        async before(session, sid) {
-            if (session.user && Utils.isOnlyLogin(session.user)) {
-                let key = await this.user(session.user.id);
-                if (key && key !== sid) {
-                    logger.info('user: %s rep login destroy before session: %s', session.user.id, key);
-                    await this.destroy(key);
-                }
+const store = new Store({
+    async before(session, sid) {
+        if (session.user && Utils.isOnlyLogin(session.user)) {
+            let key = await this.user(session.user.id);
+            if (key && key !== sid) {
+                logger.info('user: %s rep login destroy before session: %s', session.user.id, key);
+                await this.destroy(key);
             }
-            return true;
         }
-    }),
+        return true;
+    }
+});
+app._store = store;
+app.use(session({
+    store: store,
     maxAge: config.session_ttl,
     path: (!config.base_path || config.base_path === '') ? '/' : config.base_path
 }, app));

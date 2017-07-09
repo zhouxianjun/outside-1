@@ -2213,6 +2213,13 @@ exports.city = [
         "province": 34
     }
 ];
+exports.RoleType = [{
+    id: 1,
+    name: '超级管理员'
+}, {
+    id: 2,
+    name: '运营管理员'
+}];
 exports.getAttribute = (dic, prop, value, isArray = false) => {
     let result = [];
     for (let item of dic) {

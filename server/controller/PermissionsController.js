@@ -233,12 +233,17 @@ module.exports = class PermissionsController {
     }
     static async updateUser(ctx) {
         let params = ctx.request.body;
+        params.id = params.id ? params.id : ctx.session.user.id;
         let res = await userService.update(new PublicStruct.UserStruct(params));
+        if (res && params.status === false) {
+            Utils.removeUser(ctx, params.id);
+        }
         ctx.body = new Result(!!res).json;
     }
     static async delUser(ctx) {
         let params = ctx.request.body;
         let res = await userService.delUser(params.id);
+        res && Utils.removeUser(ctx, params.id);
         ctx.body = new Result(!!res).json;
     }
     static async setRoles(ctx) {
@@ -266,9 +271,12 @@ module.exports = class PermissionsController {
     }
     static async info(ctx) {
         let res = await userService.info(ctx.session.user.id);
+        let value = JSON.parse(res);
+        Reflect.deleteProperty(value, 'password');
+        Reflect.deleteProperty(value, 'username');
         ctx.body = new Result(true, {
             key: 'user',
-            value: JSON.parse(res)
+            value: value
         }).json;
     }
     static async childUsers(ctx) {
