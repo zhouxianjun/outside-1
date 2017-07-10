@@ -2220,6 +2220,16 @@ exports.RoleType = [{
     id: 2,
     name: '运营管理员'
 }];
+exports.ResourcesType = [{
+    id: 3000,
+    name: '图片'
+}, {
+    id: 3001,
+    name: '网页'
+}, {
+    id: 3002,
+    name: '应用'
+}];
 exports.getAttribute = (dic, prop, value, isArray = false) => {
     let result = [];
     for (let item of dic) {

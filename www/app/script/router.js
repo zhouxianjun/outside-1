@@ -9,6 +9,7 @@ import Menu from '../view/menu.vue';
 import Role from '../view/role.vue';
 import User from '../view/user.vue';
 import Logger from '../view/logger.vue';
+import Resources from '../view/resources.vue';
 export default [{
     path: '/login',
     component: Login
@@ -33,5 +34,8 @@ export default [{
     }, {
         path: 'logger',
         component: Logger
+    }, {
+        path: 'resources',
+        component: Resources
     }]
 }]
