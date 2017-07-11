@@ -68,6 +68,7 @@ export default {
             let date = this.$refs['date'].currentValue;
             this.search.query.start_time = date[0] instanceof Date ? Common.dateFormat(date[0]) : '';
             this.search.query.end_time = date[1] instanceof Date ? Common.dateFormat(date[1]) : '';
+            Common.voNumberToChar(this.search.query);
             let list = await this.fetch('/admin/logger/list/page', {params: this.search});
             list && (this.table.data = list.page.count === 0 ? [] : JSON.parse(list.page.items));
             list && (this.table.total = list.page.count);

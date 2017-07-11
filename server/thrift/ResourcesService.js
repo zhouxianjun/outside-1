@@ -204,7 +204,7 @@ var ResourcesService_add_result = function(args) {
   }
   if (args) {
     if (args.success !== undefined && args.success !== null) {
-      this.success = args.success;
+      this.success = new PublicStruct_ttypes.ResourcesStruct(args.success);
     }
     if (args.ex !== undefined && args.ex !== null) {
       this.ex = args.ex;
@@ -226,8 +226,9 @@ ResourcesService_add_result.prototype.read = function(input) {
     switch (fid)
     {
       case 0:
-      if (ftype == Thrift.Type.I32) {
-        this.success = input.readI32();
+      if (ftype == Thrift.Type.STRUCT) {
+        this.success = new PublicStruct_ttypes.ResourcesStruct();
+        this.success.read(input);
       } else {
         input.skip(ftype);
       }
@@ -252,8 +253,8 @@ ResourcesService_add_result.prototype.read = function(input) {
 ResourcesService_add_result.prototype.write = function(output) {
   output.writeStructBegin('ResourcesService_add_result');
   if (this.success !== null && this.success !== undefined) {
-    output.writeFieldBegin('success', Thrift.Type.I32, 0);
-    output.writeI32(this.success);
+    output.writeFieldBegin('success', Thrift.Type.STRUCT, 0);
+    this.success.write(output);
     output.writeFieldEnd();
   }
   if (this.ex !== null && this.ex !== undefined) {

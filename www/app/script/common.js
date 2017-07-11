@@ -74,8 +74,9 @@ const Common = {
     clearVo(vo) {
         let keys = Reflect.ownKeys(vo);
         for (let key of keys) {
-            if (typeof keys[key] === 'object' && keys[key]) {
-                this.clearVo(keys[key]);
+            if (key === '__ob__') continue;
+            if (typeof vo[key] === 'object' && vo[key]) {
+                this.clearVo(vo[key]);
             }
             Reflect.set(vo, key, null);
         }
@@ -95,6 +96,14 @@ const Common = {
             height: '100%', //可滚动区域高度
             disableFadeOut: true
         }, options));
+    },
+    voNumberToChar(vo) {
+        let keys = Reflect.ownKeys(vo);
+        for (let key of keys) {
+            if (!isNaN(vo[key]) && vo[key]) {
+                Reflect.set(vo, key, `${vo[key]}`);
+            }
+        }
     }
 };
 export default Common;

@@ -20,7 +20,7 @@
                     <div class="col-sm-4">
                         <label>类型</label>
                         <div class="form-group">
-                            <Select v-model="search.query.type" class="form-control pull-right">
+                            <Select v-model="search.query.type" class="pull-right">
                                 <Option v-for="item in ResourcesType" :value="item.id" :key="item">{{ item.name }}</Option>
                             </Select>
                         </div>
@@ -57,7 +57,7 @@
         <div class="panel panel-default i-panel-default">
             <div class="panel-heading">
                 <span>资源列表</span>
-                <button type="button" class="btn btn-default btn-sm pull-right" @click="add">
+                <button type="button" class="btn btn-default btn-sm pull-right" @click="showAdd">
                     <span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> 添加
                 </button>
             </div>
@@ -70,36 +70,44 @@
                 </div>
             </div>
         </div>
-        <Modal v-model="model" :title="modelTitle" @on-ok="addOrUpdate">
+        <Modal v-model="model" :title="modelTitle" :loading="loadingBtn" @on-ok="add">
             <Form ref="form" :model="vo" :label-width="80" :rules="resourcesValidate">
-                <Form-item label="名称" prop="name">
-                    <Input v-model="vo.name" placeholder="请输入接口名"/>
-                </Form-item>
                 <Form-item label="类型" prop="type">
                     <Select v-model="vo.type">
                         <Option v-for="item in ResourcesType" :value="item.id" :key="item">{{ item.name }}</Option>
                     </Select>
                 </Form-item>
-                <Form-item label="地址" prop="path" v-if="vo.type == 3001">
+                <Form-item label="名称" prop="name" v-show="vo.type == 3001">
+                    <Input v-model="vo.name"/>
+                </Form-item>
+                <Form-item label="地址" prop="path" v-show="vo.type == 3001">
                     <Input v-model="vo.path"/>
                 </Form-item>
-                <Form-item label="包名" prop="pkg" v-if="vo.type == 3002">
+                <Form-item label="包名" prop="pkg" v-show="vo.type == 3002">
                     <Input v-model="vo.pkg"/>
                 </Form-item>
-                <Form-item label="文件" v-if="vo.type != 3001">
-                    <div>
-                        <template v-if="vo.md5 && vo.md5 != ''">
-                            <img :src="image">
-                        </template>
-                        <template v-else>
-                            <Progress :percent="percentage" hide-info></Progress>
-                        </template>
-                    </div>
-                    <Upload action="//jsonplaceholder.typicode.com/posts/" v-if="vo.type != 3000">
+                <Form-item label="文件" v-show="vo.type != 3001">
+                    <Upload accept="image/*" :format="['jpg','jpeg','png']" :before-upload="beforeUpload" :on-success="uploaded" action="http://up.qiniu.com" :data="uploadData" v-if="vo.type == 3000">
+                        <Button type="ghost" icon="ios-cloud-upload-outline">上传图片</Button>
+                    </Upload>
+                    <Upload action="http://up.qiniu.com" :before-upload="beforeUpload" :on-success="uploaded" :data="uploadData" v-else>
                         <Button type="ghost" icon="ios-cloud-upload-outline">上传文件</Button>
                     </Upload>
                 </Form-item>
             </Form>
+        </Modal>
+        <Modal v-model="removeModal" width="360">
+            <p slot="header" style="color:#f60;text-align:center">
+                <Icon type="information-circled"></Icon>
+                <span>删除确认</span>
+            </p>
+            <div style="text-align:center">
+                <p>确定删除 {{removeItem ? removeItem.name : ''}} 吗?，删除后将无法恢复。</p>
+                <p>是否继续删除？</p>
+            </div>
+            <div slot="footer">
+                <Button type="error" size="large" @click="remove">删除</Button>
+            </div>
         </Modal>
     </div>
 </template>

@@ -31,7 +31,7 @@
             },
             handExpanded(id) {
                 this.$emit('on-expanded', id);
-                this.activeMenu(this.active);
+                this.activeMenu(this.active, true);
             },
             openMenu(el) {
                 return new Promise(resolve => {
@@ -48,12 +48,14 @@
                     });
                 });
             },
-            activeMenu(id) {
+            activeMenu(id, expand) {
                 let a = $(`#menu-${id}`);
                 if (!a.length) {
                     $(this.$el).find('li.active').not('.treeview').removeClass('active');
                     return;
                 }
+                let active = a.parents('li.treeview').eq(0).hasClass('active');
+                if (!active && expand) return;
                 let parents = a.parents('ul.treeview-menu');
 
                 if (!parents.first().is(':visible')) {

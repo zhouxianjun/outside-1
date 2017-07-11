@@ -111,6 +111,7 @@ export default {
         },
         async doQuery() {
             Common.clearVo(this.vo);
+            Common.voNumberToChar(this.search.query);
             let list = await this.fetch('/permissions/interface/list/mgr', {params: this.search});
             list && (this.table.data = list.interfaces.count === 0 ? [] : JSON.parse(list.interfaces.items));
             list && (this.table.total = list.interfaces.count);
