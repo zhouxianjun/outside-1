@@ -70,7 +70,7 @@
                 </div>
             </div>
         </div>
-        <Modal v-model="model" :title="modelTitle" :loading="loadingBtn" @on-ok="add">
+        <Modal v-model="model" :title="modelTitle" :loading="loadingBtn" @on-ok="add" @on-cancel="cancel">
             <Form ref="form" :model="vo" :label-width="80" :rules="resourcesValidate">
                 <Form-item label="类型" prop="type">
                     <Select v-model="vo.type">
@@ -87,10 +87,10 @@
                     <Input v-model="vo.pkg"/>
                 </Form-item>
                 <Form-item label="文件" v-show="vo.type != 3001">
-                    <Upload accept="image/*" :format="['jpg','jpeg','png']" :before-upload="beforeUpload" :on-success="uploaded" action="http://up.qiniu.com" :data="uploadData" v-if="vo.type == 3000">
+                    <Upload ref="upload" accept="image/*" :format="['jpg','jpeg','png']" :before-upload="beforeUpload" :on-success="uploaded" action="http://up-z2.qiniu.com" :data="uploadData" v-if="vo.type == 3000">
                         <Button type="ghost" icon="ios-cloud-upload-outline">上传图片</Button>
                     </Upload>
-                    <Upload action="http://up.qiniu.com" :before-upload="beforeUpload" :on-success="uploaded" :data="uploadData" v-else>
+                    <Upload ref="upload" action="http://up-z2.qiniu.com" :before-upload="beforeUpload" :on-success="uploaded" :data="uploadData" v-else>
                         <Button type="ghost" icon="ios-cloud-upload-outline">上传文件</Button>
                     </Upload>
                 </Form-item>

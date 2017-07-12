@@ -98,6 +98,7 @@ export default {
             uploadData: {
                 'x:type': null,
                 'x:pkg': null,
+                'x:user': null,
                 token: null
             }
         }
@@ -117,7 +118,11 @@ export default {
     },
     methods: {
         async add() {
-            if (this.vo.type !== 3001) return;
+            if (this.vo.type !== 3001) {
+                this.resetLoadingBtn();
+                this.$Message.warning('请上传文件');
+                return;
+            }
             this.$refs['form'].validate(async (valid) => {
                 if (valid) {
                     let success = await this.fetch('/resources/add', {method: 'post', data: this.vo});
@@ -174,12 +179,19 @@ export default {
             this.uploadData.token = res.token;
             this.uploadData['x:type'] = this.vo.type;
             this.uploadData['x:pkg'] = this.vo.pkg;
+            this.uploadData['x:user'] = this.$parent.user.id;
             return true;
         },
         async uploaded(res) {
-            console.log(res);
+            this.$refs['upload'].clearFiles();
+            if (!res.success) {
+                return;
+            }
             this.model = false;
             setTimeout(() => this.doQuery(), 500);
+        },
+        cancel() {
+            this.loadingBtn = false;
         },
         resetLoadingBtn() {
             this.loadingBtn = false;
