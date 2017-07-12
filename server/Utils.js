@@ -80,11 +80,6 @@ module.exports = class Utils {
                     item[prop_child] = temp;
                 }
             }
-            if (item[prop_child] && item[prop_child].length) {
-                item.tree = {
-                    image: 'folder.gif'
-                }
-            }
             if (typeof renderer === 'function') {
                 renderer(item);
             }

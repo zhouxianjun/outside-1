@@ -10,8 +10,8 @@ export default {
             search: {
                 page: 1,
                 pageSize: 10,
-                sortName: null,
-                sortDir: null,
+                sortName: 'create_time',
+                sortDir: 'desc',
                 query: {
                     name: '',
                     auth: ''

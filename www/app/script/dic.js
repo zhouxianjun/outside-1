@@ -2230,6 +2230,41 @@ exports.ResourcesType = [{
     id: 3002,
     name: '应用'
 }];
+exports.TempleType = [{
+    id: 6000,
+    name: '全屏'
+}, {
+    id: 6001,
+    name: '插屏'
+}, {
+    id: 6002,
+    name: '漂浮'
+}];
+exports.PositionType = [{
+    id: 5000,
+    name: 'APP首页'
+}, {
+    id: 5001,
+    name: '瀑布流中间'
+}, {
+    id: 5002,
+    name: '瀑布流下沿'
+}, {
+    id: 5003,
+    name: '搜索框中间'
+}, {
+    id: 5004,
+    name: '搜索框下沿'
+}, {
+    id: 5005,
+    name: '状态栏'
+}, {
+    id: 5006,
+    name: '桌面中间'
+}, {
+    id: 5007,
+    name: '漂浮'
+}];
 exports.getAttribute = (dic, prop, value, isArray = false) => {
     let result = [];
     for (let item of dic) {

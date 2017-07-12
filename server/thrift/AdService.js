@@ -12,10 +12,10 @@ var Q = thrift.Q;
 var PublicStruct_ttypes = require('./PublicStruct_types');
 
 
-var ttypes = require('./ResourcesService_types');
+var ttypes = require('./AdService_types');
 //HELPER FUNCTIONS AND STRUCTURES
 
-var ResourcesService_page_args = function(args) {
+var AdService_page_args = function(args) {
   this.page = null;
   if (args) {
     if (args.page !== undefined && args.page !== null) {
@@ -23,8 +23,8 @@ var ResourcesService_page_args = function(args) {
     }
   }
 };
-ResourcesService_page_args.prototype = {};
-ResourcesService_page_args.prototype.read = function(input) {
+AdService_page_args.prototype = {};
+AdService_page_args.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -57,8 +57,8 @@ ResourcesService_page_args.prototype.read = function(input) {
   return;
 };
 
-ResourcesService_page_args.prototype.write = function(output) {
-  output.writeStructBegin('ResourcesService_page_args');
+AdService_page_args.prototype.write = function(output) {
+  output.writeStructBegin('AdService_page_args');
   if (this.page !== null && this.page !== undefined) {
     output.writeFieldBegin('page', Thrift.Type.STRUCT, 1);
     this.page.write(output);
@@ -69,7 +69,7 @@ ResourcesService_page_args.prototype.write = function(output) {
   return;
 };
 
-var ResourcesService_page_result = function(args) {
+var AdService_page_result = function(args) {
   this.success = null;
   this.ex = null;
   if (args instanceof PublicStruct_ttypes.InvalidOperation) {
@@ -85,8 +85,8 @@ var ResourcesService_page_result = function(args) {
     }
   }
 };
-ResourcesService_page_result.prototype = {};
-ResourcesService_page_result.prototype.read = function(input) {
+AdService_page_result.prototype = {};
+AdService_page_result.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -124,8 +124,8 @@ ResourcesService_page_result.prototype.read = function(input) {
   return;
 };
 
-ResourcesService_page_result.prototype.write = function(output) {
-  output.writeStructBegin('ResourcesService_page_result');
+AdService_page_result.prototype.write = function(output) {
+  output.writeStructBegin('AdService_page_result');
   if (this.success !== null && this.success !== undefined) {
     output.writeFieldBegin('success', Thrift.Type.STRUCT, 0);
     this.success.write(output);
@@ -141,16 +141,16 @@ ResourcesService_page_result.prototype.write = function(output) {
   return;
 };
 
-var ResourcesService_add_args = function(args) {
+var AdService_add_args = function(args) {
   this.bean = null;
   if (args) {
     if (args.bean !== undefined && args.bean !== null) {
-      this.bean = new PublicStruct_ttypes.ResourcesStruct(args.bean);
+      this.bean = new PublicStruct_ttypes.AdStruct(args.bean);
     }
   }
 };
-ResourcesService_add_args.prototype = {};
-ResourcesService_add_args.prototype.read = function(input) {
+AdService_add_args.prototype = {};
+AdService_add_args.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -165,7 +165,7 @@ ResourcesService_add_args.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.bean = new PublicStruct_ttypes.ResourcesStruct();
+        this.bean = new PublicStruct_ttypes.AdStruct();
         this.bean.read(input);
       } else {
         input.skip(ftype);
@@ -183,8 +183,8 @@ ResourcesService_add_args.prototype.read = function(input) {
   return;
 };
 
-ResourcesService_add_args.prototype.write = function(output) {
-  output.writeStructBegin('ResourcesService_add_args');
+AdService_add_args.prototype.write = function(output) {
+  output.writeStructBegin('AdService_add_args');
   if (this.bean !== null && this.bean !== undefined) {
     output.writeFieldBegin('bean', Thrift.Type.STRUCT, 1);
     this.bean.write(output);
@@ -195,272 +195,7 @@ ResourcesService_add_args.prototype.write = function(output) {
   return;
 };
 
-var ResourcesService_add_result = function(args) {
-  this.success = null;
-  this.ex = null;
-  if (args instanceof PublicStruct_ttypes.InvalidOperation) {
-    this.ex = args;
-    return;
-  }
-  if (args) {
-    if (args.success !== undefined && args.success !== null) {
-      this.success = new PublicStruct_ttypes.ResourcesStruct(args.success);
-    }
-    if (args.ex !== undefined && args.ex !== null) {
-      this.ex = args.ex;
-    }
-  }
-};
-ResourcesService_add_result.prototype = {};
-ResourcesService_add_result.prototype.read = function(input) {
-  input.readStructBegin();
-  while (true)
-  {
-    var ret = input.readFieldBegin();
-    var fname = ret.fname;
-    var ftype = ret.ftype;
-    var fid = ret.fid;
-    if (ftype == Thrift.Type.STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 0:
-      if (ftype == Thrift.Type.STRUCT) {
-        this.success = new PublicStruct_ttypes.ResourcesStruct();
-        this.success.read(input);
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 1:
-      if (ftype == Thrift.Type.STRUCT) {
-        this.ex = new PublicStruct_ttypes.InvalidOperation();
-        this.ex.read(input);
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      default:
-        input.skip(ftype);
-    }
-    input.readFieldEnd();
-  }
-  input.readStructEnd();
-  return;
-};
-
-ResourcesService_add_result.prototype.write = function(output) {
-  output.writeStructBegin('ResourcesService_add_result');
-  if (this.success !== null && this.success !== undefined) {
-    output.writeFieldBegin('success', Thrift.Type.STRUCT, 0);
-    this.success.write(output);
-    output.writeFieldEnd();
-  }
-  if (this.ex !== null && this.ex !== undefined) {
-    output.writeFieldBegin('ex', Thrift.Type.STRUCT, 1);
-    this.ex.write(output);
-    output.writeFieldEnd();
-  }
-  output.writeFieldStop();
-  output.writeStructEnd();
-  return;
-};
-
-var ResourcesService_listByAd_args = function(args) {
-  this.ad = null;
-  this.page = null;
-  if (args) {
-    if (args.ad !== undefined && args.ad !== null) {
-      this.ad = args.ad;
-    }
-    if (args.page !== undefined && args.page !== null) {
-      this.page = new PublicStruct_ttypes.PageParamStruct(args.page);
-    }
-  }
-};
-ResourcesService_listByAd_args.prototype = {};
-ResourcesService_listByAd_args.prototype.read = function(input) {
-  input.readStructBegin();
-  while (true)
-  {
-    var ret = input.readFieldBegin();
-    var fname = ret.fname;
-    var ftype = ret.ftype;
-    var fid = ret.fid;
-    if (ftype == Thrift.Type.STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 1:
-      if (ftype == Thrift.Type.I32) {
-        this.ad = input.readI32();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 2:
-      if (ftype == Thrift.Type.STRUCT) {
-        this.page = new PublicStruct_ttypes.PageParamStruct();
-        this.page.read(input);
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      default:
-        input.skip(ftype);
-    }
-    input.readFieldEnd();
-  }
-  input.readStructEnd();
-  return;
-};
-
-ResourcesService_listByAd_args.prototype.write = function(output) {
-  output.writeStructBegin('ResourcesService_listByAd_args');
-  if (this.ad !== null && this.ad !== undefined) {
-    output.writeFieldBegin('ad', Thrift.Type.I32, 1);
-    output.writeI32(this.ad);
-    output.writeFieldEnd();
-  }
-  if (this.page !== null && this.page !== undefined) {
-    output.writeFieldBegin('page', Thrift.Type.STRUCT, 2);
-    this.page.write(output);
-    output.writeFieldEnd();
-  }
-  output.writeFieldStop();
-  output.writeStructEnd();
-  return;
-};
-
-var ResourcesService_listByAd_result = function(args) {
-  this.success = null;
-  this.ex = null;
-  if (args instanceof PublicStruct_ttypes.InvalidOperation) {
-    this.ex = args;
-    return;
-  }
-  if (args) {
-    if (args.success !== undefined && args.success !== null) {
-      this.success = new PublicStruct_ttypes.PageStruct(args.success);
-    }
-    if (args.ex !== undefined && args.ex !== null) {
-      this.ex = args.ex;
-    }
-  }
-};
-ResourcesService_listByAd_result.prototype = {};
-ResourcesService_listByAd_result.prototype.read = function(input) {
-  input.readStructBegin();
-  while (true)
-  {
-    var ret = input.readFieldBegin();
-    var fname = ret.fname;
-    var ftype = ret.ftype;
-    var fid = ret.fid;
-    if (ftype == Thrift.Type.STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 0:
-      if (ftype == Thrift.Type.STRUCT) {
-        this.success = new PublicStruct_ttypes.PageStruct();
-        this.success.read(input);
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 1:
-      if (ftype == Thrift.Type.STRUCT) {
-        this.ex = new PublicStruct_ttypes.InvalidOperation();
-        this.ex.read(input);
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      default:
-        input.skip(ftype);
-    }
-    input.readFieldEnd();
-  }
-  input.readStructEnd();
-  return;
-};
-
-ResourcesService_listByAd_result.prototype.write = function(output) {
-  output.writeStructBegin('ResourcesService_listByAd_result');
-  if (this.success !== null && this.success !== undefined) {
-    output.writeFieldBegin('success', Thrift.Type.STRUCT, 0);
-    this.success.write(output);
-    output.writeFieldEnd();
-  }
-  if (this.ex !== null && this.ex !== undefined) {
-    output.writeFieldBegin('ex', Thrift.Type.STRUCT, 1);
-    this.ex.write(output);
-    output.writeFieldEnd();
-  }
-  output.writeFieldStop();
-  output.writeStructEnd();
-  return;
-};
-
-var ResourcesService_update_args = function(args) {
-  this.bean = null;
-  if (args) {
-    if (args.bean !== undefined && args.bean !== null) {
-      this.bean = new PublicStruct_ttypes.ResourcesStruct(args.bean);
-    }
-  }
-};
-ResourcesService_update_args.prototype = {};
-ResourcesService_update_args.prototype.read = function(input) {
-  input.readStructBegin();
-  while (true)
-  {
-    var ret = input.readFieldBegin();
-    var fname = ret.fname;
-    var ftype = ret.ftype;
-    var fid = ret.fid;
-    if (ftype == Thrift.Type.STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 1:
-      if (ftype == Thrift.Type.STRUCT) {
-        this.bean = new PublicStruct_ttypes.ResourcesStruct();
-        this.bean.read(input);
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 0:
-        input.skip(ftype);
-        break;
-      default:
-        input.skip(ftype);
-    }
-    input.readFieldEnd();
-  }
-  input.readStructEnd();
-  return;
-};
-
-ResourcesService_update_args.prototype.write = function(output) {
-  output.writeStructBegin('ResourcesService_update_args');
-  if (this.bean !== null && this.bean !== undefined) {
-    output.writeFieldBegin('bean', Thrift.Type.STRUCT, 1);
-    this.bean.write(output);
-    output.writeFieldEnd();
-  }
-  output.writeFieldStop();
-  output.writeStructEnd();
-  return;
-};
-
-var ResourcesService_update_result = function(args) {
+var AdService_add_result = function(args) {
   this.success = null;
   this.ex = null;
   if (args instanceof PublicStruct_ttypes.InvalidOperation) {
@@ -476,8 +211,133 @@ var ResourcesService_update_result = function(args) {
     }
   }
 };
-ResourcesService_update_result.prototype = {};
-ResourcesService_update_result.prototype.read = function(input) {
+AdService_add_result.prototype = {};
+AdService_add_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+      if (ftype == Thrift.Type.I32) {
+        this.success = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.ex = new PublicStruct_ttypes.InvalidOperation();
+        this.ex.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+AdService_add_result.prototype.write = function(output) {
+  output.writeStructBegin('AdService_add_result');
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.I32, 0);
+    output.writeI32(this.success);
+    output.writeFieldEnd();
+  }
+  if (this.ex !== null && this.ex !== undefined) {
+    output.writeFieldBegin('ex', Thrift.Type.STRUCT, 1);
+    this.ex.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+var AdService_update_args = function(args) {
+  this.bean = null;
+  if (args) {
+    if (args.bean !== undefined && args.bean !== null) {
+      this.bean = new PublicStruct_ttypes.AdStruct(args.bean);
+    }
+  }
+};
+AdService_update_args.prototype = {};
+AdService_update_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.bean = new PublicStruct_ttypes.AdStruct();
+        this.bean.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+AdService_update_args.prototype.write = function(output) {
+  output.writeStructBegin('AdService_update_args');
+  if (this.bean !== null && this.bean !== undefined) {
+    output.writeFieldBegin('bean', Thrift.Type.STRUCT, 1);
+    this.bean.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+var AdService_update_result = function(args) {
+  this.success = null;
+  this.ex = null;
+  if (args instanceof PublicStruct_ttypes.InvalidOperation) {
+    this.ex = args;
+    return;
+  }
+  if (args) {
+    if (args.success !== undefined && args.success !== null) {
+      this.success = args.success;
+    }
+    if (args.ex !== undefined && args.ex !== null) {
+      this.ex = args.ex;
+    }
+  }
+};
+AdService_update_result.prototype = {};
+AdService_update_result.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -514,8 +374,8 @@ ResourcesService_update_result.prototype.read = function(input) {
   return;
 };
 
-ResourcesService_update_result.prototype.write = function(output) {
-  output.writeStructBegin('ResourcesService_update_result');
+AdService_update_result.prototype.write = function(output) {
+  output.writeStructBegin('AdService_update_result');
   if (this.success !== null && this.success !== undefined) {
     output.writeFieldBegin('success', Thrift.Type.BOOL, 0);
     output.writeBool(this.success);
@@ -531,7 +391,166 @@ ResourcesService_update_result.prototype.write = function(output) {
   return;
 };
 
-var ResourcesService_remove_args = function(args) {
+var AdService_setResource_args = function(args) {
+  this.id = null;
+  this.resources = null;
+  if (args) {
+    if (args.id !== undefined && args.id !== null) {
+      this.id = args.id;
+    }
+    if (args.resources !== undefined && args.resources !== null) {
+      this.resources = Thrift.copyList(args.resources, [null]);
+    }
+  }
+};
+AdService_setResource_args.prototype = {};
+AdService_setResource_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.I32) {
+        this.id = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.LIST) {
+        var _size0 = 0;
+        var _rtmp34;
+        this.resources = [];
+        var _etype3 = 0;
+        _rtmp34 = input.readListBegin();
+        _etype3 = _rtmp34.etype;
+        _size0 = _rtmp34.size;
+        for (var _i5 = 0; _i5 < _size0; ++_i5)
+        {
+          var elem6 = null;
+          elem6 = input.readI32();
+          this.resources.push(elem6);
+        }
+        input.readListEnd();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+AdService_setResource_args.prototype.write = function(output) {
+  output.writeStructBegin('AdService_setResource_args');
+  if (this.id !== null && this.id !== undefined) {
+    output.writeFieldBegin('id', Thrift.Type.I32, 1);
+    output.writeI32(this.id);
+    output.writeFieldEnd();
+  }
+  if (this.resources !== null && this.resources !== undefined) {
+    output.writeFieldBegin('resources', Thrift.Type.LIST, 2);
+    output.writeListBegin(Thrift.Type.I32, this.resources.length);
+    for (var iter7 in this.resources)
+    {
+      if (this.resources.hasOwnProperty(iter7))
+      {
+        iter7 = this.resources[iter7];
+        output.writeI32(iter7);
+      }
+    }
+    output.writeListEnd();
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+var AdService_setResource_result = function(args) {
+  this.success = null;
+  this.ex = null;
+  if (args instanceof PublicStruct_ttypes.InvalidOperation) {
+    this.ex = args;
+    return;
+  }
+  if (args) {
+    if (args.success !== undefined && args.success !== null) {
+      this.success = args.success;
+    }
+    if (args.ex !== undefined && args.ex !== null) {
+      this.ex = args.ex;
+    }
+  }
+};
+AdService_setResource_result.prototype = {};
+AdService_setResource_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+      if (ftype == Thrift.Type.BOOL) {
+        this.success = input.readBool();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.ex = new PublicStruct_ttypes.InvalidOperation();
+        this.ex.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+AdService_setResource_result.prototype.write = function(output) {
+  output.writeStructBegin('AdService_setResource_result');
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.BOOL, 0);
+    output.writeBool(this.success);
+    output.writeFieldEnd();
+  }
+  if (this.ex !== null && this.ex !== undefined) {
+    output.writeFieldBegin('ex', Thrift.Type.STRUCT, 1);
+    this.ex.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+var AdService_remove_args = function(args) {
   this.id = null;
   if (args) {
     if (args.id !== undefined && args.id !== null) {
@@ -539,8 +558,8 @@ var ResourcesService_remove_args = function(args) {
     }
   }
 };
-ResourcesService_remove_args.prototype = {};
-ResourcesService_remove_args.prototype.read = function(input) {
+AdService_remove_args.prototype = {};
+AdService_remove_args.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -572,8 +591,8 @@ ResourcesService_remove_args.prototype.read = function(input) {
   return;
 };
 
-ResourcesService_remove_args.prototype.write = function(output) {
-  output.writeStructBegin('ResourcesService_remove_args');
+AdService_remove_args.prototype.write = function(output) {
+  output.writeStructBegin('AdService_remove_args');
   if (this.id !== null && this.id !== undefined) {
     output.writeFieldBegin('id', Thrift.Type.I32, 1);
     output.writeI32(this.id);
@@ -584,7 +603,7 @@ ResourcesService_remove_args.prototype.write = function(output) {
   return;
 };
 
-var ResourcesService_remove_result = function(args) {
+var AdService_remove_result = function(args) {
   this.success = null;
   this.ex = null;
   if (args instanceof PublicStruct_ttypes.InvalidOperation) {
@@ -600,8 +619,8 @@ var ResourcesService_remove_result = function(args) {
     }
   }
 };
-ResourcesService_remove_result.prototype = {};
-ResourcesService_remove_result.prototype.read = function(input) {
+AdService_remove_result.prototype = {};
+AdService_remove_result.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -638,8 +657,8 @@ ResourcesService_remove_result.prototype.read = function(input) {
   return;
 };
 
-ResourcesService_remove_result.prototype.write = function(output) {
-  output.writeStructBegin('ResourcesService_remove_result');
+AdService_remove_result.prototype.write = function(output) {
+  output.writeStructBegin('AdService_remove_result');
   if (this.success !== null && this.success !== undefined) {
     output.writeFieldBegin('success', Thrift.Type.BOOL, 0);
     output.writeBool(this.success);
@@ -655,10 +674,10 @@ ResourcesService_remove_result.prototype.write = function(output) {
   return;
 };
 
-var ResourcesService_feedback_args = function(args) {
+var AdService_feedback_args = function(args) {
   this.push = null;
   this.ad = null;
-  this.resources = null;
+  this.type = null;
   this.c = null;
   if (args) {
     if (args.push !== undefined && args.push !== null) {
@@ -667,16 +686,16 @@ var ResourcesService_feedback_args = function(args) {
     if (args.ad !== undefined && args.ad !== null) {
       this.ad = args.ad;
     }
-    if (args.resources !== undefined && args.resources !== null) {
-      this.resources = Thrift.copyList(args.resources, [PublicStruct_ttypes.ResourcesFeedbackReqStruct]);
+    if (args.type !== undefined && args.type !== null) {
+      this.type = args.type;
     }
     if (args.c !== undefined && args.c !== null) {
       this.c = args.c;
     }
   }
 };
-ResourcesService_feedback_args.prototype = {};
-ResourcesService_feedback_args.prototype.read = function(input) {
+AdService_feedback_args.prototype = {};
+AdService_feedback_args.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -704,22 +723,8 @@ ResourcesService_feedback_args.prototype.read = function(input) {
       }
       break;
       case 3:
-      if (ftype == Thrift.Type.LIST) {
-        var _size0 = 0;
-        var _rtmp34;
-        this.resources = [];
-        var _etype3 = 0;
-        _rtmp34 = input.readListBegin();
-        _etype3 = _rtmp34.etype;
-        _size0 = _rtmp34.size;
-        for (var _i5 = 0; _i5 < _size0; ++_i5)
-        {
-          var elem6 = null;
-          elem6 = new PublicStruct_ttypes.ResourcesFeedbackReqStruct();
-          elem6.read(input);
-          this.resources.push(elem6);
-        }
-        input.readListEnd();
+      if (ftype == Thrift.Type.I32) {
+        this.type = input.readI32();
       } else {
         input.skip(ftype);
       }
@@ -740,8 +745,8 @@ ResourcesService_feedback_args.prototype.read = function(input) {
   return;
 };
 
-ResourcesService_feedback_args.prototype.write = function(output) {
-  output.writeStructBegin('ResourcesService_feedback_args');
+AdService_feedback_args.prototype.write = function(output) {
+  output.writeStructBegin('AdService_feedback_args');
   if (this.push !== null && this.push !== undefined) {
     output.writeFieldBegin('push', Thrift.Type.STRING, 1);
     output.writeString(this.push);
@@ -752,18 +757,9 @@ ResourcesService_feedback_args.prototype.write = function(output) {
     output.writeI32(this.ad);
     output.writeFieldEnd();
   }
-  if (this.resources !== null && this.resources !== undefined) {
-    output.writeFieldBegin('resources', Thrift.Type.LIST, 3);
-    output.writeListBegin(Thrift.Type.STRUCT, this.resources.length);
-    for (var iter7 in this.resources)
-    {
-      if (this.resources.hasOwnProperty(iter7))
-      {
-        iter7 = this.resources[iter7];
-        iter7.write(output);
-      }
-    }
-    output.writeListEnd();
+  if (this.type !== null && this.type !== undefined) {
+    output.writeFieldBegin('type', Thrift.Type.I32, 3);
+    output.writeI32(this.type);
     output.writeFieldEnd();
   }
   if (this.c !== null && this.c !== undefined) {
@@ -776,7 +772,7 @@ ResourcesService_feedback_args.prototype.write = function(output) {
   return;
 };
 
-var ResourcesService_feedback_result = function(args) {
+var AdService_feedback_result = function(args) {
   this.ex = null;
   if (args instanceof PublicStruct_ttypes.InvalidOperation) {
     this.ex = args;
@@ -788,8 +784,8 @@ var ResourcesService_feedback_result = function(args) {
     }
   }
 };
-ResourcesService_feedback_result.prototype = {};
-ResourcesService_feedback_result.prototype.read = function(input) {
+AdService_feedback_result.prototype = {};
+AdService_feedback_result.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -822,8 +818,8 @@ ResourcesService_feedback_result.prototype.read = function(input) {
   return;
 };
 
-ResourcesService_feedback_result.prototype.write = function(output) {
-  output.writeStructBegin('ResourcesService_feedback_result');
+AdService_feedback_result.prototype.write = function(output) {
+  output.writeStructBegin('AdService_feedback_result');
   if (this.ex !== null && this.ex !== undefined) {
     output.writeFieldBegin('ex', Thrift.Type.STRUCT, 1);
     this.ex.write(output);
@@ -834,16 +830,16 @@ ResourcesService_feedback_result.prototype.write = function(output) {
   return;
 };
 
-var ResourcesServiceClient = exports.Client = function(output, pClass) {
+var AdServiceClient = exports.Client = function(output, pClass) {
     this.output = output;
     this.pClass = pClass;
     this._seqid = 0;
     this._reqs = {};
 };
-ResourcesServiceClient.prototype = {};
-ResourcesServiceClient.prototype.seqid = function() { return this._seqid; };
-ResourcesServiceClient.prototype.new_seqid = function() { return this._seqid += 1; };
-ResourcesServiceClient.prototype.page = function(page, callback) {
+AdServiceClient.prototype = {};
+AdServiceClient.prototype.seqid = function() { return this._seqid; };
+AdServiceClient.prototype.new_seqid = function() { return this._seqid += 1; };
+AdServiceClient.prototype.page = function(page, callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
     var _defer = Q.defer();
@@ -862,17 +858,17 @@ ResourcesServiceClient.prototype.page = function(page, callback) {
   }
 };
 
-ResourcesServiceClient.prototype.send_page = function(page) {
+AdServiceClient.prototype.send_page = function(page) {
   var output = new this.pClass(this.output);
   output.writeMessageBegin('page', Thrift.MessageType.CALL, this.seqid());
-  var args = new ResourcesService_page_args();
+  var args = new AdService_page_args();
   args.page = page;
   args.write(output);
   output.writeMessageEnd();
   return this.output.flush();
 };
 
-ResourcesServiceClient.prototype.recv_page = function(input,mtype,rseqid) {
+AdServiceClient.prototype.recv_page = function(input,mtype,rseqid) {
   var callback = this._reqs[rseqid] || function() {};
   delete this._reqs[rseqid];
   if (mtype == Thrift.MessageType.EXCEPTION) {
@@ -881,7 +877,7 @@ ResourcesServiceClient.prototype.recv_page = function(input,mtype,rseqid) {
     input.readMessageEnd();
     return callback(x);
   }
-  var result = new ResourcesService_page_result();
+  var result = new AdService_page_result();
   result.read(input);
   input.readMessageEnd();
 
@@ -893,7 +889,7 @@ ResourcesServiceClient.prototype.recv_page = function(input,mtype,rseqid) {
   }
   return callback('page failed: unknown result');
 };
-ResourcesServiceClient.prototype.add = function(bean, callback) {
+AdServiceClient.prototype.add = function(bean, callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
     var _defer = Q.defer();
@@ -912,17 +908,17 @@ ResourcesServiceClient.prototype.add = function(bean, callback) {
   }
 };
 
-ResourcesServiceClient.prototype.send_add = function(bean) {
+AdServiceClient.prototype.send_add = function(bean) {
   var output = new this.pClass(this.output);
   output.writeMessageBegin('add', Thrift.MessageType.CALL, this.seqid());
-  var args = new ResourcesService_add_args();
+  var args = new AdService_add_args();
   args.bean = bean;
   args.write(output);
   output.writeMessageEnd();
   return this.output.flush();
 };
 
-ResourcesServiceClient.prototype.recv_add = function(input,mtype,rseqid) {
+AdServiceClient.prototype.recv_add = function(input,mtype,rseqid) {
   var callback = this._reqs[rseqid] || function() {};
   delete this._reqs[rseqid];
   if (mtype == Thrift.MessageType.EXCEPTION) {
@@ -931,7 +927,7 @@ ResourcesServiceClient.prototype.recv_add = function(input,mtype,rseqid) {
     input.readMessageEnd();
     return callback(x);
   }
-  var result = new ResourcesService_add_result();
+  var result = new AdService_add_result();
   result.read(input);
   input.readMessageEnd();
 
@@ -943,58 +939,7 @@ ResourcesServiceClient.prototype.recv_add = function(input,mtype,rseqid) {
   }
   return callback('add failed: unknown result');
 };
-ResourcesServiceClient.prototype.listByAd = function(ad, page, callback) {
-  this._seqid = this.new_seqid();
-  if (callback === undefined) {
-    var _defer = Q.defer();
-    this._reqs[this.seqid()] = function(error, result) {
-      if (error) {
-        _defer.reject(error);
-      } else {
-        _defer.resolve(result);
-      }
-    };
-    this.send_listByAd(ad, page);
-    return _defer.promise;
-  } else {
-    this._reqs[this.seqid()] = callback;
-    this.send_listByAd(ad, page);
-  }
-};
-
-ResourcesServiceClient.prototype.send_listByAd = function(ad, page) {
-  var output = new this.pClass(this.output);
-  output.writeMessageBegin('listByAd', Thrift.MessageType.CALL, this.seqid());
-  var args = new ResourcesService_listByAd_args();
-  args.ad = ad;
-  args.page = page;
-  args.write(output);
-  output.writeMessageEnd();
-  return this.output.flush();
-};
-
-ResourcesServiceClient.prototype.recv_listByAd = function(input,mtype,rseqid) {
-  var callback = this._reqs[rseqid] || function() {};
-  delete this._reqs[rseqid];
-  if (mtype == Thrift.MessageType.EXCEPTION) {
-    var x = new Thrift.TApplicationException();
-    x.read(input);
-    input.readMessageEnd();
-    return callback(x);
-  }
-  var result = new ResourcesService_listByAd_result();
-  result.read(input);
-  input.readMessageEnd();
-
-  if (null !== result.ex) {
-    return callback(result.ex);
-  }
-  if (null !== result.success) {
-    return callback(null, result.success);
-  }
-  return callback('listByAd failed: unknown result');
-};
-ResourcesServiceClient.prototype.update = function(bean, callback) {
+AdServiceClient.prototype.update = function(bean, callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
     var _defer = Q.defer();
@@ -1013,17 +958,17 @@ ResourcesServiceClient.prototype.update = function(bean, callback) {
   }
 };
 
-ResourcesServiceClient.prototype.send_update = function(bean) {
+AdServiceClient.prototype.send_update = function(bean) {
   var output = new this.pClass(this.output);
   output.writeMessageBegin('update', Thrift.MessageType.CALL, this.seqid());
-  var args = new ResourcesService_update_args();
+  var args = new AdService_update_args();
   args.bean = bean;
   args.write(output);
   output.writeMessageEnd();
   return this.output.flush();
 };
 
-ResourcesServiceClient.prototype.recv_update = function(input,mtype,rseqid) {
+AdServiceClient.prototype.recv_update = function(input,mtype,rseqid) {
   var callback = this._reqs[rseqid] || function() {};
   delete this._reqs[rseqid];
   if (mtype == Thrift.MessageType.EXCEPTION) {
@@ -1032,7 +977,7 @@ ResourcesServiceClient.prototype.recv_update = function(input,mtype,rseqid) {
     input.readMessageEnd();
     return callback(x);
   }
-  var result = new ResourcesService_update_result();
+  var result = new AdService_update_result();
   result.read(input);
   input.readMessageEnd();
 
@@ -1044,7 +989,58 @@ ResourcesServiceClient.prototype.recv_update = function(input,mtype,rseqid) {
   }
   return callback('update failed: unknown result');
 };
-ResourcesServiceClient.prototype.remove = function(id, callback) {
+AdServiceClient.prototype.setResource = function(id, resources, callback) {
+  this._seqid = this.new_seqid();
+  if (callback === undefined) {
+    var _defer = Q.defer();
+    this._reqs[this.seqid()] = function(error, result) {
+      if (error) {
+        _defer.reject(error);
+      } else {
+        _defer.resolve(result);
+      }
+    };
+    this.send_setResource(id, resources);
+    return _defer.promise;
+  } else {
+    this._reqs[this.seqid()] = callback;
+    this.send_setResource(id, resources);
+  }
+};
+
+AdServiceClient.prototype.send_setResource = function(id, resources) {
+  var output = new this.pClass(this.output);
+  output.writeMessageBegin('setResource', Thrift.MessageType.CALL, this.seqid());
+  var args = new AdService_setResource_args();
+  args.id = id;
+  args.resources = resources;
+  args.write(output);
+  output.writeMessageEnd();
+  return this.output.flush();
+};
+
+AdServiceClient.prototype.recv_setResource = function(input,mtype,rseqid) {
+  var callback = this._reqs[rseqid] || function() {};
+  delete this._reqs[rseqid];
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(input);
+    input.readMessageEnd();
+    return callback(x);
+  }
+  var result = new AdService_setResource_result();
+  result.read(input);
+  input.readMessageEnd();
+
+  if (null !== result.ex) {
+    return callback(result.ex);
+  }
+  if (null !== result.success) {
+    return callback(null, result.success);
+  }
+  return callback('setResource failed: unknown result');
+};
+AdServiceClient.prototype.remove = function(id, callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
     var _defer = Q.defer();
@@ -1063,17 +1059,17 @@ ResourcesServiceClient.prototype.remove = function(id, callback) {
   }
 };
 
-ResourcesServiceClient.prototype.send_remove = function(id) {
+AdServiceClient.prototype.send_remove = function(id) {
   var output = new this.pClass(this.output);
   output.writeMessageBegin('remove', Thrift.MessageType.CALL, this.seqid());
-  var args = new ResourcesService_remove_args();
+  var args = new AdService_remove_args();
   args.id = id;
   args.write(output);
   output.writeMessageEnd();
   return this.output.flush();
 };
 
-ResourcesServiceClient.prototype.recv_remove = function(input,mtype,rseqid) {
+AdServiceClient.prototype.recv_remove = function(input,mtype,rseqid) {
   var callback = this._reqs[rseqid] || function() {};
   delete this._reqs[rseqid];
   if (mtype == Thrift.MessageType.EXCEPTION) {
@@ -1082,7 +1078,7 @@ ResourcesServiceClient.prototype.recv_remove = function(input,mtype,rseqid) {
     input.readMessageEnd();
     return callback(x);
   }
-  var result = new ResourcesService_remove_result();
+  var result = new AdService_remove_result();
   result.read(input);
   input.readMessageEnd();
 
@@ -1094,7 +1090,7 @@ ResourcesServiceClient.prototype.recv_remove = function(input,mtype,rseqid) {
   }
   return callback('remove failed: unknown result');
 };
-ResourcesServiceClient.prototype.feedback = function(push, ad, resources, c, callback) {
+AdServiceClient.prototype.feedback = function(push, ad, type, c, callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
     var _defer = Q.defer();
@@ -1105,28 +1101,28 @@ ResourcesServiceClient.prototype.feedback = function(push, ad, resources, c, cal
         _defer.resolve(result);
       }
     };
-    this.send_feedback(push, ad, resources, c);
+    this.send_feedback(push, ad, type, c);
     return _defer.promise;
   } else {
     this._reqs[this.seqid()] = callback;
-    this.send_feedback(push, ad, resources, c);
+    this.send_feedback(push, ad, type, c);
   }
 };
 
-ResourcesServiceClient.prototype.send_feedback = function(push, ad, resources, c) {
+AdServiceClient.prototype.send_feedback = function(push, ad, type, c) {
   var output = new this.pClass(this.output);
   output.writeMessageBegin('feedback', Thrift.MessageType.CALL, this.seqid());
-  var args = new ResourcesService_feedback_args();
+  var args = new AdService_feedback_args();
   args.push = push;
   args.ad = ad;
-  args.resources = resources;
+  args.type = type;
   args.c = c;
   args.write(output);
   output.writeMessageEnd();
   return this.output.flush();
 };
 
-ResourcesServiceClient.prototype.recv_feedback = function(input,mtype,rseqid) {
+AdServiceClient.prototype.recv_feedback = function(input,mtype,rseqid) {
   var callback = this._reqs[rseqid] || function() {};
   delete this._reqs[rseqid];
   if (mtype == Thrift.MessageType.EXCEPTION) {
@@ -1135,7 +1131,7 @@ ResourcesServiceClient.prototype.recv_feedback = function(input,mtype,rseqid) {
     input.readMessageEnd();
     return callback(x);
   }
-  var result = new ResourcesService_feedback_result();
+  var result = new AdService_feedback_result();
   result.read(input);
   input.readMessageEnd();
 
@@ -1144,11 +1140,11 @@ ResourcesServiceClient.prototype.recv_feedback = function(input,mtype,rseqid) {
   }
   callback(null);
 };
-var ResourcesServiceProcessor = exports.Processor = function(handler) {
+var AdServiceProcessor = exports.Processor = function(handler) {
   this._handler = handler;
 }
 ;
-ResourcesServiceProcessor.prototype.process = function(input, output) {
+AdServiceProcessor.prototype.process = function(input, output) {
   var r = input.readMessageBegin();
   if (this['process_' + r.fname]) {
     return this['process_' + r.fname].call(this, r.rseqid, input, output);
@@ -1163,14 +1159,14 @@ ResourcesServiceProcessor.prototype.process = function(input, output) {
   }
 }
 ;
-ResourcesServiceProcessor.prototype.process_page = function(seqid, input, output) {
-  var args = new ResourcesService_page_args();
+AdServiceProcessor.prototype.process_page = function(seqid, input, output) {
+  var args = new AdService_page_args();
   args.read(input);
   input.readMessageEnd();
   if (this._handler.page.length === 1) {
     Q.fcall(this._handler.page, args.page)
       .then(function(result) {
-        var result_obj = new ResourcesService_page_result({success: result});
+        var result_obj = new AdService_page_result({success: result});
         output.writeMessageBegin("page", Thrift.MessageType.REPLY, seqid);
         result_obj.write(output);
         output.writeMessageEnd();
@@ -1178,7 +1174,7 @@ ResourcesServiceProcessor.prototype.process_page = function(seqid, input, output
       }, function (err) {
         var result;
         if (err instanceof PublicStruct_ttypes.InvalidOperation) {
-          result = new ResourcesService_page_result(err);
+          result = new AdService_page_result(err);
           output.writeMessageBegin("page", Thrift.MessageType.REPLY, seqid);
         } else {
           result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
@@ -1192,7 +1188,7 @@ ResourcesServiceProcessor.prototype.process_page = function(seqid, input, output
     this._handler.page(args.page, function (err, result) {
       var result_obj;
       if ((err === null || typeof err === 'undefined') || err instanceof PublicStruct_ttypes.InvalidOperation) {
-        result_obj = new ResourcesService_page_result((err !== null || typeof err === 'undefined') ? err : {success: result});
+        result_obj = new AdService_page_result((err !== null || typeof err === 'undefined') ? err : {success: result});
         output.writeMessageBegin("page", Thrift.MessageType.REPLY, seqid);
       } else {
         result_obj = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
@@ -1204,14 +1200,14 @@ ResourcesServiceProcessor.prototype.process_page = function(seqid, input, output
     });
   }
 };
-ResourcesServiceProcessor.prototype.process_add = function(seqid, input, output) {
-  var args = new ResourcesService_add_args();
+AdServiceProcessor.prototype.process_add = function(seqid, input, output) {
+  var args = new AdService_add_args();
   args.read(input);
   input.readMessageEnd();
   if (this._handler.add.length === 1) {
     Q.fcall(this._handler.add, args.bean)
       .then(function(result) {
-        var result_obj = new ResourcesService_add_result({success: result});
+        var result_obj = new AdService_add_result({success: result});
         output.writeMessageBegin("add", Thrift.MessageType.REPLY, seqid);
         result_obj.write(output);
         output.writeMessageEnd();
@@ -1219,7 +1215,7 @@ ResourcesServiceProcessor.prototype.process_add = function(seqid, input, output)
       }, function (err) {
         var result;
         if (err instanceof PublicStruct_ttypes.InvalidOperation) {
-          result = new ResourcesService_add_result(err);
+          result = new AdService_add_result(err);
           output.writeMessageBegin("add", Thrift.MessageType.REPLY, seqid);
         } else {
           result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
@@ -1233,7 +1229,7 @@ ResourcesServiceProcessor.prototype.process_add = function(seqid, input, output)
     this._handler.add(args.bean, function (err, result) {
       var result_obj;
       if ((err === null || typeof err === 'undefined') || err instanceof PublicStruct_ttypes.InvalidOperation) {
-        result_obj = new ResourcesService_add_result((err !== null || typeof err === 'undefined') ? err : {success: result});
+        result_obj = new AdService_add_result((err !== null || typeof err === 'undefined') ? err : {success: result});
         output.writeMessageBegin("add", Thrift.MessageType.REPLY, seqid);
       } else {
         result_obj = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
@@ -1245,55 +1241,14 @@ ResourcesServiceProcessor.prototype.process_add = function(seqid, input, output)
     });
   }
 };
-ResourcesServiceProcessor.prototype.process_listByAd = function(seqid, input, output) {
-  var args = new ResourcesService_listByAd_args();
-  args.read(input);
-  input.readMessageEnd();
-  if (this._handler.listByAd.length === 2) {
-    Q.fcall(this._handler.listByAd, args.ad, args.page)
-      .then(function(result) {
-        var result_obj = new ResourcesService_listByAd_result({success: result});
-        output.writeMessageBegin("listByAd", Thrift.MessageType.REPLY, seqid);
-        result_obj.write(output);
-        output.writeMessageEnd();
-        output.flush();
-      }, function (err) {
-        var result;
-        if (err instanceof PublicStruct_ttypes.InvalidOperation) {
-          result = new ResourcesService_listByAd_result(err);
-          output.writeMessageBegin("listByAd", Thrift.MessageType.REPLY, seqid);
-        } else {
-          result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
-          output.writeMessageBegin("listByAd", Thrift.MessageType.EXCEPTION, seqid);
-        }
-        result.write(output);
-        output.writeMessageEnd();
-        output.flush();
-      });
-  } else {
-    this._handler.listByAd(args.ad, args.page, function (err, result) {
-      var result_obj;
-      if ((err === null || typeof err === 'undefined') || err instanceof PublicStruct_ttypes.InvalidOperation) {
-        result_obj = new ResourcesService_listByAd_result((err !== null || typeof err === 'undefined') ? err : {success: result});
-        output.writeMessageBegin("listByAd", Thrift.MessageType.REPLY, seqid);
-      } else {
-        result_obj = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
-        output.writeMessageBegin("listByAd", Thrift.MessageType.EXCEPTION, seqid);
-      }
-      result_obj.write(output);
-      output.writeMessageEnd();
-      output.flush();
-    });
-  }
-};
-ResourcesServiceProcessor.prototype.process_update = function(seqid, input, output) {
-  var args = new ResourcesService_update_args();
+AdServiceProcessor.prototype.process_update = function(seqid, input, output) {
+  var args = new AdService_update_args();
   args.read(input);
   input.readMessageEnd();
   if (this._handler.update.length === 1) {
     Q.fcall(this._handler.update, args.bean)
       .then(function(result) {
-        var result_obj = new ResourcesService_update_result({success: result});
+        var result_obj = new AdService_update_result({success: result});
         output.writeMessageBegin("update", Thrift.MessageType.REPLY, seqid);
         result_obj.write(output);
         output.writeMessageEnd();
@@ -1301,7 +1256,7 @@ ResourcesServiceProcessor.prototype.process_update = function(seqid, input, outp
       }, function (err) {
         var result;
         if (err instanceof PublicStruct_ttypes.InvalidOperation) {
-          result = new ResourcesService_update_result(err);
+          result = new AdService_update_result(err);
           output.writeMessageBegin("update", Thrift.MessageType.REPLY, seqid);
         } else {
           result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
@@ -1315,7 +1270,7 @@ ResourcesServiceProcessor.prototype.process_update = function(seqid, input, outp
     this._handler.update(args.bean, function (err, result) {
       var result_obj;
       if ((err === null || typeof err === 'undefined') || err instanceof PublicStruct_ttypes.InvalidOperation) {
-        result_obj = new ResourcesService_update_result((err !== null || typeof err === 'undefined') ? err : {success: result});
+        result_obj = new AdService_update_result((err !== null || typeof err === 'undefined') ? err : {success: result});
         output.writeMessageBegin("update", Thrift.MessageType.REPLY, seqid);
       } else {
         result_obj = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
@@ -1327,14 +1282,55 @@ ResourcesServiceProcessor.prototype.process_update = function(seqid, input, outp
     });
   }
 };
-ResourcesServiceProcessor.prototype.process_remove = function(seqid, input, output) {
-  var args = new ResourcesService_remove_args();
+AdServiceProcessor.prototype.process_setResource = function(seqid, input, output) {
+  var args = new AdService_setResource_args();
+  args.read(input);
+  input.readMessageEnd();
+  if (this._handler.setResource.length === 2) {
+    Q.fcall(this._handler.setResource, args.id, args.resources)
+      .then(function(result) {
+        var result_obj = new AdService_setResource_result({success: result});
+        output.writeMessageBegin("setResource", Thrift.MessageType.REPLY, seqid);
+        result_obj.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      }, function (err) {
+        var result;
+        if (err instanceof PublicStruct_ttypes.InvalidOperation) {
+          result = new AdService_setResource_result(err);
+          output.writeMessageBegin("setResource", Thrift.MessageType.REPLY, seqid);
+        } else {
+          result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+          output.writeMessageBegin("setResource", Thrift.MessageType.EXCEPTION, seqid);
+        }
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      });
+  } else {
+    this._handler.setResource(args.id, args.resources, function (err, result) {
+      var result_obj;
+      if ((err === null || typeof err === 'undefined') || err instanceof PublicStruct_ttypes.InvalidOperation) {
+        result_obj = new AdService_setResource_result((err !== null || typeof err === 'undefined') ? err : {success: result});
+        output.writeMessageBegin("setResource", Thrift.MessageType.REPLY, seqid);
+      } else {
+        result_obj = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+        output.writeMessageBegin("setResource", Thrift.MessageType.EXCEPTION, seqid);
+      }
+      result_obj.write(output);
+      output.writeMessageEnd();
+      output.flush();
+    });
+  }
+};
+AdServiceProcessor.prototype.process_remove = function(seqid, input, output) {
+  var args = new AdService_remove_args();
   args.read(input);
   input.readMessageEnd();
   if (this._handler.remove.length === 1) {
     Q.fcall(this._handler.remove, args.id)
       .then(function(result) {
-        var result_obj = new ResourcesService_remove_result({success: result});
+        var result_obj = new AdService_remove_result({success: result});
         output.writeMessageBegin("remove", Thrift.MessageType.REPLY, seqid);
         result_obj.write(output);
         output.writeMessageEnd();
@@ -1342,7 +1338,7 @@ ResourcesServiceProcessor.prototype.process_remove = function(seqid, input, outp
       }, function (err) {
         var result;
         if (err instanceof PublicStruct_ttypes.InvalidOperation) {
-          result = new ResourcesService_remove_result(err);
+          result = new AdService_remove_result(err);
           output.writeMessageBegin("remove", Thrift.MessageType.REPLY, seqid);
         } else {
           result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
@@ -1356,7 +1352,7 @@ ResourcesServiceProcessor.prototype.process_remove = function(seqid, input, outp
     this._handler.remove(args.id, function (err, result) {
       var result_obj;
       if ((err === null || typeof err === 'undefined') || err instanceof PublicStruct_ttypes.InvalidOperation) {
-        result_obj = new ResourcesService_remove_result((err !== null || typeof err === 'undefined') ? err : {success: result});
+        result_obj = new AdService_remove_result((err !== null || typeof err === 'undefined') ? err : {success: result});
         output.writeMessageBegin("remove", Thrift.MessageType.REPLY, seqid);
       } else {
         result_obj = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
@@ -1368,14 +1364,14 @@ ResourcesServiceProcessor.prototype.process_remove = function(seqid, input, outp
     });
   }
 };
-ResourcesServiceProcessor.prototype.process_feedback = function(seqid, input, output) {
-  var args = new ResourcesService_feedback_args();
+AdServiceProcessor.prototype.process_feedback = function(seqid, input, output) {
+  var args = new AdService_feedback_args();
   args.read(input);
   input.readMessageEnd();
   if (this._handler.feedback.length === 4) {
-    Q.fcall(this._handler.feedback, args.push, args.ad, args.resources, args.c)
+    Q.fcall(this._handler.feedback, args.push, args.ad, args.type, args.c)
       .then(function(result) {
-        var result_obj = new ResourcesService_feedback_result({success: result});
+        var result_obj = new AdService_feedback_result({success: result});
         output.writeMessageBegin("feedback", Thrift.MessageType.REPLY, seqid);
         result_obj.write(output);
         output.writeMessageEnd();
@@ -1383,7 +1379,7 @@ ResourcesServiceProcessor.prototype.process_feedback = function(seqid, input, ou
       }, function (err) {
         var result;
         if (err instanceof PublicStruct_ttypes.InvalidOperation) {
-          result = new ResourcesService_feedback_result(err);
+          result = new AdService_feedback_result(err);
           output.writeMessageBegin("feedback", Thrift.MessageType.REPLY, seqid);
         } else {
           result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
@@ -1394,10 +1390,10 @@ ResourcesServiceProcessor.prototype.process_feedback = function(seqid, input, ou
         output.flush();
       });
   } else {
-    this._handler.feedback(args.push, args.ad, args.resources, args.c, function (err, result) {
+    this._handler.feedback(args.push, args.ad, args.type, args.c, function (err, result) {
       var result_obj;
       if ((err === null || typeof err === 'undefined') || err instanceof PublicStruct_ttypes.InvalidOperation) {
-        result_obj = new ResourcesService_feedback_result((err !== null || typeof err === 'undefined') ? err : {success: result});
+        result_obj = new AdService_feedback_result((err !== null || typeof err === 'undefined') ? err : {success: result});
         output.writeMessageBegin("feedback", Thrift.MessageType.REPLY, seqid);
       } else {
         result_obj = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);

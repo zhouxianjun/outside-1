@@ -10,6 +10,7 @@ import Role from '../view/role.vue';
 import User from '../view/user.vue';
 import Logger from '../view/logger.vue';
 import Resources from '../view/resources.vue';
+import Ad from '../view/ad.vue';
 export default [{
     path: '/login',
     component: Login
@@ -37,5 +38,8 @@ export default [{
     }, {
         path: 'resources',
         component: Resources
+    }, {
+        path: 'ad',
+        component: Ad
     }]
 }]

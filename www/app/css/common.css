@@ -42,3 +42,6 @@ table.fancytree-ext-table tbody tr.fancytree-active {
 .no-padding .ivu-modal-body {
     padding: 0;
 }
+.overflow-no-x .ivu-table-body {
+    overflow-x: hidden;
+}

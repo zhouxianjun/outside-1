@@ -33,6 +33,10 @@ module.exports = class ResourcesController {
             value: ResourcesController.page
         }, {
             method: 'get',
+            path: '/resources/ad/page',
+            value: ResourcesController.pageByAd
+        }, {
+            method: 'get',
             path: '/resources/download',
             value: ResourcesController.download
         }, {
@@ -54,6 +58,16 @@ module.exports = class ResourcesController {
         let params = Object.assign({}, ctx.query);
         Reflect.set(params, 'query', JSON.parse(decodeURIComponent(ctx.query.query)));
         let res = await resourcesService.page(new PublicStruct.PageParamStruct(params));
+        ctx.body = new Result(true, {
+            key: 'page',
+            value: res
+        }).json;
+    }
+
+    static async pageByAd(ctx) {
+        let params = Object.assign({}, ctx.query);
+        Reflect.set(params, 'query', JSON.parse(decodeURIComponent(ctx.query.query)));
+        let res = await resourcesService.listByAd(ctx.query.id, new PublicStruct.PageParamStruct(params));
         ctx.body = new Result(true, {
             key: 'page',
             value: res

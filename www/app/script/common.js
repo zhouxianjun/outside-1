@@ -66,6 +66,16 @@ const Common = {
         DATE(h, params) {
             return h('span', Common.dateFormat(params.row[params.column.key]));
         },
+        DATE_RANGE(h, params) {
+            return function (start, end) {
+                return h('span', `${Common.dateFormat(params.row[start])}~${Common.dateFormat(params.row[end])}`);
+            };
+        },
+        APPEND(h, params) {
+            return function (append) {
+                return h('span', `${params.row[params.column.key]}${append}`);
+            };
+        },
         STATUS(h, params) {
             let status = params.row[params.column.key];
             return h('span', {class: status === true ? 'text-green' : 'text-muted'}, status === true ? '启用' : '禁用');
