@@ -45,9 +45,6 @@ export default {
                         return h('span', getAttribute(ModeType, 'id', params.row[params.column.key]).name);
                     }
                 }, {
-                    title: '友盟消息',
-                    key: 'msg_id'
-                }, {
                     title: '发送频率',
                     key: 'max_send_num',
                     render: (h, params) => {
@@ -73,21 +70,16 @@ export default {
             pushAdModel: false,
             adList: [],
             adVo: {
-                id: null,
-                temple: 6000,
-                position: 5000,
-                fault_click_rate: 0,
-                show_day: 1,
-                count_down: 3
+                mode: 2000,
+                description: '',
+                filter: null,
+                max_send_num: 1
             },
             adValidate: {
-                temple: [{type: 'number', required: true, trigger: 'change' }],
-                position: [{type: 'number', required: true, trigger: 'change' }],
-                fault_click_rate: [{type: 'number', required: true, trigger: 'blur' }],
-                show_day: [{type: 'number', required: true, trigger: 'blur' }],
-                count_down: [{type: 'number', required: true, trigger: 'blur' }]
+                max_send_num: [{type: 'number', required: true, trigger: 'blur' }],
+                mode: [{type: 'number', required: true, trigger: 'change' }],
+                filter: [{required: true, trigger: 'blur' }]
             },
-            waitSetId: null,
             ad: {
                 columns: [{
                     type: 'selection',
@@ -127,13 +119,15 @@ export default {
                     }
                 }
             },
-            selected: new Map()
+            selected: new Map(),
+            selectedList: new Map(),
+            ads: []
         }
     },
     async mounted() {
         await this.doQuery();
-        Common.slimScroll(this.$refs['adForm'].$el);
-        Common.slimScroll($('.ivu-table-body', this.$refs['table'].$el));
+        Common.slimScroll($('#selectAdDiv'));
+        Common.slimScroll($('#pushAdDiv'));
     },
     components: {
         Table
@@ -143,13 +137,21 @@ export default {
     },
     methods: {
         async pushAd() {
+            if (!this.ads || !this.ads.length) {
+                this.$Message.error('请选择要推送的广告!');
+                this.resetLoadingBtn();
+                return;
+            }
             this.$refs['adForm'].validate(async (valid) => {
                 if (valid) {
                     let date = this.$refs['adVoStartDate'].currentValue;
-                    let success = await this.fetch('push/ad', {method: 'post', data: Object.assign({
-                        start_time: date ? date.getTime() : null,
-                        type: 1000
-                    }, this.adVo)});
+                    let success = await this.fetch('push/ad', {method: 'post', data: {
+                        push: Object.assign({
+                            start_time: date ? date.getTime() : null,
+                            type: 1000
+                        }, this.adVo),
+                        ads: this.ads
+                    }});
                     if (success === false) {
                         this.resetLoadingBtn();
                         return;
@@ -161,6 +163,15 @@ export default {
                     this.$Message.error('表单验证失败!');
                 }
             });
+        },
+        showPushAd() {
+            this.pushAdModel = true;
+            this.loadingBtn = true;
+            this.$refs['adForm'].resetFields();
+        },
+        showAd() {
+            this.adModel = true;
+            this.doAdQuery();
         },
         async doQuery() {
             let date = this.$refs['date'].currentValue;
@@ -180,9 +191,14 @@ export default {
             let list = await this.fetch('/ad/list/page', {params: this.ad.search});
             list && (this.ad.data = list.page.count === 0 ? [] : JSON.parse(list.page.items));
             list && (this.ad.total = list.page.count);
-            this.ad.data.forEach(item => item['_checked'] = item.ow);
             for (let ids of this.selected.values()) {
-                ids.forEach(id => this.ad.data.forEach(item => item['_checked'] = item.id === id));
+                this.ad.data.forEach(item => {
+                    let have = false;
+                    ids.forEach(id => {
+                        if (item.id === id) have = true;
+                    });
+                    item['_checked'] = have;
+                });
             }
         },
         async changePage(page) {
@@ -194,24 +210,37 @@ export default {
             this.doQuery();
         },
         async changePageByAd(page) {
-            this.ad.page = page;
+            this.ad.search.page = page;
             this.doAdQuery();
         },
         async changePageSizeByAd(size) {
-            this.ad.pageSize = size;
+            this.ad.search.pageSize = size;
             this.doAdQuery();
         },
         selectionChange(selection) {
             let array = [];
+            let objs = [];
             selection.forEach(item => array.push(item.id));
-            this.selected.set(this.ad.page, array);
+            selection.forEach(item => objs.push(item));
+            this.selected.set(this.ad.search.page, array);
+            this.selectedList.set(this.ad.search.page, objs);
         },
         cancel() {
             this.loadingBtn = false;
             this.selected.clear();
+            this.selectedList.clear();
         },
         selectAd() {
-
+            let array = [];
+            this.adList = [];
+            for (let ids of this.selected.values()) {
+                ids.forEach(id => array.push(id));
+            }
+            for (let items of this.selectedList.values()) {
+                items.forEach(item => this.adList.push(item));
+            }
+            this.adModel = false;
+            this.ads = array;
         },
         resetLoadingBtn() {
             this.loadingBtn = false;

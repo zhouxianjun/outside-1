@@ -2227,6 +2227,7 @@ var AdStruct = module.exports.AdStruct = function(args) {
   this.count_down = null;
   this.user = null;
   this.create_time = null;
+  this.name = null;
   if (args) {
     if (args.id !== undefined && args.id !== null) {
       this.id = args.id;
@@ -2260,6 +2261,9 @@ var AdStruct = module.exports.AdStruct = function(args) {
     }
     if (args.create_time !== undefined && args.create_time !== null) {
       this.create_time = args.create_time;
+    }
+    if (args.name !== undefined && args.name !== null) {
+      this.name = args.name;
     }
   }
 };
@@ -2354,6 +2358,13 @@ AdStruct.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 12:
+      if (ftype == Thrift.Type.STRING) {
+        this.name = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -2418,6 +2429,11 @@ AdStruct.prototype.write = function(output) {
   if (this.create_time !== null && this.create_time !== undefined) {
     output.writeFieldBegin('create_time', Thrift.Type.I64, 11);
     output.writeI64(this.create_time);
+    output.writeFieldEnd();
+  }
+  if (this.name !== null && this.name !== undefined) {
+    output.writeFieldBegin('name', Thrift.Type.STRING, 12);
+    output.writeString(this.name);
     output.writeFieldEnd();
   }
   output.writeFieldStop();

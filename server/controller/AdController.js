@@ -44,7 +44,7 @@ module.exports = class AdController {
     }
 
     static async add(ctx) {
-        let res = await adService.add(new PublicStruct.AdStruct(ctx.request.body));
+        let res = await adService.add(new PublicStruct.AdStruct(Object.assign({user: ctx.session.user.id}, ctx.request.body)));
         ctx.body = new Result(!!res, {
             key: 'id',
             value: res

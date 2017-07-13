@@ -117,6 +117,11 @@ export default {
                                         this.model = true;
                                         this.modelTitle = '修改广告';
                                         this.loadingBtn = true;
+                                        Object.keys(this.vo).forEach(key => this.vo[key] = params.row[key]);
+                                        this.$refs['showDate'].currentValue = params.row['show_time'] ? new Date(params.row['show_time']) : null;
+                                        this.$refs['voDate'].currentValue = [
+                                            params.row['show_time_start'] ? new Date(params.row['show_time_start']) : null,
+                                            params.row['show_time_end'] ? new Date(params.row['show_time_end']) : null];
                                     }
                                 }
                             }, '修改'),
@@ -146,6 +151,7 @@ export default {
             removeItem: null,
             vo: {
                 id: null,
+                name: null,
                 temple: 6000,
                 position: 5000,
                 fault_click_rate: 0,
@@ -276,7 +282,13 @@ export default {
             list && (this.resources.total = list.page.count);
             this.resources.data.forEach(item => item['_checked'] = item.ow);
             for (let ids of this.selected.values()) {
-                ids.forEach(id => this.resources.data.forEach(item => item['_checked'] = item.id === id));
+                this.resources.data.forEach(item => {
+                    let have = false;
+                    ids.forEach(id => {
+                        if (item.id === id) have = true;
+                    });
+                    item['_checked'] = have;
+                });
             }
         },
         async changePage(page) {
@@ -288,11 +300,11 @@ export default {
             this.doQuery();
         },
         async changePageByResources(page) {
-            this.resources.page = page;
+            this.resources.search.page = page;
             this.doResourcesQuery();
         },
         async changePageSizeByResources(size) {
-            this.resources.pageSize = size;
+            this.resources.search.pageSize = size;
             this.doResourcesQuery();
         },
         async setResources() {
@@ -314,7 +326,7 @@ export default {
         selectionChange(selection) {
             let array = [];
             selection.forEach(item => array.push(item.id));
-            this.selected.set(this.resources.page, array);
+            this.selected.set(this.resources.search.page, array);
         },
         add() {
             this.model = true;

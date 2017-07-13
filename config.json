@@ -19,6 +19,9 @@
   "loggerPath": [
     "/permissions/**/*"
   ],
+  "api": [
+    "/api/**/*"
+  ],
   "qiniu": {
     "ACCESS_KEY": "qZq3Y85XBAWIWvwZpbl-REEd3SfSlOrjc55gcgxO",
     "SECRET_KEY": "kdW-1Ynd-1H5nw-gfHi-BKgDodsVSdcaZi_GUhpZ",

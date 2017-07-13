@@ -7,6 +7,7 @@ const logger = require('tracer-logger');
 const Result = require('./dto/Result');
 const config = require('../config.json');
 const path = require('path');
+const QS = require('querystring');
 const Router = require('koa-router');
 const Static = require('koa-static');
 const bodyParser = require('koa-bodyparser');
@@ -88,6 +89,17 @@ app.use(async (ctx, next) => {
     if (ctx.path.indexOf('.') > -1 || Utils.filter(ctx.path, ignoreUrl) || (Utils.filter(ctx.path, loginUrl) && ctx.session['user'])){
         await next();
     } else {
+        if (Utils.filter(ctx.path, config.api)) {
+            const {token, sign} = ctx.query;
+            const raw = QS.stringify(ctx.request.body, '&', '=', {encodeURIComponent: val => {return val}});
+            const checkSign = Utils.md5(`${raw}${token}`);
+            if (checkSign !== sign) {
+                ctx.body = new Result(Result.CODE.NO_ACCESS).json;
+                return;
+            }
+            await next();
+            return;
+        }
         if (!ctx.session['user']) {
             ctx.body = new Result(Result.CODE.NO_LOGIN).json;
             return;

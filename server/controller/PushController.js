@@ -6,6 +6,7 @@ const Utils = require('../Utils');
 const Result = require('../dto/Result');
 const trc = require('trc');
 const logger = require('tracer-logger');
+const uuid = require('uuid');
 const pushService = trc.ServerProvider.instance(require('../thrift/PushService'));
 const PublicStruct = require('../thrift/PublicStruct_types');
 module.exports = class PushController {
@@ -33,7 +34,7 @@ module.exports = class PushController {
 
     static async ad(ctx) {
         let body = ctx.request.body;
-        let res = await pushService.pushAd(new PublicStruct.PushStruct(body.push), body.ads);
+        let res = await pushService.pushAd(new PublicStruct.PushStruct(Object.assign({uuid: uuid(), user: ctx.session.user.id}, body.push)), body.ads);
         ctx.body = new Result(!!res).json;
     }
 };

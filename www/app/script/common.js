@@ -54,7 +54,7 @@ const Common = {
         }
     },
     dateFormat(val, format = 'YYYY-MM-DD HH:mm:ss') {
-        return moment(Number(val)).format(format);
+        return val ? moment(Number(val)).format(format) : '-';
     },
     statusFormat(val, trueTxt = '启用', falseTxt = '禁用') {
         return `<span class="${val === true ? 'text-green' : 'text-muted'}">${val === true ? trueTxt : falseTxt}</span>`;
