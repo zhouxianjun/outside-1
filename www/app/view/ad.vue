@@ -11,13 +11,19 @@
             </div>
             <div class="box-body">
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                         <label>用户</label>
                         <div class="form-group">
                             <input type="text" v-model="search.query.user" class="form-control pull-right">
                         </div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
+                        <label>名称</label>
+                        <div class="form-group">
+                            <input type="text" v-model="search.query.name" class="form-control pull-right">
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
                         <label>模板</label>
                         <div class="form-group">
                             <Select v-model="search.query.temple" class="pull-right">
@@ -62,6 +68,9 @@
         </div>
         <Modal v-model="model" :title="modelTitle" :loading="loadingBtn" @on-ok="addOrUpdate" @on-cancel="cancel">
             <Form ref="form" :model="vo" :label-width="80" :rules="adValidate" style="max-height: 400px;overflow: hidden">
+                <Form-item label="名称" prop="name">
+                    <Input v-model="vo.name"/>
+                </Form-item>
                 <Form-item label="模板" prop="temple">
                     <Select v-model="vo.temple">
                         <Option v-for="item in TempleType" :value="item.id" :key="item">{{ item.name }}</Option>

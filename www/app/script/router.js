@@ -11,6 +11,7 @@ import User from '../view/user.vue';
 import Logger from '../view/logger.vue';
 import Resources from '../view/resources.vue';
 import Ad from '../view/ad.vue';
+import Push from '../view/push.vue';
 export default [{
     path: '/login',
     component: Login
@@ -41,5 +42,8 @@ export default [{
     }, {
         path: 'ad',
         component: Ad
+    }, {
+        path: 'push',
+        component: Push
     }]
 }]

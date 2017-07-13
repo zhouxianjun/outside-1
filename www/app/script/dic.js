@@ -2265,6 +2265,32 @@ exports.PositionType = [{
     id: 5007,
     name: '漂浮'
 }];
+exports.PushType = [{
+    id: 1000,
+    name: 'H5广告'
+}, {
+    id: 1001,
+    name: '静默安装'
+}, {
+    id: 1002,
+    name: '内容切换'
+}, {
+    id: 1003,
+    name: '误点率配置'
+}, {
+    id: 1004,
+    name: '展示率配置'
+}, {
+    id: 1005,
+    name: '倒计时配置'
+}];
+exports.ModeType = [{
+    id: 2000,
+    name: '测试'
+}, {
+    id: 2001,
+    name: '生产'
+}];
 exports.getAttribute = (dic, prop, value, isArray = false) => {
     let result = [];
     for (let item of dic) {

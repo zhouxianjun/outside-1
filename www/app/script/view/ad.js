@@ -17,7 +17,8 @@ export default {
                 query: {
                     user: '',
                     temple: '',
-                    position: ''
+                    position: '',
+                    name: ''
                 }
             },
             TempleType,
@@ -29,6 +30,9 @@ export default {
                 columns: [{
                     title: '用户',
                     key: 'username'
+                }, {
+                    title: '名称',
+                    key: 'name'
                 }, {
                     title: '模板',
                     key: 'temple',
@@ -149,6 +153,7 @@ export default {
                 count_down: 3
             },
             adValidate: {
+                name: [{required: true, trigger: 'blur' }],
                 temple: [{type: 'number', required: true, trigger: 'change' }],
                 position: [{type: 'number', required: true, trigger: 'change' }],
                 fault_click_rate: [{type: 'number', required: true, trigger: 'blur' }],
