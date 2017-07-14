@@ -2043,7 +2043,9 @@ var ClientStruct = module.exports.ClientStruct = function(args) {
   this.device_id = null;
   this.phone = null;
   this.model = null;
-  this.token = null;
+  this.access_id = null;
+  this.access_key = null;
+  this.umeng_token = null;
   this.ip = null;
   this.version = null;
   this.create_time = null;
@@ -2063,8 +2065,14 @@ var ClientStruct = module.exports.ClientStruct = function(args) {
     if (args.model !== undefined && args.model !== null) {
       this.model = args.model;
     }
-    if (args.token !== undefined && args.token !== null) {
-      this.token = args.token;
+    if (args.access_id !== undefined && args.access_id !== null) {
+      this.access_id = args.access_id;
+    }
+    if (args.access_key !== undefined && args.access_key !== null) {
+      this.access_key = args.access_key;
+    }
+    if (args.umeng_token !== undefined && args.umeng_token !== null) {
+      this.umeng_token = args.umeng_token;
     }
     if (args.ip !== undefined && args.ip !== null) {
       this.ip = args.ip;
@@ -2128,26 +2136,40 @@ ClientStruct.prototype.read = function(input) {
       break;
       case 6:
       if (ftype == Thrift.Type.STRING) {
-        this.token = input.readString();
+        this.access_id = input.readString();
       } else {
         input.skip(ftype);
       }
       break;
       case 7:
       if (ftype == Thrift.Type.STRING) {
-        this.ip = input.readString();
+        this.access_key = input.readString();
       } else {
         input.skip(ftype);
       }
       break;
       case 8:
+      if (ftype == Thrift.Type.STRING) {
+        this.umeng_token = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 9:
+      if (ftype == Thrift.Type.STRING) {
+        this.ip = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 10:
       if (ftype == Thrift.Type.I32) {
         this.version = input.readI32();
       } else {
         input.skip(ftype);
       }
       break;
-      case 9:
+      case 11:
       if (ftype == Thrift.Type.I64) {
         this.create_time = input.readI64();
       } else {
@@ -2190,23 +2212,33 @@ ClientStruct.prototype.write = function(output) {
     output.writeString(this.model);
     output.writeFieldEnd();
   }
-  if (this.token !== null && this.token !== undefined) {
-    output.writeFieldBegin('token', Thrift.Type.STRING, 6);
-    output.writeString(this.token);
+  if (this.access_id !== null && this.access_id !== undefined) {
+    output.writeFieldBegin('access_id', Thrift.Type.STRING, 6);
+    output.writeString(this.access_id);
+    output.writeFieldEnd();
+  }
+  if (this.access_key !== null && this.access_key !== undefined) {
+    output.writeFieldBegin('access_key', Thrift.Type.STRING, 7);
+    output.writeString(this.access_key);
+    output.writeFieldEnd();
+  }
+  if (this.umeng_token !== null && this.umeng_token !== undefined) {
+    output.writeFieldBegin('umeng_token', Thrift.Type.STRING, 8);
+    output.writeString(this.umeng_token);
     output.writeFieldEnd();
   }
   if (this.ip !== null && this.ip !== undefined) {
-    output.writeFieldBegin('ip', Thrift.Type.STRING, 7);
+    output.writeFieldBegin('ip', Thrift.Type.STRING, 9);
     output.writeString(this.ip);
     output.writeFieldEnd();
   }
   if (this.version !== null && this.version !== undefined) {
-    output.writeFieldBegin('version', Thrift.Type.I32, 8);
+    output.writeFieldBegin('version', Thrift.Type.I32, 10);
     output.writeI32(this.version);
     output.writeFieldEnd();
   }
   if (this.create_time !== null && this.create_time !== undefined) {
-    output.writeFieldBegin('create_time', Thrift.Type.I64, 9);
+    output.writeFieldBegin('create_time', Thrift.Type.I64, 11);
     output.writeI64(this.create_time);
     output.writeFieldEnd();
   }
@@ -3755,6 +3787,72 @@ ShowRateStruct.prototype.write = function(output) {
   if (this.show_time_end !== null && this.show_time_end !== undefined) {
     output.writeFieldBegin('show_time_end', Thrift.Type.I64, 4);
     output.writeI64(this.show_time_end);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+var ActivateStruct = module.exports.ActivateStruct = function(args) {
+  this.access_id = null;
+  this.access_key = null;
+  if (args) {
+    if (args.access_id !== undefined && args.access_id !== null) {
+      this.access_id = args.access_id;
+    }
+    if (args.access_key !== undefined && args.access_key !== null) {
+      this.access_key = args.access_key;
+    }
+  }
+};
+ActivateStruct.prototype = {};
+ActivateStruct.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRING) {
+        this.access_id = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.access_key = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+ActivateStruct.prototype.write = function(output) {
+  output.writeStructBegin('ActivateStruct');
+  if (this.access_id !== null && this.access_id !== undefined) {
+    output.writeFieldBegin('access_id', Thrift.Type.STRING, 1);
+    output.writeString(this.access_id);
+    output.writeFieldEnd();
+  }
+  if (this.access_key !== null && this.access_key !== undefined) {
+    output.writeFieldBegin('access_key', Thrift.Type.STRING, 2);
+    output.writeString(this.access_key);
     output.writeFieldEnd();
   }
   output.writeFieldStop();

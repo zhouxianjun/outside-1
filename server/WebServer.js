@@ -22,6 +22,7 @@ const loginUrl = config.loginUrl;
 
 const trc = require('trc');
 const loggerService = trc.ServerProvider.instance(require('./thrift/LoggerService'));
+const clientService = trc.ServerProvider.instance(require('./thrift/ClientService'));
 const PublicStruct = require('./thrift/PublicStruct_types');
 
 //body
@@ -90,9 +91,14 @@ app.use(async (ctx, next) => {
         await next();
     } else {
         if (Utils.filter(ctx.path, config.api)) {
-            const {token, sign} = ctx.query;
+            const {access_id, sign} = ctx.query;
+            let accessKey = await store.redis.get(`ACCESS:${access_id}`);
+            if (!accessKey) {
+                accessKey = await clientService.getAccessKey(access_id);
+                await store.redis.set(`ACCESS:${access_id}`, accessKey, 'EX', 86400);
+            }
             const raw = QS.stringify(ctx.request.body, '&', '=', {encodeURIComponent: val => {return val}});
-            const checkSign = Utils.md5(`${raw}${token}`);
+            const checkSign = Utils.md5(`${raw}${accessKey}`);
             if (checkSign !== sign) {
                 ctx.body = new Result(Result.CODE.NO_ACCESS).json;
                 return;

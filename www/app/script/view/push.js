@@ -71,7 +71,7 @@ export default {
             adList: [],
             adVo: {
                 mode: 2000,
-                description: '',
+                description: null,
                 filter: null,
                 max_send_num: 1
             },
