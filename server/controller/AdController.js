@@ -30,6 +30,10 @@ module.exports = class AdController {
             method: 'post',
             path: '/ad/set/resources',
             value: AdController.setResources
+        }, {
+            method: 'post',
+            path: '/api/ad/feedback',
+            value: AdController.feedback
         }]
     }
 
@@ -66,5 +70,11 @@ module.exports = class AdController {
         let params = ctx.request.body;
         let res = await adService.remove(params.id);
         ctx.body = new Result(!!res).json;
+    }
+
+    static async feedback(ctx) {
+        const {push, ad, type} = ctx.request.body;
+        await adService.feedback(push, ad, type, ctx._client.id);
+        ctx.body = new Result(true).json;
     }
 };

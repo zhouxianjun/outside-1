@@ -5,6 +5,7 @@ const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const StringReplacePlugin = require('string-replace-webpack-plugin');
 
 module.exports = {
     entry: {
@@ -54,6 +55,16 @@ module.exports = {
                 fallback: 'style-loader'
             })
         }, {
+            test: /\.css$/,
+            loader: StringReplacePlugin.replace({
+                    replacements: [{
+                        pattern: /https\:\/\/fonts\.googleapis\.com/ig,
+                        replacement: function (match, p1, offset, string) {
+                            return 'https://fonts.lug.ustc.edu.cn'
+                        }
+                    }]
+            })
+        }, {
             test: /\.less/,
             use: ExtractTextPlugin.extract({
                 use: ['autoprefixer-loader', 'less-loader'],
@@ -92,6 +103,7 @@ module.exports = {
         new webpack.optimize.CommonsChunkPlugin({
             name: 'vendor',
             filename: 'vendor.js'
-        })
+        }),
+        new StringReplacePlugin()
     ]
 };

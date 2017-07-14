@@ -51,6 +51,10 @@ module.exports = class ResourcesController {
             method: 'post',
             path: '/resources/callback',
             value: ResourcesController.callback
+        }, {
+            method: 'post',
+            path: '/api/resources/feedback',
+            value: ResourcesController.feedback
         }]
     }
 
@@ -125,5 +129,13 @@ module.exports = class ResourcesController {
         let params = ctx.request.body;
         let res = await resourcesService.remove(params.id);
         ctx.body = new Result(!!res).json;
+    }
+
+    static async feedback(ctx) {
+        const {push, ad, resources} = ctx.request.body;
+        let rs = [];
+        resources.forEach(r => rs.push(new PublicStruct.ResourcesFeedbackReqStruct(r)));
+        await resourcesService.feedback(push, ad, rs, ctx._client.id);
+        ctx.body = new Result(true).json;
     }
 };

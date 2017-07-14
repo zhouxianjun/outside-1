@@ -421,7 +421,7 @@ ClientService_page_result.prototype.write = function(output) {
   return;
 };
 
-var ClientService_getAccessKey_args = function(args) {
+var ClientService_getByAccessId_args = function(args) {
   this.accessId = null;
   if (args) {
     if (args.accessId !== undefined && args.accessId !== null) {
@@ -429,8 +429,8 @@ var ClientService_getAccessKey_args = function(args) {
     }
   }
 };
-ClientService_getAccessKey_args.prototype = {};
-ClientService_getAccessKey_args.prototype.read = function(input) {
+ClientService_getByAccessId_args.prototype = {};
+ClientService_getByAccessId_args.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -462,8 +462,8 @@ ClientService_getAccessKey_args.prototype.read = function(input) {
   return;
 };
 
-ClientService_getAccessKey_args.prototype.write = function(output) {
-  output.writeStructBegin('ClientService_getAccessKey_args');
+ClientService_getByAccessId_args.prototype.write = function(output) {
+  output.writeStructBegin('ClientService_getByAccessId_args');
   if (this.accessId !== null && this.accessId !== undefined) {
     output.writeFieldBegin('accessId', Thrift.Type.STRING, 1);
     output.writeString(this.accessId);
@@ -474,7 +474,7 @@ ClientService_getAccessKey_args.prototype.write = function(output) {
   return;
 };
 
-var ClientService_getAccessKey_result = function(args) {
+var ClientService_getByAccessId_result = function(args) {
   this.success = null;
   this.ex = null;
   if (args instanceof PublicStruct_ttypes.InvalidOperation) {
@@ -483,15 +483,15 @@ var ClientService_getAccessKey_result = function(args) {
   }
   if (args) {
     if (args.success !== undefined && args.success !== null) {
-      this.success = args.success;
+      this.success = new PublicStruct_ttypes.ClientStruct(args.success);
     }
     if (args.ex !== undefined && args.ex !== null) {
       this.ex = args.ex;
     }
   }
 };
-ClientService_getAccessKey_result.prototype = {};
-ClientService_getAccessKey_result.prototype.read = function(input) {
+ClientService_getByAccessId_result.prototype = {};
+ClientService_getByAccessId_result.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -505,8 +505,9 @@ ClientService_getAccessKey_result.prototype.read = function(input) {
     switch (fid)
     {
       case 0:
-      if (ftype == Thrift.Type.STRING) {
-        this.success = input.readString();
+      if (ftype == Thrift.Type.STRUCT) {
+        this.success = new PublicStruct_ttypes.ClientStruct();
+        this.success.read(input);
       } else {
         input.skip(ftype);
       }
@@ -528,11 +529,11 @@ ClientService_getAccessKey_result.prototype.read = function(input) {
   return;
 };
 
-ClientService_getAccessKey_result.prototype.write = function(output) {
-  output.writeStructBegin('ClientService_getAccessKey_result');
+ClientService_getByAccessId_result.prototype.write = function(output) {
+  output.writeStructBegin('ClientService_getByAccessId_result');
   if (this.success !== null && this.success !== undefined) {
-    output.writeFieldBegin('success', Thrift.Type.STRING, 0);
-    output.writeString(this.success);
+    output.writeFieldBegin('success', Thrift.Type.STRUCT, 0);
+    this.success.write(output);
     output.writeFieldEnd();
   }
   if (this.ex !== null && this.ex !== undefined) {
@@ -706,7 +707,7 @@ ClientServiceClient.prototype.recv_page = function(input,mtype,rseqid) {
   }
   return callback('page failed: unknown result');
 };
-ClientServiceClient.prototype.getAccessKey = function(accessId, callback) {
+ClientServiceClient.prototype.getByAccessId = function(accessId, callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
     var _defer = Q.defer();
@@ -717,25 +718,25 @@ ClientServiceClient.prototype.getAccessKey = function(accessId, callback) {
         _defer.resolve(result);
       }
     };
-    this.send_getAccessKey(accessId);
+    this.send_getByAccessId(accessId);
     return _defer.promise;
   } else {
     this._reqs[this.seqid()] = callback;
-    this.send_getAccessKey(accessId);
+    this.send_getByAccessId(accessId);
   }
 };
 
-ClientServiceClient.prototype.send_getAccessKey = function(accessId) {
+ClientServiceClient.prototype.send_getByAccessId = function(accessId) {
   var output = new this.pClass(this.output);
-  output.writeMessageBegin('getAccessKey', Thrift.MessageType.CALL, this.seqid());
-  var args = new ClientService_getAccessKey_args();
+  output.writeMessageBegin('getByAccessId', Thrift.MessageType.CALL, this.seqid());
+  var args = new ClientService_getByAccessId_args();
   args.accessId = accessId;
   args.write(output);
   output.writeMessageEnd();
   return this.output.flush();
 };
 
-ClientServiceClient.prototype.recv_getAccessKey = function(input,mtype,rseqid) {
+ClientServiceClient.prototype.recv_getByAccessId = function(input,mtype,rseqid) {
   var callback = this._reqs[rseqid] || function() {};
   delete this._reqs[rseqid];
   if (mtype == Thrift.MessageType.EXCEPTION) {
@@ -744,7 +745,7 @@ ClientServiceClient.prototype.recv_getAccessKey = function(input,mtype,rseqid) {
     input.readMessageEnd();
     return callback(x);
   }
-  var result = new ClientService_getAccessKey_result();
+  var result = new ClientService_getByAccessId_result();
   result.read(input);
   input.readMessageEnd();
 
@@ -754,7 +755,7 @@ ClientServiceClient.prototype.recv_getAccessKey = function(input,mtype,rseqid) {
   if (null !== result.success) {
     return callback(null, result.success);
   }
-  return callback('getAccessKey failed: unknown result');
+  return callback('getByAccessId failed: unknown result');
 };
 var ClientServiceProcessor = exports.Processor = function(handler) {
   this._handler = handler;
@@ -898,40 +899,40 @@ ClientServiceProcessor.prototype.process_page = function(seqid, input, output) {
     });
   }
 };
-ClientServiceProcessor.prototype.process_getAccessKey = function(seqid, input, output) {
-  var args = new ClientService_getAccessKey_args();
+ClientServiceProcessor.prototype.process_getByAccessId = function(seqid, input, output) {
+  var args = new ClientService_getByAccessId_args();
   args.read(input);
   input.readMessageEnd();
-  if (this._handler.getAccessKey.length === 1) {
-    Q.fcall(this._handler.getAccessKey, args.accessId)
+  if (this._handler.getByAccessId.length === 1) {
+    Q.fcall(this._handler.getByAccessId, args.accessId)
       .then(function(result) {
-        var result_obj = new ClientService_getAccessKey_result({success: result});
-        output.writeMessageBegin("getAccessKey", Thrift.MessageType.REPLY, seqid);
+        var result_obj = new ClientService_getByAccessId_result({success: result});
+        output.writeMessageBegin("getByAccessId", Thrift.MessageType.REPLY, seqid);
         result_obj.write(output);
         output.writeMessageEnd();
         output.flush();
       }, function (err) {
         var result;
         if (err instanceof PublicStruct_ttypes.InvalidOperation) {
-          result = new ClientService_getAccessKey_result(err);
-          output.writeMessageBegin("getAccessKey", Thrift.MessageType.REPLY, seqid);
+          result = new ClientService_getByAccessId_result(err);
+          output.writeMessageBegin("getByAccessId", Thrift.MessageType.REPLY, seqid);
         } else {
           result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
-          output.writeMessageBegin("getAccessKey", Thrift.MessageType.EXCEPTION, seqid);
+          output.writeMessageBegin("getByAccessId", Thrift.MessageType.EXCEPTION, seqid);
         }
         result.write(output);
         output.writeMessageEnd();
         output.flush();
       });
   } else {
-    this._handler.getAccessKey(args.accessId, function (err, result) {
+    this._handler.getByAccessId(args.accessId, function (err, result) {
       var result_obj;
       if ((err === null || typeof err === 'undefined') || err instanceof PublicStruct_ttypes.InvalidOperation) {
-        result_obj = new ClientService_getAccessKey_result((err !== null || typeof err === 'undefined') ? err : {success: result});
-        output.writeMessageBegin("getAccessKey", Thrift.MessageType.REPLY, seqid);
+        result_obj = new ClientService_getByAccessId_result((err !== null || typeof err === 'undefined') ? err : {success: result});
+        output.writeMessageBegin("getByAccessId", Thrift.MessageType.REPLY, seqid);
       } else {
         result_obj = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
-        output.writeMessageBegin("getAccessKey", Thrift.MessageType.EXCEPTION, seqid);
+        output.writeMessageBegin("getByAccessId", Thrift.MessageType.EXCEPTION, seqid);
       }
       result_obj.write(output);
       output.writeMessageEnd();
