@@ -19,6 +19,10 @@ module.exports = class PushController {
             method: 'post',
             path: '/push/ad',
             value: PushController.ad
+        }, {
+            method: 'post',
+            path: '/push/install',
+            value: PushController.install
         }]
     }
 
@@ -35,6 +39,12 @@ module.exports = class PushController {
     static async ad(ctx) {
         let body = ctx.request.body;
         let res = await pushService.pushAd(new PublicStruct.PushStruct(Object.assign({uuid: uuid(), user: ctx.session.user.id}, body.push)), body.ads);
+        ctx.body = new Result(!!res).json;
+    }
+
+    static async install(ctx) {
+        let body = ctx.request.body;
+        let res = await pushService.pushInstall(new PublicStruct.PushStruct(Object.assign({uuid: uuid(), user: ctx.session.user.id}, body.push)), body.installs);
         ctx.body = new Result(!!res).json;
     }
 };

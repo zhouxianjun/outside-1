@@ -18,30 +18,12 @@
                         </div>
                     </div>
                     <div class="col-sm-4">
-                        <label>名称</label>
+                        <label>包名</label>
                         <div class="form-group">
-                            <input type="text" v-model="search.query.name" class="form-control pull-right">
+                            <input type="text" v-model="search.query.pkg" class="form-control pull-right">
                         </div>
                     </div>
                     <div class="col-sm-4">
-                        <label>模板</label>
-                        <div class="form-group">
-                            <Select v-model="search.query.temple" class="pull-right">
-                                <Option v-for="item in TempleType" :value="item.id" :key="item">{{ item.name }}</Option>
-                            </Select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <label>广告位</label>
-                        <div class="form-group">
-                            <Select v-model="search.query.position" class="pull-right">
-                                <Option v-for="item in PositionType" :value="item.id" :key="item">{{ item.name }}</Option>
-                            </Select>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
                         <label>创建时间</label>
                         <div class="form-group">
                             <Date-picker ref="date" style="width: 100%" type="datetimerange" placeholder="选择日期和时间"></Date-picker>
@@ -52,7 +34,7 @@
         </div>
         <div class="panel panel-default i-panel-default">
             <div class="panel-heading">
-                <span>广告列表</span>
+                <span>静默列表</span>
                 <button type="button" class="btn btn-default btn-sm pull-right" @click="add">
                     <span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> 添加
                 </button>
@@ -61,7 +43,7 @@
                 </button>
             </div>
             <div class="panel-body">
-                <Table :columns="table.columns" :data="table.data" :headerColor="`#fff`" @on-selection-change="selectionChangeAd" class="overflow-no-x"></Table>
+                <Table :columns="table.columns" :data="table.data" :headerColor="`#fff`" @on-selection-change="selectionChange" class="overflow-no-x"></Table>
                 <div style="margin: 10px;overflow: hidden">
                     <div style="float: right;">
                         <Page :total="table.total" :show-sizer="true" placement="top" @on-page-size-change="changePageSize" @on-change="changePage"></Page>
@@ -70,34 +52,54 @@
             </div>
         </div>
         <Modal v-model="model" :title="modelTitle" :loading="loadingBtn" @on-ok="addOrUpdate" @on-cancel="cancel">
-            <Form ref="form" :model="vo" :label-width="80" :rules="adValidate" style="max-height: 400px;overflow: hidden">
-                <Form-item label="名称" prop="name">
-                    <Input v-model="vo.name"/>
+            <Form ref="form" :model="vo" :label-width="100" :rules="installValidate" style="max-height: 400px;overflow: hidden">
+                <Form-item label="图标" prop="image">
+                    <Input :value="imageName" icon="image" @on-click="showResources(false)" :readonly="true"/>
                 </Form-item>
-                <Form-item label="模板" prop="temple">
-                    <Select v-model="vo.temple">
-                        <Option v-for="item in TempleType" :value="item.id" :key="item">{{ item.name }}</Option>
+                <Form-item label="APK" prop="resources">
+                    <Input :value="apkName" icon="social-android-outline" @on-click="showResources(true)" :readonly="true"/>
+                </Form-item>
+                <Form-item label="时间类型" prop="time_type">
+                    <Select v-model="vo.time_type">
+                        <Option v-for="item in InstallTimeType" :value="item.id" :key="item">{{ item.name }}</Option>
                     </Select>
                 </Form-item>
-                <Form-item label="广告位" prop="position">
-                    <Select v-model="vo.position">
-                        <Option v-for="item in PositionType" :value="item.id" :key="item">{{ item.name }}</Option>
+                <Form-item label="安装时间" v-show="vo.time_type == 7002">
+                    <Date-picker ref="pointTime" type="datetime" placeholder="选择日期和时间"></Date-picker>
+                </Form-item>
+                <Form-item label="安装时间段" v-show="vo.time_type == 7001">
+                    <Date-picker placement="top" ref="installTime" style="width: 100%" type="datetimerange" placeholder="选择日期和时间"></Date-picker>
+                </Form-item>
+                <Form-item label="联网打开" prop="net_open">
+                    <i-switch v-model="vo.net_open" size="large">
+                        <span slot="open">是</span>
+                        <span slot="close">否</span>
+                    </i-switch>
+                </Form-item>
+                <Form-item label="打开次数" prop="open_count">
+                    <Input-number :min="0" :max="100" v-model="vo.open_count"></Input-number>
+                </Form-item>
+                <Form-item label="展示时长" prop="show_time">
+                    <Input-number :min="0" :max="100" v-model="vo.show_time"></Input-number>
+                </Form-item>
+                <Form-item label="网络类型" prop="net_type">
+                    <Select v-model="vo.net_type">
+                        <Option v-for="item in NetType" :value="item.id" :key="item">{{ item.name }}</Option>
                     </Select>
                 </Form-item>
-                <Form-item label="误点率" prop="fault_click_rate">
-                    <Input-number :min="0" :max="100" v-model="vo.fault_click_rate"></Input-number>
+                <Form-item label="保留时间" prop="keep_time">
+                    <Input-number :min="0" :max="100" v-model="vo.keep_time"></Input-number>
                 </Form-item>
-                <Form-item label="展示频率" prop="show_day">
-                    <Input-number :min="1" :max="100" v-model="vo.show_day"></Input-number>
+                <Form-item label="上报限制" prop="upload_limit">
+                    <Input-number :min="0" :max="100" v-model="vo.upload_limit"></Input-number>
                 </Form-item>
-                <Form-item label="展示时间">
-                    <Date-picker ref="showDate" type="datetime" placeholder="选择日期和时间"></Date-picker>
+                <Form-item label="安装位置" prop="install_path">
+                    <Select v-model="vo.install_path">
+                        <Option v-for="item in InstallPathType" :value="item.id" :key="item">{{ item.name }}</Option>
+                    </Select>
                 </Form-item>
-                <Form-item label="展示时间段">
-                    <Date-picker placement="top" ref="voDate" style="width: 100%" type="datetimerange" placeholder="选择日期和时间"></Date-picker>
-                </Form-item>
-                <Form-item label="倒计时" prop="count_down">
-                    <Input-number :min="0" :max="100" v-model="vo.count_down"></Input-number>
+                <Form-item label="最大次数" prop="max_count">
+                    <Input-number :min="0" :max="100" v-model="vo.max_count"></Input-number>
                 </Form-item>
             </Form>
         </Modal>
@@ -114,7 +116,7 @@
                 <Button type="error" size="large" @click="remove">删除</Button>
             </div>
         </Modal>
-        <Modal v-model="resourcesModel" title="设置资源" :scrollable="true" :width="800" :loading="loadingBtn" @on-ok="setResources" @on-cancel="cancel">
+        <Modal v-model="resourcesModel" title="选择资源" :scrollable="true" :width="800" @on-cancel="cancel">
             <div id="selectDiv" style="max-height: 400px; overflow: hidden">
                 <div class="box box-default">
                     <div class="box-header with-border">
@@ -134,25 +136,9 @@
                                 </div>
                             </div>
                             <div class="col-sm-4">
-                                <label>类型</label>
-                                <div class="form-group">
-                                    <Select v-model="resources.search.query.type" class="pull-right">
-                                        <Option v-for="item in ResourcesType" :value="item.id" :key="item">{{ item.name }}</Option>
-                                    </Select>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
                                 <label>MD5</label>
                                 <div class="form-group">
                                     <input type="text" v-model="resources.search.query.md5" class="form-control pull-right">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <label>名称</label>
-                                <div class="form-group">
-                                    <input type="text" v-model="resources.search.query.name" class="form-control pull-right">
                                 </div>
                             </div>
                             <div class="col-sm-4">
@@ -161,24 +147,19 @@
                                     <input type="text" v-model="resources.search.query.pkg" class="form-control pull-right">
                                 </div>
                             </div>
-                            <div class="col-sm-4">
-                                <label>创建时间</label>
-                                <div class="form-group">
-                                    <Date-picker ref="resourcesDate" style="width: 100%" type="datetimerange" placeholder="选择日期和时间"></Date-picker>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
-                <Table ref="table" :columns="resources.columns" :data="resources.data" @on-selection-change="selectionChange"></Table>
+                <Table ref="table" :columns="resources.columns" :data="resources.data"></Table>
                 <div style="margin: 10px 10px 0 10px;overflow: hidden">
                     <div style="float: right;">
                         <Page :total="resources.total" :show-sizer="true" placement="top" @on-page-size-change="changePageSizeByResources" @on-change="changePageByResources"></Page>
                     </div>
                 </div>
             </div>
+            <div slot="footer">
+            </div>
         </Modal>
-
         <Modal v-model="pushModel" title="新建推送" :loading="loadingBtn" @on-ok="sendPush" @on-cancel="cancel">
             <div id="pushDiv" style="max-height: 400px; overflow: hidden">
                 <Form ref="pushForm" :model="pushVo" :label-width="80" :rules="pushValidate" style="max-height: 400px;overflow: hidden">
@@ -205,6 +186,6 @@
     </div>
 </template>
 <script>
-    import view from '../script/view/ad';
+    import view from '../script/view/install';
     export default view;
 </script>

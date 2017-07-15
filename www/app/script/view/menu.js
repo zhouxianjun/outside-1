@@ -47,10 +47,10 @@ export default {
                 name: null,
                 path: null,
                 icon: null,
-                seq: null,
+                seq: 0,
                 description: null,
-                show: null,
-                status: null
+                show: false,
+                status: false
             },
             menuValidate: {
                 name: [{required: true, trigger: 'blur' }],

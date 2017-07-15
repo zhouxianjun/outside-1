@@ -12,290 +12,10 @@ var Q = thrift.Q;
 var PublicStruct_ttypes = require('./PublicStruct_types');
 
 
-var ttypes = require('./ClientService_types');
+var ttypes = require('./AdSupportService_types');
 //HELPER FUNCTIONS AND STRUCTURES
 
-var ClientService_activate_args = function(args) {
-  this.bean = null;
-  if (args) {
-    if (args.bean !== undefined && args.bean !== null) {
-      this.bean = new PublicStruct_ttypes.ClientStruct(args.bean);
-    }
-  }
-};
-ClientService_activate_args.prototype = {};
-ClientService_activate_args.prototype.read = function(input) {
-  input.readStructBegin();
-  while (true)
-  {
-    var ret = input.readFieldBegin();
-    var fname = ret.fname;
-    var ftype = ret.ftype;
-    var fid = ret.fid;
-    if (ftype == Thrift.Type.STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 1:
-      if (ftype == Thrift.Type.STRUCT) {
-        this.bean = new PublicStruct_ttypes.ClientStruct();
-        this.bean.read(input);
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 0:
-        input.skip(ftype);
-        break;
-      default:
-        input.skip(ftype);
-    }
-    input.readFieldEnd();
-  }
-  input.readStructEnd();
-  return;
-};
-
-ClientService_activate_args.prototype.write = function(output) {
-  output.writeStructBegin('ClientService_activate_args');
-  if (this.bean !== null && this.bean !== undefined) {
-    output.writeFieldBegin('bean', Thrift.Type.STRUCT, 1);
-    this.bean.write(output);
-    output.writeFieldEnd();
-  }
-  output.writeFieldStop();
-  output.writeStructEnd();
-  return;
-};
-
-var ClientService_activate_result = function(args) {
-  this.success = null;
-  this.ex = null;
-  if (args instanceof PublicStruct_ttypes.InvalidOperation) {
-    this.ex = args;
-    return;
-  }
-  if (args) {
-    if (args.success !== undefined && args.success !== null) {
-      this.success = new PublicStruct_ttypes.ActivateStruct(args.success);
-    }
-    if (args.ex !== undefined && args.ex !== null) {
-      this.ex = args.ex;
-    }
-  }
-};
-ClientService_activate_result.prototype = {};
-ClientService_activate_result.prototype.read = function(input) {
-  input.readStructBegin();
-  while (true)
-  {
-    var ret = input.readFieldBegin();
-    var fname = ret.fname;
-    var ftype = ret.ftype;
-    var fid = ret.fid;
-    if (ftype == Thrift.Type.STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 0:
-      if (ftype == Thrift.Type.STRUCT) {
-        this.success = new PublicStruct_ttypes.ActivateStruct();
-        this.success.read(input);
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 1:
-      if (ftype == Thrift.Type.STRUCT) {
-        this.ex = new PublicStruct_ttypes.InvalidOperation();
-        this.ex.read(input);
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      default:
-        input.skip(ftype);
-    }
-    input.readFieldEnd();
-  }
-  input.readStructEnd();
-  return;
-};
-
-ClientService_activate_result.prototype.write = function(output) {
-  output.writeStructBegin('ClientService_activate_result');
-  if (this.success !== null && this.success !== undefined) {
-    output.writeFieldBegin('success', Thrift.Type.STRUCT, 0);
-    this.success.write(output);
-    output.writeFieldEnd();
-  }
-  if (this.ex !== null && this.ex !== undefined) {
-    output.writeFieldBegin('ex', Thrift.Type.STRUCT, 1);
-    this.ex.write(output);
-    output.writeFieldEnd();
-  }
-  output.writeFieldStop();
-  output.writeStructEnd();
-  return;
-};
-
-var ClientService_check_args = function(args) {
-  this.sign = null;
-  this.noncestr = null;
-  this.md5 = null;
-  if (args) {
-    if (args.sign !== undefined && args.sign !== null) {
-      this.sign = args.sign;
-    }
-    if (args.noncestr !== undefined && args.noncestr !== null) {
-      this.noncestr = args.noncestr;
-    }
-    if (args.md5 !== undefined && args.md5 !== null) {
-      this.md5 = args.md5;
-    }
-  }
-};
-ClientService_check_args.prototype = {};
-ClientService_check_args.prototype.read = function(input) {
-  input.readStructBegin();
-  while (true)
-  {
-    var ret = input.readFieldBegin();
-    var fname = ret.fname;
-    var ftype = ret.ftype;
-    var fid = ret.fid;
-    if (ftype == Thrift.Type.STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 1:
-      if (ftype == Thrift.Type.STRING) {
-        this.sign = input.readString();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 2:
-      if (ftype == Thrift.Type.STRING) {
-        this.noncestr = input.readString();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 3:
-      if (ftype == Thrift.Type.STRING) {
-        this.md5 = input.readString();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      default:
-        input.skip(ftype);
-    }
-    input.readFieldEnd();
-  }
-  input.readStructEnd();
-  return;
-};
-
-ClientService_check_args.prototype.write = function(output) {
-  output.writeStructBegin('ClientService_check_args');
-  if (this.sign !== null && this.sign !== undefined) {
-    output.writeFieldBegin('sign', Thrift.Type.STRING, 1);
-    output.writeString(this.sign);
-    output.writeFieldEnd();
-  }
-  if (this.noncestr !== null && this.noncestr !== undefined) {
-    output.writeFieldBegin('noncestr', Thrift.Type.STRING, 2);
-    output.writeString(this.noncestr);
-    output.writeFieldEnd();
-  }
-  if (this.md5 !== null && this.md5 !== undefined) {
-    output.writeFieldBegin('md5', Thrift.Type.STRING, 3);
-    output.writeString(this.md5);
-    output.writeFieldEnd();
-  }
-  output.writeFieldStop();
-  output.writeStructEnd();
-  return;
-};
-
-var ClientService_check_result = function(args) {
-  this.success = null;
-  this.ex = null;
-  if (args instanceof PublicStruct_ttypes.InvalidOperation) {
-    this.ex = args;
-    return;
-  }
-  if (args) {
-    if (args.success !== undefined && args.success !== null) {
-      this.success = new PublicStruct_ttypes.CheckResultStruct(args.success);
-    }
-    if (args.ex !== undefined && args.ex !== null) {
-      this.ex = args.ex;
-    }
-  }
-};
-ClientService_check_result.prototype = {};
-ClientService_check_result.prototype.read = function(input) {
-  input.readStructBegin();
-  while (true)
-  {
-    var ret = input.readFieldBegin();
-    var fname = ret.fname;
-    var ftype = ret.ftype;
-    var fid = ret.fid;
-    if (ftype == Thrift.Type.STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 0:
-      if (ftype == Thrift.Type.STRUCT) {
-        this.success = new PublicStruct_ttypes.CheckResultStruct();
-        this.success.read(input);
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 1:
-      if (ftype == Thrift.Type.STRUCT) {
-        this.ex = new PublicStruct_ttypes.InvalidOperation();
-        this.ex.read(input);
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      default:
-        input.skip(ftype);
-    }
-    input.readFieldEnd();
-  }
-  input.readStructEnd();
-  return;
-};
-
-ClientService_check_result.prototype.write = function(output) {
-  output.writeStructBegin('ClientService_check_result');
-  if (this.success !== null && this.success !== undefined) {
-    output.writeFieldBegin('success', Thrift.Type.STRUCT, 0);
-    this.success.write(output);
-    output.writeFieldEnd();
-  }
-  if (this.ex !== null && this.ex !== undefined) {
-    output.writeFieldBegin('ex', Thrift.Type.STRUCT, 1);
-    this.ex.write(output);
-    output.writeFieldEnd();
-  }
-  output.writeFieldStop();
-  output.writeStructEnd();
-  return;
-};
-
-var ClientService_page_args = function(args) {
+var AdSupportService_page_args = function(args) {
   this.page = null;
   if (args) {
     if (args.page !== undefined && args.page !== null) {
@@ -303,8 +23,8 @@ var ClientService_page_args = function(args) {
     }
   }
 };
-ClientService_page_args.prototype = {};
-ClientService_page_args.prototype.read = function(input) {
+AdSupportService_page_args.prototype = {};
+AdSupportService_page_args.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -337,8 +57,8 @@ ClientService_page_args.prototype.read = function(input) {
   return;
 };
 
-ClientService_page_args.prototype.write = function(output) {
-  output.writeStructBegin('ClientService_page_args');
+AdSupportService_page_args.prototype.write = function(output) {
+  output.writeStructBegin('AdSupportService_page_args');
   if (this.page !== null && this.page !== undefined) {
     output.writeFieldBegin('page', Thrift.Type.STRUCT, 1);
     this.page.write(output);
@@ -349,7 +69,7 @@ ClientService_page_args.prototype.write = function(output) {
   return;
 };
 
-var ClientService_page_result = function(args) {
+var AdSupportService_page_result = function(args) {
   this.success = null;
   this.ex = null;
   if (args instanceof PublicStruct_ttypes.InvalidOperation) {
@@ -365,8 +85,8 @@ var ClientService_page_result = function(args) {
     }
   }
 };
-ClientService_page_result.prototype = {};
-ClientService_page_result.prototype.read = function(input) {
+AdSupportService_page_result.prototype = {};
+AdSupportService_page_result.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -404,8 +124,8 @@ ClientService_page_result.prototype.read = function(input) {
   return;
 };
 
-ClientService_page_result.prototype.write = function(output) {
-  output.writeStructBegin('ClientService_page_result');
+AdSupportService_page_result.prototype.write = function(output) {
+  output.writeStructBegin('AdSupportService_page_result');
   if (this.success !== null && this.success !== undefined) {
     output.writeFieldBegin('success', Thrift.Type.STRUCT, 0);
     this.success.write(output);
@@ -421,16 +141,10 @@ ClientService_page_result.prototype.write = function(output) {
   return;
 };
 
-var ClientService_getByAccessId_args = function(args) {
-  this.accessId = null;
-  if (args) {
-    if (args.accessId !== undefined && args.accessId !== null) {
-      this.accessId = args.accessId;
-    }
-  }
+var AdSupportService_all_args = function(args) {
 };
-ClientService_getByAccessId_args.prototype = {};
-ClientService_getByAccessId_args.prototype.read = function(input) {
+AdSupportService_all_args.prototype = {};
+AdSupportService_all_args.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -441,40 +155,21 @@ ClientService_getByAccessId_args.prototype.read = function(input) {
     if (ftype == Thrift.Type.STOP) {
       break;
     }
-    switch (fid)
-    {
-      case 1:
-      if (ftype == Thrift.Type.STRING) {
-        this.accessId = input.readString();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 0:
-        input.skip(ftype);
-        break;
-      default:
-        input.skip(ftype);
-    }
+    input.skip(ftype);
     input.readFieldEnd();
   }
   input.readStructEnd();
   return;
 };
 
-ClientService_getByAccessId_args.prototype.write = function(output) {
-  output.writeStructBegin('ClientService_getByAccessId_args');
-  if (this.accessId !== null && this.accessId !== undefined) {
-    output.writeFieldBegin('accessId', Thrift.Type.STRING, 1);
-    output.writeString(this.accessId);
-    output.writeFieldEnd();
-  }
+AdSupportService_all_args.prototype.write = function(output) {
+  output.writeStructBegin('AdSupportService_all_args');
   output.writeFieldStop();
   output.writeStructEnd();
   return;
 };
 
-var ClientService_getByAccessId_result = function(args) {
+var AdSupportService_all_result = function(args) {
   this.success = null;
   this.ex = null;
   if (args instanceof PublicStruct_ttypes.InvalidOperation) {
@@ -483,15 +178,15 @@ var ClientService_getByAccessId_result = function(args) {
   }
   if (args) {
     if (args.success !== undefined && args.success !== null) {
-      this.success = new PublicStruct_ttypes.ClientStruct(args.success);
+      this.success = Thrift.copyList(args.success, [PublicStruct_ttypes.AdSupportStruct]);
     }
     if (args.ex !== undefined && args.ex !== null) {
       this.ex = args.ex;
     }
   }
 };
-ClientService_getByAccessId_result.prototype = {};
-ClientService_getByAccessId_result.prototype.read = function(input) {
+AdSupportService_all_result.prototype = {};
+AdSupportService_all_result.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -505,9 +200,22 @@ ClientService_getByAccessId_result.prototype.read = function(input) {
     switch (fid)
     {
       case 0:
-      if (ftype == Thrift.Type.STRUCT) {
-        this.success = new PublicStruct_ttypes.ClientStruct();
-        this.success.read(input);
+      if (ftype == Thrift.Type.LIST) {
+        var _size0 = 0;
+        var _rtmp34;
+        this.success = [];
+        var _etype3 = 0;
+        _rtmp34 = input.readListBegin();
+        _etype3 = _rtmp34.etype;
+        _size0 = _rtmp34.size;
+        for (var _i5 = 0; _i5 < _size0; ++_i5)
+        {
+          var elem6 = null;
+          elem6 = new PublicStruct_ttypes.AdSupportStruct();
+          elem6.read(input);
+          this.success.push(elem6);
+        }
+        input.readListEnd();
       } else {
         input.skip(ftype);
       }
@@ -529,11 +237,20 @@ ClientService_getByAccessId_result.prototype.read = function(input) {
   return;
 };
 
-ClientService_getByAccessId_result.prototype.write = function(output) {
-  output.writeStructBegin('ClientService_getByAccessId_result');
+AdSupportService_all_result.prototype.write = function(output) {
+  output.writeStructBegin('AdSupportService_all_result');
   if (this.success !== null && this.success !== undefined) {
-    output.writeFieldBegin('success', Thrift.Type.STRUCT, 0);
-    this.success.write(output);
+    output.writeFieldBegin('success', Thrift.Type.LIST, 0);
+    output.writeListBegin(Thrift.Type.STRUCT, this.success.length);
+    for (var iter7 in this.success)
+    {
+      if (this.success.hasOwnProperty(iter7))
+      {
+        iter7 = this.success[iter7];
+        iter7.write(output);
+      }
+    }
+    output.writeListEnd();
     output.writeFieldEnd();
   }
   if (this.ex !== null && this.ex !== undefined) {
@@ -546,16 +263,16 @@ ClientService_getByAccessId_result.prototype.write = function(output) {
   return;
 };
 
-var ClientService_remove_args = function(args) {
-  this.id = null;
+var AdSupportService_add_args = function(args) {
+  this.bean = null;
   if (args) {
-    if (args.id !== undefined && args.id !== null) {
-      this.id = args.id;
+    if (args.bean !== undefined && args.bean !== null) {
+      this.bean = new PublicStruct_ttypes.AdSupportStruct(args.bean);
     }
   }
 };
-ClientService_remove_args.prototype = {};
-ClientService_remove_args.prototype.read = function(input) {
+AdSupportService_add_args.prototype = {};
+AdSupportService_add_args.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -569,8 +286,9 @@ ClientService_remove_args.prototype.read = function(input) {
     switch (fid)
     {
       case 1:
-      if (ftype == Thrift.Type.I32) {
-        this.id = input.readI32();
+      if (ftype == Thrift.Type.STRUCT) {
+        this.bean = new PublicStruct_ttypes.AdSupportStruct();
+        this.bean.read(input);
       } else {
         input.skip(ftype);
       }
@@ -587,11 +305,11 @@ ClientService_remove_args.prototype.read = function(input) {
   return;
 };
 
-ClientService_remove_args.prototype.write = function(output) {
-  output.writeStructBegin('ClientService_remove_args');
-  if (this.id !== null && this.id !== undefined) {
-    output.writeFieldBegin('id', Thrift.Type.I32, 1);
-    output.writeI32(this.id);
+AdSupportService_add_args.prototype.write = function(output) {
+  output.writeStructBegin('AdSupportService_add_args');
+  if (this.bean !== null && this.bean !== undefined) {
+    output.writeFieldBegin('bean', Thrift.Type.STRUCT, 1);
+    this.bean.write(output);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
@@ -599,7 +317,7 @@ ClientService_remove_args.prototype.write = function(output) {
   return;
 };
 
-var ClientService_remove_result = function(args) {
+var AdSupportService_add_result = function(args) {
   this.success = null;
   this.ex = null;
   if (args instanceof PublicStruct_ttypes.InvalidOperation) {
@@ -615,8 +333,133 @@ var ClientService_remove_result = function(args) {
     }
   }
 };
-ClientService_remove_result.prototype = {};
-ClientService_remove_result.prototype.read = function(input) {
+AdSupportService_add_result.prototype = {};
+AdSupportService_add_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+      if (ftype == Thrift.Type.I32) {
+        this.success = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.ex = new PublicStruct_ttypes.InvalidOperation();
+        this.ex.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+AdSupportService_add_result.prototype.write = function(output) {
+  output.writeStructBegin('AdSupportService_add_result');
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.I32, 0);
+    output.writeI32(this.success);
+    output.writeFieldEnd();
+  }
+  if (this.ex !== null && this.ex !== undefined) {
+    output.writeFieldBegin('ex', Thrift.Type.STRUCT, 1);
+    this.ex.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+var AdSupportService_update_args = function(args) {
+  this.bean = null;
+  if (args) {
+    if (args.bean !== undefined && args.bean !== null) {
+      this.bean = new PublicStruct_ttypes.AdSupportStruct(args.bean);
+    }
+  }
+};
+AdSupportService_update_args.prototype = {};
+AdSupportService_update_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.bean = new PublicStruct_ttypes.AdSupportStruct();
+        this.bean.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+AdSupportService_update_args.prototype.write = function(output) {
+  output.writeStructBegin('AdSupportService_update_args');
+  if (this.bean !== null && this.bean !== undefined) {
+    output.writeFieldBegin('bean', Thrift.Type.STRUCT, 1);
+    this.bean.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+var AdSupportService_update_result = function(args) {
+  this.success = null;
+  this.ex = null;
+  if (args instanceof PublicStruct_ttypes.InvalidOperation) {
+    this.ex = args;
+    return;
+  }
+  if (args) {
+    if (args.success !== undefined && args.success !== null) {
+      this.success = args.success;
+    }
+    if (args.ex !== undefined && args.ex !== null) {
+      this.ex = args.ex;
+    }
+  }
+};
+AdSupportService_update_result.prototype = {};
+AdSupportService_update_result.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -653,8 +496,8 @@ ClientService_remove_result.prototype.read = function(input) {
   return;
 };
 
-ClientService_remove_result.prototype.write = function(output) {
-  output.writeStructBegin('ClientService_remove_result');
+AdSupportService_update_result.prototype.write = function(output) {
+  output.writeStructBegin('AdSupportService_update_result');
   if (this.success !== null && this.success !== undefined) {
     output.writeFieldBegin('success', Thrift.Type.BOOL, 0);
     output.writeBool(this.success);
@@ -670,118 +513,140 @@ ClientService_remove_result.prototype.write = function(output) {
   return;
 };
 
-var ClientServiceClient = exports.Client = function(output, pClass) {
+var AdSupportService_remove_args = function(args) {
+  this.id = null;
+  if (args) {
+    if (args.id !== undefined && args.id !== null) {
+      this.id = args.id;
+    }
+  }
+};
+AdSupportService_remove_args.prototype = {};
+AdSupportService_remove_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.I32) {
+        this.id = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+AdSupportService_remove_args.prototype.write = function(output) {
+  output.writeStructBegin('AdSupportService_remove_args');
+  if (this.id !== null && this.id !== undefined) {
+    output.writeFieldBegin('id', Thrift.Type.I32, 1);
+    output.writeI32(this.id);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+var AdSupportService_remove_result = function(args) {
+  this.success = null;
+  this.ex = null;
+  if (args instanceof PublicStruct_ttypes.InvalidOperation) {
+    this.ex = args;
+    return;
+  }
+  if (args) {
+    if (args.success !== undefined && args.success !== null) {
+      this.success = args.success;
+    }
+    if (args.ex !== undefined && args.ex !== null) {
+      this.ex = args.ex;
+    }
+  }
+};
+AdSupportService_remove_result.prototype = {};
+AdSupportService_remove_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+      if (ftype == Thrift.Type.BOOL) {
+        this.success = input.readBool();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.ex = new PublicStruct_ttypes.InvalidOperation();
+        this.ex.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+AdSupportService_remove_result.prototype.write = function(output) {
+  output.writeStructBegin('AdSupportService_remove_result');
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.BOOL, 0);
+    output.writeBool(this.success);
+    output.writeFieldEnd();
+  }
+  if (this.ex !== null && this.ex !== undefined) {
+    output.writeFieldBegin('ex', Thrift.Type.STRUCT, 1);
+    this.ex.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+var AdSupportServiceClient = exports.Client = function(output, pClass) {
     this.output = output;
     this.pClass = pClass;
     this._seqid = 0;
     this._reqs = {};
 };
-ClientServiceClient.prototype = {};
-ClientServiceClient.prototype.seqid = function() { return this._seqid; };
-ClientServiceClient.prototype.new_seqid = function() { return this._seqid += 1; };
-ClientServiceClient.prototype.activate = function(bean, callback) {
-  this._seqid = this.new_seqid();
-  if (callback === undefined) {
-    var _defer = Q.defer();
-    this._reqs[this.seqid()] = function(error, result) {
-      if (error) {
-        _defer.reject(error);
-      } else {
-        _defer.resolve(result);
-      }
-    };
-    this.send_activate(bean);
-    return _defer.promise;
-  } else {
-    this._reqs[this.seqid()] = callback;
-    this.send_activate(bean);
-  }
-};
-
-ClientServiceClient.prototype.send_activate = function(bean) {
-  var output = new this.pClass(this.output);
-  output.writeMessageBegin('activate', Thrift.MessageType.CALL, this.seqid());
-  var args = new ClientService_activate_args();
-  args.bean = bean;
-  args.write(output);
-  output.writeMessageEnd();
-  return this.output.flush();
-};
-
-ClientServiceClient.prototype.recv_activate = function(input,mtype,rseqid) {
-  var callback = this._reqs[rseqid] || function() {};
-  delete this._reqs[rseqid];
-  if (mtype == Thrift.MessageType.EXCEPTION) {
-    var x = new Thrift.TApplicationException();
-    x.read(input);
-    input.readMessageEnd();
-    return callback(x);
-  }
-  var result = new ClientService_activate_result();
-  result.read(input);
-  input.readMessageEnd();
-
-  if (null !== result.ex) {
-    return callback(result.ex);
-  }
-  if (null !== result.success) {
-    return callback(null, result.success);
-  }
-  return callback('activate failed: unknown result');
-};
-ClientServiceClient.prototype.check = function(sign, noncestr, md5, callback) {
-  this._seqid = this.new_seqid();
-  if (callback === undefined) {
-    var _defer = Q.defer();
-    this._reqs[this.seqid()] = function(error, result) {
-      if (error) {
-        _defer.reject(error);
-      } else {
-        _defer.resolve(result);
-      }
-    };
-    this.send_check(sign, noncestr, md5);
-    return _defer.promise;
-  } else {
-    this._reqs[this.seqid()] = callback;
-    this.send_check(sign, noncestr, md5);
-  }
-};
-
-ClientServiceClient.prototype.send_check = function(sign, noncestr, md5) {
-  var output = new this.pClass(this.output);
-  output.writeMessageBegin('check', Thrift.MessageType.CALL, this.seqid());
-  var args = new ClientService_check_args();
-  args.sign = sign;
-  args.noncestr = noncestr;
-  args.md5 = md5;
-  args.write(output);
-  output.writeMessageEnd();
-  return this.output.flush();
-};
-
-ClientServiceClient.prototype.recv_check = function(input,mtype,rseqid) {
-  var callback = this._reqs[rseqid] || function() {};
-  delete this._reqs[rseqid];
-  if (mtype == Thrift.MessageType.EXCEPTION) {
-    var x = new Thrift.TApplicationException();
-    x.read(input);
-    input.readMessageEnd();
-    return callback(x);
-  }
-  var result = new ClientService_check_result();
-  result.read(input);
-  input.readMessageEnd();
-
-  if (null !== result.ex) {
-    return callback(result.ex);
-  }
-  if (null !== result.success) {
-    return callback(null, result.success);
-  }
-  return callback('check failed: unknown result');
-};
-ClientServiceClient.prototype.page = function(page, callback) {
+AdSupportServiceClient.prototype = {};
+AdSupportServiceClient.prototype.seqid = function() { return this._seqid; };
+AdSupportServiceClient.prototype.new_seqid = function() { return this._seqid += 1; };
+AdSupportServiceClient.prototype.page = function(page, callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
     var _defer = Q.defer();
@@ -800,17 +665,17 @@ ClientServiceClient.prototype.page = function(page, callback) {
   }
 };
 
-ClientServiceClient.prototype.send_page = function(page) {
+AdSupportServiceClient.prototype.send_page = function(page) {
   var output = new this.pClass(this.output);
   output.writeMessageBegin('page', Thrift.MessageType.CALL, this.seqid());
-  var args = new ClientService_page_args();
+  var args = new AdSupportService_page_args();
   args.page = page;
   args.write(output);
   output.writeMessageEnd();
   return this.output.flush();
 };
 
-ClientServiceClient.prototype.recv_page = function(input,mtype,rseqid) {
+AdSupportServiceClient.prototype.recv_page = function(input,mtype,rseqid) {
   var callback = this._reqs[rseqid] || function() {};
   delete this._reqs[rseqid];
   if (mtype == Thrift.MessageType.EXCEPTION) {
@@ -819,7 +684,7 @@ ClientServiceClient.prototype.recv_page = function(input,mtype,rseqid) {
     input.readMessageEnd();
     return callback(x);
   }
-  var result = new ClientService_page_result();
+  var result = new AdSupportService_page_result();
   result.read(input);
   input.readMessageEnd();
 
@@ -831,7 +696,7 @@ ClientServiceClient.prototype.recv_page = function(input,mtype,rseqid) {
   }
   return callback('page failed: unknown result');
 };
-ClientServiceClient.prototype.getByAccessId = function(accessId, callback) {
+AdSupportServiceClient.prototype.all = function(callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
     var _defer = Q.defer();
@@ -842,25 +707,24 @@ ClientServiceClient.prototype.getByAccessId = function(accessId, callback) {
         _defer.resolve(result);
       }
     };
-    this.send_getByAccessId(accessId);
+    this.send_all();
     return _defer.promise;
   } else {
     this._reqs[this.seqid()] = callback;
-    this.send_getByAccessId(accessId);
+    this.send_all();
   }
 };
 
-ClientServiceClient.prototype.send_getByAccessId = function(accessId) {
+AdSupportServiceClient.prototype.send_all = function() {
   var output = new this.pClass(this.output);
-  output.writeMessageBegin('getByAccessId', Thrift.MessageType.CALL, this.seqid());
-  var args = new ClientService_getByAccessId_args();
-  args.accessId = accessId;
+  output.writeMessageBegin('all', Thrift.MessageType.CALL, this.seqid());
+  var args = new AdSupportService_all_args();
   args.write(output);
   output.writeMessageEnd();
   return this.output.flush();
 };
 
-ClientServiceClient.prototype.recv_getByAccessId = function(input,mtype,rseqid) {
+AdSupportServiceClient.prototype.recv_all = function(input,mtype,rseqid) {
   var callback = this._reqs[rseqid] || function() {};
   delete this._reqs[rseqid];
   if (mtype == Thrift.MessageType.EXCEPTION) {
@@ -869,7 +733,7 @@ ClientServiceClient.prototype.recv_getByAccessId = function(input,mtype,rseqid) 
     input.readMessageEnd();
     return callback(x);
   }
-  var result = new ClientService_getByAccessId_result();
+  var result = new AdSupportService_all_result();
   result.read(input);
   input.readMessageEnd();
 
@@ -879,9 +743,109 @@ ClientServiceClient.prototype.recv_getByAccessId = function(input,mtype,rseqid) 
   if (null !== result.success) {
     return callback(null, result.success);
   }
-  return callback('getByAccessId failed: unknown result');
+  return callback('all failed: unknown result');
 };
-ClientServiceClient.prototype.remove = function(id, callback) {
+AdSupportServiceClient.prototype.add = function(bean, callback) {
+  this._seqid = this.new_seqid();
+  if (callback === undefined) {
+    var _defer = Q.defer();
+    this._reqs[this.seqid()] = function(error, result) {
+      if (error) {
+        _defer.reject(error);
+      } else {
+        _defer.resolve(result);
+      }
+    };
+    this.send_add(bean);
+    return _defer.promise;
+  } else {
+    this._reqs[this.seqid()] = callback;
+    this.send_add(bean);
+  }
+};
+
+AdSupportServiceClient.prototype.send_add = function(bean) {
+  var output = new this.pClass(this.output);
+  output.writeMessageBegin('add', Thrift.MessageType.CALL, this.seqid());
+  var args = new AdSupportService_add_args();
+  args.bean = bean;
+  args.write(output);
+  output.writeMessageEnd();
+  return this.output.flush();
+};
+
+AdSupportServiceClient.prototype.recv_add = function(input,mtype,rseqid) {
+  var callback = this._reqs[rseqid] || function() {};
+  delete this._reqs[rseqid];
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(input);
+    input.readMessageEnd();
+    return callback(x);
+  }
+  var result = new AdSupportService_add_result();
+  result.read(input);
+  input.readMessageEnd();
+
+  if (null !== result.ex) {
+    return callback(result.ex);
+  }
+  if (null !== result.success) {
+    return callback(null, result.success);
+  }
+  return callback('add failed: unknown result');
+};
+AdSupportServiceClient.prototype.update = function(bean, callback) {
+  this._seqid = this.new_seqid();
+  if (callback === undefined) {
+    var _defer = Q.defer();
+    this._reqs[this.seqid()] = function(error, result) {
+      if (error) {
+        _defer.reject(error);
+      } else {
+        _defer.resolve(result);
+      }
+    };
+    this.send_update(bean);
+    return _defer.promise;
+  } else {
+    this._reqs[this.seqid()] = callback;
+    this.send_update(bean);
+  }
+};
+
+AdSupportServiceClient.prototype.send_update = function(bean) {
+  var output = new this.pClass(this.output);
+  output.writeMessageBegin('update', Thrift.MessageType.CALL, this.seqid());
+  var args = new AdSupportService_update_args();
+  args.bean = bean;
+  args.write(output);
+  output.writeMessageEnd();
+  return this.output.flush();
+};
+
+AdSupportServiceClient.prototype.recv_update = function(input,mtype,rseqid) {
+  var callback = this._reqs[rseqid] || function() {};
+  delete this._reqs[rseqid];
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(input);
+    input.readMessageEnd();
+    return callback(x);
+  }
+  var result = new AdSupportService_update_result();
+  result.read(input);
+  input.readMessageEnd();
+
+  if (null !== result.ex) {
+    return callback(result.ex);
+  }
+  if (null !== result.success) {
+    return callback(null, result.success);
+  }
+  return callback('update failed: unknown result');
+};
+AdSupportServiceClient.prototype.remove = function(id, callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
     var _defer = Q.defer();
@@ -900,17 +864,17 @@ ClientServiceClient.prototype.remove = function(id, callback) {
   }
 };
 
-ClientServiceClient.prototype.send_remove = function(id) {
+AdSupportServiceClient.prototype.send_remove = function(id) {
   var output = new this.pClass(this.output);
   output.writeMessageBegin('remove', Thrift.MessageType.CALL, this.seqid());
-  var args = new ClientService_remove_args();
+  var args = new AdSupportService_remove_args();
   args.id = id;
   args.write(output);
   output.writeMessageEnd();
   return this.output.flush();
 };
 
-ClientServiceClient.prototype.recv_remove = function(input,mtype,rseqid) {
+AdSupportServiceClient.prototype.recv_remove = function(input,mtype,rseqid) {
   var callback = this._reqs[rseqid] || function() {};
   delete this._reqs[rseqid];
   if (mtype == Thrift.MessageType.EXCEPTION) {
@@ -919,7 +883,7 @@ ClientServiceClient.prototype.recv_remove = function(input,mtype,rseqid) {
     input.readMessageEnd();
     return callback(x);
   }
-  var result = new ClientService_remove_result();
+  var result = new AdSupportService_remove_result();
   result.read(input);
   input.readMessageEnd();
 
@@ -931,11 +895,11 @@ ClientServiceClient.prototype.recv_remove = function(input,mtype,rseqid) {
   }
   return callback('remove failed: unknown result');
 };
-var ClientServiceProcessor = exports.Processor = function(handler) {
+var AdSupportServiceProcessor = exports.Processor = function(handler) {
   this._handler = handler;
 }
 ;
-ClientServiceProcessor.prototype.process = function(input, output) {
+AdSupportServiceProcessor.prototype.process = function(input, output) {
   var r = input.readMessageBegin();
   if (this['process_' + r.fname]) {
     return this['process_' + r.fname].call(this, r.rseqid, input, output);
@@ -950,96 +914,14 @@ ClientServiceProcessor.prototype.process = function(input, output) {
   }
 }
 ;
-ClientServiceProcessor.prototype.process_activate = function(seqid, input, output) {
-  var args = new ClientService_activate_args();
-  args.read(input);
-  input.readMessageEnd();
-  if (this._handler.activate.length === 1) {
-    Q.fcall(this._handler.activate, args.bean)
-      .then(function(result) {
-        var result_obj = new ClientService_activate_result({success: result});
-        output.writeMessageBegin("activate", Thrift.MessageType.REPLY, seqid);
-        result_obj.write(output);
-        output.writeMessageEnd();
-        output.flush();
-      }, function (err) {
-        var result;
-        if (err instanceof PublicStruct_ttypes.InvalidOperation) {
-          result = new ClientService_activate_result(err);
-          output.writeMessageBegin("activate", Thrift.MessageType.REPLY, seqid);
-        } else {
-          result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
-          output.writeMessageBegin("activate", Thrift.MessageType.EXCEPTION, seqid);
-        }
-        result.write(output);
-        output.writeMessageEnd();
-        output.flush();
-      });
-  } else {
-    this._handler.activate(args.bean, function (err, result) {
-      var result_obj;
-      if ((err === null || typeof err === 'undefined') || err instanceof PublicStruct_ttypes.InvalidOperation) {
-        result_obj = new ClientService_activate_result((err !== null || typeof err === 'undefined') ? err : {success: result});
-        output.writeMessageBegin("activate", Thrift.MessageType.REPLY, seqid);
-      } else {
-        result_obj = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
-        output.writeMessageBegin("activate", Thrift.MessageType.EXCEPTION, seqid);
-      }
-      result_obj.write(output);
-      output.writeMessageEnd();
-      output.flush();
-    });
-  }
-};
-ClientServiceProcessor.prototype.process_check = function(seqid, input, output) {
-  var args = new ClientService_check_args();
-  args.read(input);
-  input.readMessageEnd();
-  if (this._handler.check.length === 3) {
-    Q.fcall(this._handler.check, args.sign, args.noncestr, args.md5)
-      .then(function(result) {
-        var result_obj = new ClientService_check_result({success: result});
-        output.writeMessageBegin("check", Thrift.MessageType.REPLY, seqid);
-        result_obj.write(output);
-        output.writeMessageEnd();
-        output.flush();
-      }, function (err) {
-        var result;
-        if (err instanceof PublicStruct_ttypes.InvalidOperation) {
-          result = new ClientService_check_result(err);
-          output.writeMessageBegin("check", Thrift.MessageType.REPLY, seqid);
-        } else {
-          result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
-          output.writeMessageBegin("check", Thrift.MessageType.EXCEPTION, seqid);
-        }
-        result.write(output);
-        output.writeMessageEnd();
-        output.flush();
-      });
-  } else {
-    this._handler.check(args.sign, args.noncestr, args.md5, function (err, result) {
-      var result_obj;
-      if ((err === null || typeof err === 'undefined') || err instanceof PublicStruct_ttypes.InvalidOperation) {
-        result_obj = new ClientService_check_result((err !== null || typeof err === 'undefined') ? err : {success: result});
-        output.writeMessageBegin("check", Thrift.MessageType.REPLY, seqid);
-      } else {
-        result_obj = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
-        output.writeMessageBegin("check", Thrift.MessageType.EXCEPTION, seqid);
-      }
-      result_obj.write(output);
-      output.writeMessageEnd();
-      output.flush();
-    });
-  }
-};
-ClientServiceProcessor.prototype.process_page = function(seqid, input, output) {
-  var args = new ClientService_page_args();
+AdSupportServiceProcessor.prototype.process_page = function(seqid, input, output) {
+  var args = new AdSupportService_page_args();
   args.read(input);
   input.readMessageEnd();
   if (this._handler.page.length === 1) {
     Q.fcall(this._handler.page, args.page)
       .then(function(result) {
-        var result_obj = new ClientService_page_result({success: result});
+        var result_obj = new AdSupportService_page_result({success: result});
         output.writeMessageBegin("page", Thrift.MessageType.REPLY, seqid);
         result_obj.write(output);
         output.writeMessageEnd();
@@ -1047,7 +929,7 @@ ClientServiceProcessor.prototype.process_page = function(seqid, input, output) {
       }, function (err) {
         var result;
         if (err instanceof PublicStruct_ttypes.InvalidOperation) {
-          result = new ClientService_page_result(err);
+          result = new AdSupportService_page_result(err);
           output.writeMessageBegin("page", Thrift.MessageType.REPLY, seqid);
         } else {
           result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
@@ -1061,7 +943,7 @@ ClientServiceProcessor.prototype.process_page = function(seqid, input, output) {
     this._handler.page(args.page, function (err, result) {
       var result_obj;
       if ((err === null || typeof err === 'undefined') || err instanceof PublicStruct_ttypes.InvalidOperation) {
-        result_obj = new ClientService_page_result((err !== null || typeof err === 'undefined') ? err : {success: result});
+        result_obj = new AdSupportService_page_result((err !== null || typeof err === 'undefined') ? err : {success: result});
         output.writeMessageBegin("page", Thrift.MessageType.REPLY, seqid);
       } else {
         result_obj = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
@@ -1073,40 +955,40 @@ ClientServiceProcessor.prototype.process_page = function(seqid, input, output) {
     });
   }
 };
-ClientServiceProcessor.prototype.process_getByAccessId = function(seqid, input, output) {
-  var args = new ClientService_getByAccessId_args();
+AdSupportServiceProcessor.prototype.process_all = function(seqid, input, output) {
+  var args = new AdSupportService_all_args();
   args.read(input);
   input.readMessageEnd();
-  if (this._handler.getByAccessId.length === 1) {
-    Q.fcall(this._handler.getByAccessId, args.accessId)
+  if (this._handler.all.length === 0) {
+    Q.fcall(this._handler.all)
       .then(function(result) {
-        var result_obj = new ClientService_getByAccessId_result({success: result});
-        output.writeMessageBegin("getByAccessId", Thrift.MessageType.REPLY, seqid);
+        var result_obj = new AdSupportService_all_result({success: result});
+        output.writeMessageBegin("all", Thrift.MessageType.REPLY, seqid);
         result_obj.write(output);
         output.writeMessageEnd();
         output.flush();
       }, function (err) {
         var result;
         if (err instanceof PublicStruct_ttypes.InvalidOperation) {
-          result = new ClientService_getByAccessId_result(err);
-          output.writeMessageBegin("getByAccessId", Thrift.MessageType.REPLY, seqid);
+          result = new AdSupportService_all_result(err);
+          output.writeMessageBegin("all", Thrift.MessageType.REPLY, seqid);
         } else {
           result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
-          output.writeMessageBegin("getByAccessId", Thrift.MessageType.EXCEPTION, seqid);
+          output.writeMessageBegin("all", Thrift.MessageType.EXCEPTION, seqid);
         }
         result.write(output);
         output.writeMessageEnd();
         output.flush();
       });
   } else {
-    this._handler.getByAccessId(args.accessId, function (err, result) {
+    this._handler.all(function (err, result) {
       var result_obj;
       if ((err === null || typeof err === 'undefined') || err instanceof PublicStruct_ttypes.InvalidOperation) {
-        result_obj = new ClientService_getByAccessId_result((err !== null || typeof err === 'undefined') ? err : {success: result});
-        output.writeMessageBegin("getByAccessId", Thrift.MessageType.REPLY, seqid);
+        result_obj = new AdSupportService_all_result((err !== null || typeof err === 'undefined') ? err : {success: result});
+        output.writeMessageBegin("all", Thrift.MessageType.REPLY, seqid);
       } else {
         result_obj = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
-        output.writeMessageBegin("getByAccessId", Thrift.MessageType.EXCEPTION, seqid);
+        output.writeMessageBegin("all", Thrift.MessageType.EXCEPTION, seqid);
       }
       result_obj.write(output);
       output.writeMessageEnd();
@@ -1114,14 +996,96 @@ ClientServiceProcessor.prototype.process_getByAccessId = function(seqid, input, 
     });
   }
 };
-ClientServiceProcessor.prototype.process_remove = function(seqid, input, output) {
-  var args = new ClientService_remove_args();
+AdSupportServiceProcessor.prototype.process_add = function(seqid, input, output) {
+  var args = new AdSupportService_add_args();
+  args.read(input);
+  input.readMessageEnd();
+  if (this._handler.add.length === 1) {
+    Q.fcall(this._handler.add, args.bean)
+      .then(function(result) {
+        var result_obj = new AdSupportService_add_result({success: result});
+        output.writeMessageBegin("add", Thrift.MessageType.REPLY, seqid);
+        result_obj.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      }, function (err) {
+        var result;
+        if (err instanceof PublicStruct_ttypes.InvalidOperation) {
+          result = new AdSupportService_add_result(err);
+          output.writeMessageBegin("add", Thrift.MessageType.REPLY, seqid);
+        } else {
+          result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+          output.writeMessageBegin("add", Thrift.MessageType.EXCEPTION, seqid);
+        }
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      });
+  } else {
+    this._handler.add(args.bean, function (err, result) {
+      var result_obj;
+      if ((err === null || typeof err === 'undefined') || err instanceof PublicStruct_ttypes.InvalidOperation) {
+        result_obj = new AdSupportService_add_result((err !== null || typeof err === 'undefined') ? err : {success: result});
+        output.writeMessageBegin("add", Thrift.MessageType.REPLY, seqid);
+      } else {
+        result_obj = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+        output.writeMessageBegin("add", Thrift.MessageType.EXCEPTION, seqid);
+      }
+      result_obj.write(output);
+      output.writeMessageEnd();
+      output.flush();
+    });
+  }
+};
+AdSupportServiceProcessor.prototype.process_update = function(seqid, input, output) {
+  var args = new AdSupportService_update_args();
+  args.read(input);
+  input.readMessageEnd();
+  if (this._handler.update.length === 1) {
+    Q.fcall(this._handler.update, args.bean)
+      .then(function(result) {
+        var result_obj = new AdSupportService_update_result({success: result});
+        output.writeMessageBegin("update", Thrift.MessageType.REPLY, seqid);
+        result_obj.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      }, function (err) {
+        var result;
+        if (err instanceof PublicStruct_ttypes.InvalidOperation) {
+          result = new AdSupportService_update_result(err);
+          output.writeMessageBegin("update", Thrift.MessageType.REPLY, seqid);
+        } else {
+          result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+          output.writeMessageBegin("update", Thrift.MessageType.EXCEPTION, seqid);
+        }
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      });
+  } else {
+    this._handler.update(args.bean, function (err, result) {
+      var result_obj;
+      if ((err === null || typeof err === 'undefined') || err instanceof PublicStruct_ttypes.InvalidOperation) {
+        result_obj = new AdSupportService_update_result((err !== null || typeof err === 'undefined') ? err : {success: result});
+        output.writeMessageBegin("update", Thrift.MessageType.REPLY, seqid);
+      } else {
+        result_obj = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+        output.writeMessageBegin("update", Thrift.MessageType.EXCEPTION, seqid);
+      }
+      result_obj.write(output);
+      output.writeMessageEnd();
+      output.flush();
+    });
+  }
+};
+AdSupportServiceProcessor.prototype.process_remove = function(seqid, input, output) {
+  var args = new AdSupportService_remove_args();
   args.read(input);
   input.readMessageEnd();
   if (this._handler.remove.length === 1) {
     Q.fcall(this._handler.remove, args.id)
       .then(function(result) {
-        var result_obj = new ClientService_remove_result({success: result});
+        var result_obj = new AdSupportService_remove_result({success: result});
         output.writeMessageBegin("remove", Thrift.MessageType.REPLY, seqid);
         result_obj.write(output);
         output.writeMessageEnd();
@@ -1129,7 +1093,7 @@ ClientServiceProcessor.prototype.process_remove = function(seqid, input, output)
       }, function (err) {
         var result;
         if (err instanceof PublicStruct_ttypes.InvalidOperation) {
-          result = new ClientService_remove_result(err);
+          result = new AdSupportService_remove_result(err);
           output.writeMessageBegin("remove", Thrift.MessageType.REPLY, seqid);
         } else {
           result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
@@ -1143,7 +1107,7 @@ ClientServiceProcessor.prototype.process_remove = function(seqid, input, output)
     this._handler.remove(args.id, function (err, result) {
       var result_obj;
       if ((err === null || typeof err === 'undefined') || err instanceof PublicStruct_ttypes.InvalidOperation) {
-        result_obj = new ClientService_remove_result((err !== null || typeof err === 'undefined') ? err : {success: result});
+        result_obj = new AdSupportService_remove_result((err !== null || typeof err === 'undefined') ? err : {success: result});
         output.writeMessageBegin("remove", Thrift.MessageType.REPLY, seqid);
       } else {
         result_obj = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);

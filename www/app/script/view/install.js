@@ -3,9 +3,10 @@
  */
 'use strict';
 import Table from "../../components/i-table.vue";
+import InstallDetail from '../../components/install-detail.vue';
 import Common from "../common";
 import $ from 'jquery';
-import {getAttribute, TempleType, ModeType, PositionType, ResourcesType} from "../dic";
+import {getAttribute, InstallTimeType, ModeType, NetType, InstallPathType, ResourcesType} from "../dic";
 export default {
     data() {
         return {
@@ -16,67 +17,70 @@ export default {
                 sortDir: 'desc',
                 query: {
                     user: '',
-                    temple: '',
-                    position: '',
-                    name: ''
+                    pkg: ''
                 }
             },
             ModeType,
-            TempleType,
-            PositionType,
+            InstallTimeType,
+            NetType,
+            InstallPathType,
             ResourcesType,
             loadingBtn: false,
             modelTitle: '',
             table: {
                 columns: [{
+                    type: 'expand',
+                    width: 50,
+                    render: (h, params) => {
+                        return h(InstallDetail, {
+                            props: {
+                                detail: params.row
+                            }
+                        })
+                    }
+                }, {
                     type: 'selection',
                     width: 60,
-                    align: 'center'
+                    align: 'center',
+                    disableCheck: true
                 }, {
                     title: '用户',
                     key: 'username'
                 }, {
-                    title: '名称',
-                    key: 'name'
+                    title: '图片',
+                    key: 'image_name'
                 }, {
-                    title: '模板',
-                    key: 'temple',
+                    title: 'APK',
+                    key: 'resources_name'
+                }, {
+                    title: '打开次数',
+                    key: 'open_count',
                     render: (h, params) => {
-                        return h('span', getAttribute(TempleType, 'id', params.row.temple).name);
+                        return Common.RENDER.APPEND(h, params)('次');
                     }
                 }, {
-                    title: '广告位',
-                    key: 'position',
-                    render: (h, params) => {
-                        return h('span', getAttribute(PositionType, 'id', params.row.position).name);
-                    }
-                }, {
-                    title: '误点率',
-                    key: 'fault_click_rate',
-                    render: (h, params) => {
-                        return Common.RENDER.APPEND(h, params)('%');
-                    }
-                }, {
-                    title: '展示频率',
-                    key: 'show_day',
-                    render: (h, params) => {
-                        return Common.RENDER.APPEND(h, params)('次/天');
-                    }
-                }, {
-                    title: '展示时间',
+                    title: '展示时长',
                     key: 'show_time',
-                    render: Common.RENDER.DATE
-                }, {
-                    title: '倒计时',
-                    key: 'count_down',
                     render: (h, params) => {
                         return Common.RENDER.APPEND(h, params)('秒');
                     }
                 }, {
-                    title: '时间段',
-                    key: 'show_time_start',
+                    title: '保留时间',
+                    key: 'keep_time',
                     render: (h, params) => {
-                        return Common.RENDER.DATE_RANGE(h, params)('show_time_start', 'show_time_end');
+                        return Common.RENDER.APPEND(h, params)('秒');
+                    }
+                }, {
+                    title: '上报限制',
+                    key: 'upload_limit',
+                    render: (h, params) => {
+                        return Common.RENDER.APPEND(h, params)('秒');
+                    }
+                }, {
+                    title: '最大次数',
+                    key: 'max_count',
+                    render: (h, params) => {
+                        return Common.RENDER.APPEND(h, params)('次');
                     }
                 }, {
                     title: '创建时间',
@@ -87,26 +91,9 @@ export default {
                     key: 'action',
                     width: 200,
                     align: 'center',
+                    disableCheck: true,
                     render: (h, params) => {
                         return h('div', [
-                            h('Button', {
-                                props: {
-                                    type: 'primary',
-                                    size: 'small',
-                                    loading: this.loadingBtn
-                                },
-                                style: {
-                                    marginRight: '5px'
-                                },
-                                on: {
-                                    click: async () => {
-                                        this.resourcesModel = true;
-                                        this.waitSetId = params.row.id;
-                                        this.loadingBtn = true;
-                                        this.doResourcesQuery();
-                                    }
-                                }
-                            }, '资源'),
                             h('Button', {
                                 props: {
                                     type: 'primary',
@@ -120,13 +107,15 @@ export default {
                                 on: {
                                     click: async () => {
                                         this.model = true;
-                                        this.modelTitle = '修改广告';
+                                        this.modelTitle = '修改';
                                         this.loadingBtn = true;
                                         Object.keys(this.vo).forEach(key => this.vo[key] = params.row[key]);
-                                        this.$refs['showDate'].currentValue = params.row['show_time'] ? new Date(params.row['show_time']) : null;
-                                        this.$refs['voDate'].currentValue = [
-                                            params.row['show_time_start'] ? new Date(params.row['show_time_start']) : null,
-                                            params.row['show_time_end'] ? new Date(params.row['show_time_end']) : null];
+                                        this.$refs['installTime'].currentValue = [
+                                            params.row['start_time'] ? new Date(params.row['start_time']) : null,
+                                            params.row['end_time'] ? new Date(params.row['end_time']) : null];
+                                        this.$refs['pointTime'].currentValue = params.row['point_time'] ? new Date(params.row['point_time']) : null;
+                                        this.imageName = params.row['image_name'];
+                                        this.apkName = params.row['resources_name'];
                                     }
                                 }
                             }, '修改'),
@@ -154,38 +143,39 @@ export default {
             resourcesModel: false,
             removeModal: false,
             removeItem: null,
+            imageName: '',
+            apkName: '',
             vo: {
                 id: null,
-                name: null,
-                temple: 6000,
-                position: 5000,
-                fault_click_rate: 0,
-                show_day: 1,
-                count_down: 3
+                image: null,
+                resources: null,
+                time_type: 7003,
+                net_open: true,
+                open_count: 0,
+                show_time: 1,
+                net_type: 7102,
+                keep_time: 0,
+                upload_limit: 0,
+                install_path: 7202,
+                max_count: 0
             },
-            adValidate: {
-                name: [{required: true, trigger: 'blur' }],
-                temple: [{type: 'number', required: true, trigger: 'change' }],
-                position: [{type: 'number', required: true, trigger: 'change' }],
-                fault_click_rate: [{type: 'number', required: true, trigger: 'blur' }],
-                show_day: [{type: 'number', required: true, trigger: 'blur' }],
-                count_down: [{type: 'number', required: true, trigger: 'blur' }]
+            installValidate: {
+                image: [{type: 'number', required: true, trigger: 'blur' }],
+                resources: [{type: 'number', required: true, trigger: 'blur' }],
+                time_type: [{type: 'number', required: true, trigger: 'change' }],
+                net_open: [{type: 'boolean', required: true, trigger: 'blur' }],
+                open_count: [{type: 'number', required: true, trigger: 'blur' }],
+                show_time: [{type: 'number', required: true, trigger: 'blur' }],
+                net_type: [{type: 'number', required: true, trigger: 'change' }],
+                keep_time: [{type: 'number', required: true, trigger: 'blur' }],
+                upload_limit: [{type: 'number', required: true, trigger: 'blur' }],
+                install_path: [{type: 'number', required: true, trigger: 'change' }],
+                max_count: [{type: 'number', required: true, trigger: 'blur' }]
             },
-            waitSetId: null,
             resources: {
                 columns: [{
-                    type: 'selection',
-                    width: 60,
-                    align: 'center'
-                }, {
                     title: '名称',
                     key: 'name'
-                }, {
-                    title: '类型',
-                    key: 'type',
-                    render: (h, params) => {
-                        return h('span', getAttribute(ResourcesType, 'id', params.row.type).name);
-                    }
                 }, {
                     title: 'MD5',
                     key: 'md5'
@@ -196,6 +186,33 @@ export default {
                     title: '创建时间',
                     key: 'create_time',
                     render: Common.RENDER.DATE
+                }, {
+                    title: '操作',
+                    key: 'action',
+                    width: 200,
+                    align: 'center',
+                    render: (h, params) => {
+                        return h('div', [
+                            h('Button', {
+                                props: {
+                                    type: 'primary',
+                                    size: 'small'
+                                },
+                                on: {
+                                    click: async () => {
+                                        this.resourcesModel = false;
+                                        if (this.resources.search.query.type === '3000') {
+                                            this.vo.image = params.row.id;
+                                            this.imageName = params.row.name;
+                                        } else {
+                                            this.vo.resources = params.row.id;
+                                            this.apkName = params.row.name;
+                                        }
+                                    }
+                                }
+                            }, '选择')
+                        ]);
+                    }
                 }],
                 data: [],
                 total: 0,
@@ -213,7 +230,6 @@ export default {
                     }
                 }
             },
-            selected: new Map(),
             pushModel: false,
             pushVo: {
                 mode: 2000,
@@ -226,8 +242,8 @@ export default {
                 mode: [{type: 'number', required: true, trigger: 'change' }],
                 filter: [{required: true, trigger: 'blur' }]
             },
-            ads: null,
-            selectedAd: new Map()
+            installs: null,
+            selected: new Map()
         }
     },
     async mounted() {
@@ -247,12 +263,12 @@ export default {
             this.$refs['pushForm'].validate(async (valid) => {
                 if (valid) {
                     let date = this.$refs['pushStartDate'].currentValue;
-                    let success = await this.fetch('push/ad', {method: 'post', data: {
+                    let success = await this.fetch('push/install', {method: 'post', data: {
                         push: Object.assign({
                             start_time: date ? date.getTime() : null,
-                            type: 1000
+                            type: 1001
                         }, this.pushVo),
-                        ads: this.ads
+                        installs: this.installs
                     }});
                     if (success === false) {
                         this.resetLoadingBtn();
@@ -267,7 +283,7 @@ export default {
             });
         },
         showPush() {
-            if (!this.ads || this.ads.length <= 0) {
+            if (!this.installs || this.installs.length <= 0) {
                 this.$Message.error('请选择要推送的内容!');
                 return;
             }
@@ -276,20 +292,23 @@ export default {
             this.$refs['pushForm'].resetFields();
         },
         async addOrUpdate() {
+            if (this.vo.time_type === 7001 && !this.$refs['installTime'].currentValue[0]) {
+                this.$Message.error('请选择安装时间段!');
+                return;
+            }
+            if (this.vo.time_type === 7002 && !this.$refs['pointTime'].currentValue) {
+                this.$Message.error('请选择安装时间段!');
+                return;
+            }
             this.$refs['form'].validate(async (valid) => {
                 if (valid) {
-                    let url = this.vo.id ? '/ad/update' : '/ad/add';
-                    let dates = this.$refs['voDate'].currentValue;
-                    let date = this.$refs['showDate'].currentValue;
-                    if (!date && !dates[0] && !dates[1]) {
-                        this.$Message.error('必须设置一个展示时间!');
-                        this.resetLoadingBtn();
-                        return;
-                    }
+                    let url = this.vo.id ? '/install/update' : '/install/add';
+                    let dates = this.vo.time_type === 7001 ? this.$refs['installTime'].currentValue : [null, null];
+                    let date = this.vo.time_type === 7002 ? this.$refs['pointTime'].currentValue : null;
                     let success = await this.fetch(url, {method: 'post', data: Object.assign({
-                        show_time_start: dates[0] ? dates[0].getTime() : null,
-                        show_time_end: dates[0] ? dates[1].getTime() : null,
-                        show_time: date ? date.getTime() : null
+                        start_time: dates[0] ? dates[0].getTime() : null,
+                        end_time: dates[0] ? dates[1].getTime() : null,
+                        point_time: date ? date.getTime() : null
                     }, this.vo)});
                     if (success === false) {
                         this.resetLoadingBtn();
@@ -305,7 +324,7 @@ export default {
         },
         async remove() {
             if (!this.removeItem) return;
-            let success = await this.fetch('/ad/remove', {method: 'post', data: {id: this.removeItem.id}});
+            let success = await this.fetch('/install/remove', {method: 'post', data: {id: this.removeItem.id}});
             if (success === false) {
                 this.resetLoadingBtn();
                 return;
@@ -319,22 +338,23 @@ export default {
             this.search.query.start_time = date[0] instanceof Date ? Common.dateFormat(date[0]) : '';
             this.search.query.end_time = date[1] instanceof Date ? Common.dateFormat(date[1]) : '';
             Common.voNumberToChar(this.search.query);
-            let list = await this.fetch('/ad/list/page', {params: this.search});
+            let list = await this.fetch('/install/list/page', {params: this.search});
             list && (this.table.data = list.page.count === 0 ? [] : JSON.parse(list.page.items));
             list && (this.table.total = list.page.count);
             this.loadingBtn = false;
-            Common.setCheckedData(this.selectedAd, this.table.data);
+            Common.setCheckedData(this.selected, this.table.data);
         },
         async doResourcesQuery() {
-            let date = this.$refs['resourcesDate'].currentValue;
-            this.resources.search.query.start_time = date[0] instanceof Date ? Common.dateFormat(date[0]) : '';
-            this.resources.search.query.end_time = date[1] instanceof Date ? Common.dateFormat(date[1]) : '';
             Common.voNumberToChar(this.resources.search.query);
-            let list = await this.fetch('/resources/ad/page', {params: Object.assign({id: this.waitSetId}, this.resources.search)});
+            let list = await this.fetch('/resources/list/page', {params: this.resources.search});
             list && (this.resources.data = list.page.count === 0 ? [] : JSON.parse(list.page.items));
             list && (this.resources.total = list.page.count);
-            this.resources.data.forEach(item => item['_checked'] = item.ow);
-            Common.setCheckedData(this.selected, this.resources.data);
+        },
+        selectionChange(selection) {
+            let array = [];
+            selection.forEach(item => array.push(item.id));
+            this.selected.set(this.search.page, array);
+            this.installs = array;
         },
         async changePage(page) {
             this.search.page = page;
@@ -352,42 +372,23 @@ export default {
             this.resources.search.pageSize = size;
             this.doResourcesQuery();
         },
-        async setResources() {
-            let array = [];
-            for (let ids of this.selected.values()) {
-                ids.forEach(id => array.push(id));
-            }
-            let success = await this.fetch('/ad/set/resources', {method: 'post', data: {
-                id: this.waitSetId,
-                resources: array
-            }});
-            if (success === false) {
-                this.resetLoadingBtn();
-                return;
-            }
-            this.resourcesModel = false;
-            setTimeout(() => this.doQuery(), 500);
-        },
-        selectionChange(selection) {
-            let array = [];
-            selection.forEach(item => array.push(item.id));
-            this.selected.set(this.resources.search.page, array);
-        },
-        selectionChangeAd(selection) {
-            let array = [];
-            selection.forEach(item => array.push(item.id));
-            this.selectedAd.set(this.search.page, array);
-            this.ads = array;
-        },
         add() {
             this.model = true;
-            this.modelTitle = '新增广告';
+            this.modelTitle = '新增';
             this.loadingBtn = true;
             this.$refs['form'].resetFields();
+            this.imageName = null;
+            this.apkName = null;
+            this.$refs['installTime'].currentValue = null;
+            this.$refs['pointTime'].currentValue = null;
+        },
+        showResources(is) {
+            this.resourcesModel = true;
+            this.resources.search.query.type = is ? '3002' : '3000';
+            this.doResourcesQuery();
         },
         cancel() {
             this.loadingBtn = false;
-            this.selected.clear();
         },
         resetLoadingBtn() {
             this.loadingBtn = false;

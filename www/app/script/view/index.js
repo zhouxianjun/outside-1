@@ -183,6 +183,13 @@ export default {
         resetLoadingBtn() {
             this.loadingBtn = false;
             this.$nextTick(() => this.loadingBtn = true);
+        },
+        selfResize() {
+            setTimeout(() => {
+                let e = document.createEvent("HTMLEvents");
+                e.initEvent('resize', true, true);
+                window.dispatchEvent(e);
+            }, 350);
         }
     }
 }

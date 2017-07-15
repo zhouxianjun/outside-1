@@ -1,0 +1,87 @@
+<template>
+    <div>
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title">查询</h3>
+
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" @click="doQuery"><i class="glyphicon glyphicon-search"></i></button>
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label>IMEI</label>
+                        <div class="form-group">
+                            <input type="text" v-model="search.query.imei" class="form-control pull-right">
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <label>设备ID</label>
+                        <div class="form-group">
+                            <input type="text" v-model="search.query.device_id" class="form-control pull-right">
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <label>版本</label>
+                        <div class="form-group">
+                            <input type="text" v-model="search.query.version" class="form-control pull-right">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label>手机号码</label>
+                        <div class="form-group">
+                            <input type="text" v-model="search.query.phone" class="form-control pull-right">
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <label>型号</label>
+                        <div class="form-group">
+                            <input type="text" v-model="search.query.model" class="form-control pull-right">
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <label>厂商</label>
+                        <div class="form-group">
+                            <input type="text" v-model="search.query.producer" class="form-control pull-right">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default i-panel-default">
+            <div class="panel-heading">
+                <span>客户端列表</span>
+            </div>
+            <div class="panel-body">
+                <Table :columns="table.columns" :data="table.data" :headerColor="`#fff`"></Table>
+                <div style="margin: 10px;overflow: hidden">
+                    <div style="float: right;">
+                        <Page :total="table.total" :show-sizer="true" placement="top" @on-page-size-change="changePageSize" @on-change="changePage"></Page>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <Modal v-model="removeModal" width="360">
+            <p slot="header" style="color:#f60;text-align:center">
+                <Icon type="information-circled"></Icon>
+                <span>删除确认</span>
+            </p>
+            <div style="text-align:center">
+                <p>确定删除 {{removeItem ? removeItem.name : ''}} 吗?，删除后将无法恢复。</p>
+                <p>是否继续删除？</p>
+            </div>
+            <div slot="footer">
+                <Button type="error" size="large" @click="remove">删除</Button>
+            </div>
+        </Modal>
+    </div>
+</template>
+<script>
+    import view from '../script/view/client';
+    export default view;
+</script>

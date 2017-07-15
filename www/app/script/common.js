@@ -79,6 +79,12 @@ const Common = {
         STATUS(h, params) {
             let status = params.row[params.column.key];
             return h('span', {class: status === true ? 'text-green' : 'text-muted'}, status === true ? '启用' : '禁用');
+        },
+        STATUS_DIY(h, params) {
+            let status = params.row[params.column.key];
+            return function (trueTxt = '启用', falseTxt = '禁用') {
+                return h('span', {class: status === true ? 'text-green' : 'text-muted'}, status === true ? trueTxt : falseTxt);
+            };
         }
     },
     clearVo(vo) {
@@ -113,6 +119,28 @@ const Common = {
             if (!isNaN(vo[key]) && vo[key]) {
                 Reflect.set(vo, key, `${vo[key]}`);
             }
+        }
+    },
+    getAllCheckCol(cols) {
+        let columns = [];
+        let model = [];
+        cols.forEach(col => {
+            if (!col.disableCheck) {
+                columns.push({key: col.key, title: col.title});
+                model.push(col.key);
+            }
+        });
+        return {columns, model};
+    },
+    setCheckedData(selected, data) {
+        for (let ids of selected.values()) {
+            data.forEach(item => {
+                let have = false;
+                ids.forEach(id => {
+                    if (item.id === id) have = true;
+                });
+                item['_checked'] = have;
+            });
         }
     }
 };

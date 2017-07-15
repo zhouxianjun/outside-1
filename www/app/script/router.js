@@ -12,6 +12,10 @@ import Logger from '../view/logger.vue';
 import Resources from '../view/resources.vue';
 import Ad from '../view/ad.vue';
 import Push from '../view/push.vue';
+import Install from '../view/install.vue';
+import Client from '../view/client.vue';
+import Support from '../view/support.vue';
+import Version from '../view/version.vue';
 export default [{
     path: '/login',
     component: Login
@@ -45,5 +49,17 @@ export default [{
     }, {
         path: 'push',
         component: Push
+    }, {
+        path: 'install',
+        component: Install
+    }, {
+        path: 'client',
+        component: Client
+    }, {
+        path: 'support',
+        component: Support
+    }, {
+        path: 'version',
+        component: Version
     }]
 }]

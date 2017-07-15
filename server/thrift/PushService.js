@@ -337,17 +337,13 @@ PushService_pushInstall_result.prototype.write = function(output) {
 
 var PushService_pushCmdFaultRate_args = function(args) {
   this.bean = null;
-  this.ad = null;
-  this.rate = null;
+  this.faultClicks = null;
   if (args) {
     if (args.bean !== undefined && args.bean !== null) {
       this.bean = new PublicStruct_ttypes.PushStruct(args.bean);
     }
-    if (args.ad !== undefined && args.ad !== null) {
-      this.ad = args.ad;
-    }
-    if (args.rate !== undefined && args.rate !== null) {
-      this.rate = args.rate;
+    if (args.faultClicks !== undefined && args.faultClicks !== null) {
+      this.faultClicks = Thrift.copyList(args.faultClicks, [PublicStruct_ttypes.FaultClickStruct]);
     }
   }
 };
@@ -374,15 +370,22 @@ PushService_pushCmdFaultRate_args.prototype.read = function(input) {
       }
       break;
       case 2:
-      if (ftype == Thrift.Type.I32) {
-        this.ad = input.readI32();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 3:
-      if (ftype == Thrift.Type.I32) {
-        this.rate = input.readI32();
+      if (ftype == Thrift.Type.LIST) {
+        var _size16 = 0;
+        var _rtmp320;
+        this.faultClicks = [];
+        var _etype19 = 0;
+        _rtmp320 = input.readListBegin();
+        _etype19 = _rtmp320.etype;
+        _size16 = _rtmp320.size;
+        for (var _i21 = 0; _i21 < _size16; ++_i21)
+        {
+          var elem22 = null;
+          elem22 = new PublicStruct_ttypes.FaultClickStruct();
+          elem22.read(input);
+          this.faultClicks.push(elem22);
+        }
+        input.readListEnd();
       } else {
         input.skip(ftype);
       }
@@ -403,14 +406,18 @@ PushService_pushCmdFaultRate_args.prototype.write = function(output) {
     this.bean.write(output);
     output.writeFieldEnd();
   }
-  if (this.ad !== null && this.ad !== undefined) {
-    output.writeFieldBegin('ad', Thrift.Type.I32, 2);
-    output.writeI32(this.ad);
-    output.writeFieldEnd();
-  }
-  if (this.rate !== null && this.rate !== undefined) {
-    output.writeFieldBegin('rate', Thrift.Type.I32, 3);
-    output.writeI32(this.rate);
+  if (this.faultClicks !== null && this.faultClicks !== undefined) {
+    output.writeFieldBegin('faultClicks', Thrift.Type.LIST, 2);
+    output.writeListBegin(Thrift.Type.STRUCT, this.faultClicks.length);
+    for (var iter23 in this.faultClicks)
+    {
+      if (this.faultClicks.hasOwnProperty(iter23))
+      {
+        iter23 = this.faultClicks[iter23];
+        iter23.write(output);
+      }
+    }
+    output.writeListEnd();
     output.writeFieldEnd();
   }
   output.writeFieldStop();
@@ -491,17 +498,13 @@ PushService_pushCmdFaultRate_result.prototype.write = function(output) {
 
 var PushService_pushCmdCountDown_args = function(args) {
   this.bean = null;
-  this.ad = null;
-  this.countDown = null;
+  this.countDowns = null;
   if (args) {
     if (args.bean !== undefined && args.bean !== null) {
       this.bean = new PublicStruct_ttypes.PushStruct(args.bean);
     }
-    if (args.ad !== undefined && args.ad !== null) {
-      this.ad = args.ad;
-    }
-    if (args.countDown !== undefined && args.countDown !== null) {
-      this.countDown = args.countDown;
+    if (args.countDowns !== undefined && args.countDowns !== null) {
+      this.countDowns = Thrift.copyList(args.countDowns, [PublicStruct_ttypes.CountDownStruct]);
     }
   }
 };
@@ -528,15 +531,22 @@ PushService_pushCmdCountDown_args.prototype.read = function(input) {
       }
       break;
       case 2:
-      if (ftype == Thrift.Type.I32) {
-        this.ad = input.readI32();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 3:
-      if (ftype == Thrift.Type.I32) {
-        this.countDown = input.readI32();
+      if (ftype == Thrift.Type.LIST) {
+        var _size24 = 0;
+        var _rtmp328;
+        this.countDowns = [];
+        var _etype27 = 0;
+        _rtmp328 = input.readListBegin();
+        _etype27 = _rtmp328.etype;
+        _size24 = _rtmp328.size;
+        for (var _i29 = 0; _i29 < _size24; ++_i29)
+        {
+          var elem30 = null;
+          elem30 = new PublicStruct_ttypes.CountDownStruct();
+          elem30.read(input);
+          this.countDowns.push(elem30);
+        }
+        input.readListEnd();
       } else {
         input.skip(ftype);
       }
@@ -557,14 +567,18 @@ PushService_pushCmdCountDown_args.prototype.write = function(output) {
     this.bean.write(output);
     output.writeFieldEnd();
   }
-  if (this.ad !== null && this.ad !== undefined) {
-    output.writeFieldBegin('ad', Thrift.Type.I32, 2);
-    output.writeI32(this.ad);
-    output.writeFieldEnd();
-  }
-  if (this.countDown !== null && this.countDown !== undefined) {
-    output.writeFieldBegin('countDown', Thrift.Type.I32, 3);
-    output.writeI32(this.countDown);
+  if (this.countDowns !== null && this.countDowns !== undefined) {
+    output.writeFieldBegin('countDowns', Thrift.Type.LIST, 2);
+    output.writeListBegin(Thrift.Type.STRUCT, this.countDowns.length);
+    for (var iter31 in this.countDowns)
+    {
+      if (this.countDowns.hasOwnProperty(iter31))
+      {
+        iter31 = this.countDowns[iter31];
+        iter31.write(output);
+      }
+    }
+    output.writeListEnd();
     output.writeFieldEnd();
   }
   output.writeFieldStop();
@@ -645,17 +659,13 @@ PushService_pushCmdCountDown_result.prototype.write = function(output) {
 
 var PushService_pushCmdShowRate_args = function(args) {
   this.bean = null;
-  this.ad = null;
-  this.rate = null;
+  this.showRates = null;
   if (args) {
     if (args.bean !== undefined && args.bean !== null) {
       this.bean = new PublicStruct_ttypes.PushStruct(args.bean);
     }
-    if (args.ad !== undefined && args.ad !== null) {
-      this.ad = args.ad;
-    }
-    if (args.rate !== undefined && args.rate !== null) {
-      this.rate = new PublicStruct_ttypes.ShowRateStruct(args.rate);
+    if (args.showRates !== undefined && args.showRates !== null) {
+      this.showRates = Thrift.copyList(args.showRates, [PublicStruct_ttypes.ShowRateStruct]);
     }
   }
 };
@@ -682,16 +692,22 @@ PushService_pushCmdShowRate_args.prototype.read = function(input) {
       }
       break;
       case 2:
-      if (ftype == Thrift.Type.I32) {
-        this.ad = input.readI32();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 3:
-      if (ftype == Thrift.Type.STRUCT) {
-        this.rate = new PublicStruct_ttypes.ShowRateStruct();
-        this.rate.read(input);
+      if (ftype == Thrift.Type.LIST) {
+        var _size32 = 0;
+        var _rtmp336;
+        this.showRates = [];
+        var _etype35 = 0;
+        _rtmp336 = input.readListBegin();
+        _etype35 = _rtmp336.etype;
+        _size32 = _rtmp336.size;
+        for (var _i37 = 0; _i37 < _size32; ++_i37)
+        {
+          var elem38 = null;
+          elem38 = new PublicStruct_ttypes.ShowRateStruct();
+          elem38.read(input);
+          this.showRates.push(elem38);
+        }
+        input.readListEnd();
       } else {
         input.skip(ftype);
       }
@@ -712,14 +728,18 @@ PushService_pushCmdShowRate_args.prototype.write = function(output) {
     this.bean.write(output);
     output.writeFieldEnd();
   }
-  if (this.ad !== null && this.ad !== undefined) {
-    output.writeFieldBegin('ad', Thrift.Type.I32, 2);
-    output.writeI32(this.ad);
-    output.writeFieldEnd();
-  }
-  if (this.rate !== null && this.rate !== undefined) {
-    output.writeFieldBegin('rate', Thrift.Type.STRUCT, 3);
-    this.rate.write(output);
+  if (this.showRates !== null && this.showRates !== undefined) {
+    output.writeFieldBegin('showRates', Thrift.Type.LIST, 2);
+    output.writeListBegin(Thrift.Type.STRUCT, this.showRates.length);
+    for (var iter39 in this.showRates)
+    {
+      if (this.showRates.hasOwnProperty(iter39))
+      {
+        iter39 = this.showRates[iter39];
+        iter39.write(output);
+      }
+    }
+    output.writeListEnd();
     output.writeFieldEnd();
   }
   output.writeFieldStop();
@@ -783,6 +803,145 @@ PushService_pushCmdShowRate_result.prototype.read = function(input) {
 
 PushService_pushCmdShowRate_result.prototype.write = function(output) {
   output.writeStructBegin('PushService_pushCmdShowRate_result');
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.BOOL, 0);
+    output.writeBool(this.success);
+    output.writeFieldEnd();
+  }
+  if (this.ex !== null && this.ex !== undefined) {
+    output.writeFieldBegin('ex', Thrift.Type.STRUCT, 1);
+    this.ex.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+var PushService_pushCmdAdContentChange_args = function(args) {
+  this.bean = null;
+  this.change = null;
+  if (args) {
+    if (args.bean !== undefined && args.bean !== null) {
+      this.bean = new PublicStruct_ttypes.PushStruct(args.bean);
+    }
+    if (args.change !== undefined && args.change !== null) {
+      this.change = new PublicStruct_ttypes.AdContentStruct(args.change);
+    }
+  }
+};
+PushService_pushCmdAdContentChange_args.prototype = {};
+PushService_pushCmdAdContentChange_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.bean = new PublicStruct_ttypes.PushStruct();
+        this.bean.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.change = new PublicStruct_ttypes.AdContentStruct();
+        this.change.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+PushService_pushCmdAdContentChange_args.prototype.write = function(output) {
+  output.writeStructBegin('PushService_pushCmdAdContentChange_args');
+  if (this.bean !== null && this.bean !== undefined) {
+    output.writeFieldBegin('bean', Thrift.Type.STRUCT, 1);
+    this.bean.write(output);
+    output.writeFieldEnd();
+  }
+  if (this.change !== null && this.change !== undefined) {
+    output.writeFieldBegin('change', Thrift.Type.STRUCT, 2);
+    this.change.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+var PushService_pushCmdAdContentChange_result = function(args) {
+  this.success = null;
+  this.ex = null;
+  if (args instanceof PublicStruct_ttypes.InvalidOperation) {
+    this.ex = args;
+    return;
+  }
+  if (args) {
+    if (args.success !== undefined && args.success !== null) {
+      this.success = args.success;
+    }
+    if (args.ex !== undefined && args.ex !== null) {
+      this.ex = args.ex;
+    }
+  }
+};
+PushService_pushCmdAdContentChange_result.prototype = {};
+PushService_pushCmdAdContentChange_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+      if (ftype == Thrift.Type.BOOL) {
+        this.success = input.readBool();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.ex = new PublicStruct_ttypes.InvalidOperation();
+        this.ex.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+PushService_pushCmdAdContentChange_result.prototype.write = function(output) {
+  output.writeStructBegin('PushService_pushCmdAdContentChange_result');
   if (this.success !== null && this.success !== undefined) {
     output.writeFieldBegin('success', Thrift.Type.BOOL, 0);
     output.writeBool(this.success);
@@ -924,146 +1083,6 @@ PushService_page_result.prototype.write = function(output) {
   return;
 };
 
-var PushService_adFeedback_args = function(args) {
-  this.push = null;
-  this.type = null;
-  this.c = null;
-  if (args) {
-    if (args.push !== undefined && args.push !== null) {
-      this.push = args.push;
-    }
-    if (args.type !== undefined && args.type !== null) {
-      this.type = args.type;
-    }
-    if (args.c !== undefined && args.c !== null) {
-      this.c = args.c;
-    }
-  }
-};
-PushService_adFeedback_args.prototype = {};
-PushService_adFeedback_args.prototype.read = function(input) {
-  input.readStructBegin();
-  while (true)
-  {
-    var ret = input.readFieldBegin();
-    var fname = ret.fname;
-    var ftype = ret.ftype;
-    var fid = ret.fid;
-    if (ftype == Thrift.Type.STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 1:
-      if (ftype == Thrift.Type.STRING) {
-        this.push = input.readString();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 2:
-      if (ftype == Thrift.Type.I32) {
-        this.type = input.readI32();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 3:
-      if (ftype == Thrift.Type.I32) {
-        this.c = input.readI32();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      default:
-        input.skip(ftype);
-    }
-    input.readFieldEnd();
-  }
-  input.readStructEnd();
-  return;
-};
-
-PushService_adFeedback_args.prototype.write = function(output) {
-  output.writeStructBegin('PushService_adFeedback_args');
-  if (this.push !== null && this.push !== undefined) {
-    output.writeFieldBegin('push', Thrift.Type.STRING, 1);
-    output.writeString(this.push);
-    output.writeFieldEnd();
-  }
-  if (this.type !== null && this.type !== undefined) {
-    output.writeFieldBegin('type', Thrift.Type.I32, 2);
-    output.writeI32(this.type);
-    output.writeFieldEnd();
-  }
-  if (this.c !== null && this.c !== undefined) {
-    output.writeFieldBegin('c', Thrift.Type.I32, 3);
-    output.writeI32(this.c);
-    output.writeFieldEnd();
-  }
-  output.writeFieldStop();
-  output.writeStructEnd();
-  return;
-};
-
-var PushService_adFeedback_result = function(args) {
-  this.ex = null;
-  if (args instanceof PublicStruct_ttypes.InvalidOperation) {
-    this.ex = args;
-    return;
-  }
-  if (args) {
-    if (args.ex !== undefined && args.ex !== null) {
-      this.ex = args.ex;
-    }
-  }
-};
-PushService_adFeedback_result.prototype = {};
-PushService_adFeedback_result.prototype.read = function(input) {
-  input.readStructBegin();
-  while (true)
-  {
-    var ret = input.readFieldBegin();
-    var fname = ret.fname;
-    var ftype = ret.ftype;
-    var fid = ret.fid;
-    if (ftype == Thrift.Type.STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 1:
-      if (ftype == Thrift.Type.STRUCT) {
-        this.ex = new PublicStruct_ttypes.InvalidOperation();
-        this.ex.read(input);
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 0:
-        input.skip(ftype);
-        break;
-      default:
-        input.skip(ftype);
-    }
-    input.readFieldEnd();
-  }
-  input.readStructEnd();
-  return;
-};
-
-PushService_adFeedback_result.prototype.write = function(output) {
-  output.writeStructBegin('PushService_adFeedback_result');
-  if (this.ex !== null && this.ex !== undefined) {
-    output.writeFieldBegin('ex', Thrift.Type.STRUCT, 1);
-    this.ex.write(output);
-    output.writeFieldEnd();
-  }
-  output.writeFieldStop();
-  output.writeStructEnd();
-  return;
-};
-
 var PushServiceClient = exports.Client = function(output, pClass) {
     this.output = output;
     this.pClass = pClass;
@@ -1175,7 +1194,7 @@ PushServiceClient.prototype.recv_pushInstall = function(input,mtype,rseqid) {
   }
   return callback('pushInstall failed: unknown result');
 };
-PushServiceClient.prototype.pushCmdFaultRate = function(bean, ad, rate, callback) {
+PushServiceClient.prototype.pushCmdFaultRate = function(bean, faultClicks, callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
     var _defer = Q.defer();
@@ -1186,21 +1205,20 @@ PushServiceClient.prototype.pushCmdFaultRate = function(bean, ad, rate, callback
         _defer.resolve(result);
       }
     };
-    this.send_pushCmdFaultRate(bean, ad, rate);
+    this.send_pushCmdFaultRate(bean, faultClicks);
     return _defer.promise;
   } else {
     this._reqs[this.seqid()] = callback;
-    this.send_pushCmdFaultRate(bean, ad, rate);
+    this.send_pushCmdFaultRate(bean, faultClicks);
   }
 };
 
-PushServiceClient.prototype.send_pushCmdFaultRate = function(bean, ad, rate) {
+PushServiceClient.prototype.send_pushCmdFaultRate = function(bean, faultClicks) {
   var output = new this.pClass(this.output);
   output.writeMessageBegin('pushCmdFaultRate', Thrift.MessageType.CALL, this.seqid());
   var args = new PushService_pushCmdFaultRate_args();
   args.bean = bean;
-  args.ad = ad;
-  args.rate = rate;
+  args.faultClicks = faultClicks;
   args.write(output);
   output.writeMessageEnd();
   return this.output.flush();
@@ -1227,7 +1245,7 @@ PushServiceClient.prototype.recv_pushCmdFaultRate = function(input,mtype,rseqid)
   }
   return callback('pushCmdFaultRate failed: unknown result');
 };
-PushServiceClient.prototype.pushCmdCountDown = function(bean, ad, countDown, callback) {
+PushServiceClient.prototype.pushCmdCountDown = function(bean, countDowns, callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
     var _defer = Q.defer();
@@ -1238,21 +1256,20 @@ PushServiceClient.prototype.pushCmdCountDown = function(bean, ad, countDown, cal
         _defer.resolve(result);
       }
     };
-    this.send_pushCmdCountDown(bean, ad, countDown);
+    this.send_pushCmdCountDown(bean, countDowns);
     return _defer.promise;
   } else {
     this._reqs[this.seqid()] = callback;
-    this.send_pushCmdCountDown(bean, ad, countDown);
+    this.send_pushCmdCountDown(bean, countDowns);
   }
 };
 
-PushServiceClient.prototype.send_pushCmdCountDown = function(bean, ad, countDown) {
+PushServiceClient.prototype.send_pushCmdCountDown = function(bean, countDowns) {
   var output = new this.pClass(this.output);
   output.writeMessageBegin('pushCmdCountDown', Thrift.MessageType.CALL, this.seqid());
   var args = new PushService_pushCmdCountDown_args();
   args.bean = bean;
-  args.ad = ad;
-  args.countDown = countDown;
+  args.countDowns = countDowns;
   args.write(output);
   output.writeMessageEnd();
   return this.output.flush();
@@ -1279,7 +1296,7 @@ PushServiceClient.prototype.recv_pushCmdCountDown = function(input,mtype,rseqid)
   }
   return callback('pushCmdCountDown failed: unknown result');
 };
-PushServiceClient.prototype.pushCmdShowRate = function(bean, ad, rate, callback) {
+PushServiceClient.prototype.pushCmdShowRate = function(bean, showRates, callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
     var _defer = Q.defer();
@@ -1290,21 +1307,20 @@ PushServiceClient.prototype.pushCmdShowRate = function(bean, ad, rate, callback)
         _defer.resolve(result);
       }
     };
-    this.send_pushCmdShowRate(bean, ad, rate);
+    this.send_pushCmdShowRate(bean, showRates);
     return _defer.promise;
   } else {
     this._reqs[this.seqid()] = callback;
-    this.send_pushCmdShowRate(bean, ad, rate);
+    this.send_pushCmdShowRate(bean, showRates);
   }
 };
 
-PushServiceClient.prototype.send_pushCmdShowRate = function(bean, ad, rate) {
+PushServiceClient.prototype.send_pushCmdShowRate = function(bean, showRates) {
   var output = new this.pClass(this.output);
   output.writeMessageBegin('pushCmdShowRate', Thrift.MessageType.CALL, this.seqid());
   var args = new PushService_pushCmdShowRate_args();
   args.bean = bean;
-  args.ad = ad;
-  args.rate = rate;
+  args.showRates = showRates;
   args.write(output);
   output.writeMessageEnd();
   return this.output.flush();
@@ -1330,6 +1346,57 @@ PushServiceClient.prototype.recv_pushCmdShowRate = function(input,mtype,rseqid) 
     return callback(null, result.success);
   }
   return callback('pushCmdShowRate failed: unknown result');
+};
+PushServiceClient.prototype.pushCmdAdContentChange = function(bean, change, callback) {
+  this._seqid = this.new_seqid();
+  if (callback === undefined) {
+    var _defer = Q.defer();
+    this._reqs[this.seqid()] = function(error, result) {
+      if (error) {
+        _defer.reject(error);
+      } else {
+        _defer.resolve(result);
+      }
+    };
+    this.send_pushCmdAdContentChange(bean, change);
+    return _defer.promise;
+  } else {
+    this._reqs[this.seqid()] = callback;
+    this.send_pushCmdAdContentChange(bean, change);
+  }
+};
+
+PushServiceClient.prototype.send_pushCmdAdContentChange = function(bean, change) {
+  var output = new this.pClass(this.output);
+  output.writeMessageBegin('pushCmdAdContentChange', Thrift.MessageType.CALL, this.seqid());
+  var args = new PushService_pushCmdAdContentChange_args();
+  args.bean = bean;
+  args.change = change;
+  args.write(output);
+  output.writeMessageEnd();
+  return this.output.flush();
+};
+
+PushServiceClient.prototype.recv_pushCmdAdContentChange = function(input,mtype,rseqid) {
+  var callback = this._reqs[rseqid] || function() {};
+  delete this._reqs[rseqid];
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(input);
+    input.readMessageEnd();
+    return callback(x);
+  }
+  var result = new PushService_pushCmdAdContentChange_result();
+  result.read(input);
+  input.readMessageEnd();
+
+  if (null !== result.ex) {
+    return callback(result.ex);
+  }
+  if (null !== result.success) {
+    return callback(null, result.success);
+  }
+  return callback('pushCmdAdContentChange failed: unknown result');
 };
 PushServiceClient.prototype.page = function(page, callback) {
   this._seqid = this.new_seqid();
@@ -1380,55 +1447,6 @@ PushServiceClient.prototype.recv_page = function(input,mtype,rseqid) {
     return callback(null, result.success);
   }
   return callback('page failed: unknown result');
-};
-PushServiceClient.prototype.adFeedback = function(push, type, c, callback) {
-  this._seqid = this.new_seqid();
-  if (callback === undefined) {
-    var _defer = Q.defer();
-    this._reqs[this.seqid()] = function(error, result) {
-      if (error) {
-        _defer.reject(error);
-      } else {
-        _defer.resolve(result);
-      }
-    };
-    this.send_adFeedback(push, type, c);
-    return _defer.promise;
-  } else {
-    this._reqs[this.seqid()] = callback;
-    this.send_adFeedback(push, type, c);
-  }
-};
-
-PushServiceClient.prototype.send_adFeedback = function(push, type, c) {
-  var output = new this.pClass(this.output);
-  output.writeMessageBegin('adFeedback', Thrift.MessageType.CALL, this.seqid());
-  var args = new PushService_adFeedback_args();
-  args.push = push;
-  args.type = type;
-  args.c = c;
-  args.write(output);
-  output.writeMessageEnd();
-  return this.output.flush();
-};
-
-PushServiceClient.prototype.recv_adFeedback = function(input,mtype,rseqid) {
-  var callback = this._reqs[rseqid] || function() {};
-  delete this._reqs[rseqid];
-  if (mtype == Thrift.MessageType.EXCEPTION) {
-    var x = new Thrift.TApplicationException();
-    x.read(input);
-    input.readMessageEnd();
-    return callback(x);
-  }
-  var result = new PushService_adFeedback_result();
-  result.read(input);
-  input.readMessageEnd();
-
-  if (null !== result.ex) {
-    return callback(result.ex);
-  }
-  callback(null);
 };
 var PushServiceProcessor = exports.Processor = function(handler) {
   this._handler = handler;
@@ -1535,8 +1553,8 @@ PushServiceProcessor.prototype.process_pushCmdFaultRate = function(seqid, input,
   var args = new PushService_pushCmdFaultRate_args();
   args.read(input);
   input.readMessageEnd();
-  if (this._handler.pushCmdFaultRate.length === 3) {
-    Q.fcall(this._handler.pushCmdFaultRate, args.bean, args.ad, args.rate)
+  if (this._handler.pushCmdFaultRate.length === 2) {
+    Q.fcall(this._handler.pushCmdFaultRate, args.bean, args.faultClicks)
       .then(function(result) {
         var result_obj = new PushService_pushCmdFaultRate_result({success: result});
         output.writeMessageBegin("pushCmdFaultRate", Thrift.MessageType.REPLY, seqid);
@@ -1557,7 +1575,7 @@ PushServiceProcessor.prototype.process_pushCmdFaultRate = function(seqid, input,
         output.flush();
       });
   } else {
-    this._handler.pushCmdFaultRate(args.bean, args.ad, args.rate, function (err, result) {
+    this._handler.pushCmdFaultRate(args.bean, args.faultClicks, function (err, result) {
       var result_obj;
       if ((err === null || typeof err === 'undefined') || err instanceof PublicStruct_ttypes.InvalidOperation) {
         result_obj = new PushService_pushCmdFaultRate_result((err !== null || typeof err === 'undefined') ? err : {success: result});
@@ -1576,8 +1594,8 @@ PushServiceProcessor.prototype.process_pushCmdCountDown = function(seqid, input,
   var args = new PushService_pushCmdCountDown_args();
   args.read(input);
   input.readMessageEnd();
-  if (this._handler.pushCmdCountDown.length === 3) {
-    Q.fcall(this._handler.pushCmdCountDown, args.bean, args.ad, args.countDown)
+  if (this._handler.pushCmdCountDown.length === 2) {
+    Q.fcall(this._handler.pushCmdCountDown, args.bean, args.countDowns)
       .then(function(result) {
         var result_obj = new PushService_pushCmdCountDown_result({success: result});
         output.writeMessageBegin("pushCmdCountDown", Thrift.MessageType.REPLY, seqid);
@@ -1598,7 +1616,7 @@ PushServiceProcessor.prototype.process_pushCmdCountDown = function(seqid, input,
         output.flush();
       });
   } else {
-    this._handler.pushCmdCountDown(args.bean, args.ad, args.countDown, function (err, result) {
+    this._handler.pushCmdCountDown(args.bean, args.countDowns, function (err, result) {
       var result_obj;
       if ((err === null || typeof err === 'undefined') || err instanceof PublicStruct_ttypes.InvalidOperation) {
         result_obj = new PushService_pushCmdCountDown_result((err !== null || typeof err === 'undefined') ? err : {success: result});
@@ -1617,8 +1635,8 @@ PushServiceProcessor.prototype.process_pushCmdShowRate = function(seqid, input, 
   var args = new PushService_pushCmdShowRate_args();
   args.read(input);
   input.readMessageEnd();
-  if (this._handler.pushCmdShowRate.length === 3) {
-    Q.fcall(this._handler.pushCmdShowRate, args.bean, args.ad, args.rate)
+  if (this._handler.pushCmdShowRate.length === 2) {
+    Q.fcall(this._handler.pushCmdShowRate, args.bean, args.showRates)
       .then(function(result) {
         var result_obj = new PushService_pushCmdShowRate_result({success: result});
         output.writeMessageBegin("pushCmdShowRate", Thrift.MessageType.REPLY, seqid);
@@ -1639,7 +1657,7 @@ PushServiceProcessor.prototype.process_pushCmdShowRate = function(seqid, input, 
         output.flush();
       });
   } else {
-    this._handler.pushCmdShowRate(args.bean, args.ad, args.rate, function (err, result) {
+    this._handler.pushCmdShowRate(args.bean, args.showRates, function (err, result) {
       var result_obj;
       if ((err === null || typeof err === 'undefined') || err instanceof PublicStruct_ttypes.InvalidOperation) {
         result_obj = new PushService_pushCmdShowRate_result((err !== null || typeof err === 'undefined') ? err : {success: result});
@@ -1647,6 +1665,47 @@ PushServiceProcessor.prototype.process_pushCmdShowRate = function(seqid, input, 
       } else {
         result_obj = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
         output.writeMessageBegin("pushCmdShowRate", Thrift.MessageType.EXCEPTION, seqid);
+      }
+      result_obj.write(output);
+      output.writeMessageEnd();
+      output.flush();
+    });
+  }
+};
+PushServiceProcessor.prototype.process_pushCmdAdContentChange = function(seqid, input, output) {
+  var args = new PushService_pushCmdAdContentChange_args();
+  args.read(input);
+  input.readMessageEnd();
+  if (this._handler.pushCmdAdContentChange.length === 2) {
+    Q.fcall(this._handler.pushCmdAdContentChange, args.bean, args.change)
+      .then(function(result) {
+        var result_obj = new PushService_pushCmdAdContentChange_result({success: result});
+        output.writeMessageBegin("pushCmdAdContentChange", Thrift.MessageType.REPLY, seqid);
+        result_obj.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      }, function (err) {
+        var result;
+        if (err instanceof PublicStruct_ttypes.InvalidOperation) {
+          result = new PushService_pushCmdAdContentChange_result(err);
+          output.writeMessageBegin("pushCmdAdContentChange", Thrift.MessageType.REPLY, seqid);
+        } else {
+          result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+          output.writeMessageBegin("pushCmdAdContentChange", Thrift.MessageType.EXCEPTION, seqid);
+        }
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      });
+  } else {
+    this._handler.pushCmdAdContentChange(args.bean, args.change, function (err, result) {
+      var result_obj;
+      if ((err === null || typeof err === 'undefined') || err instanceof PublicStruct_ttypes.InvalidOperation) {
+        result_obj = new PushService_pushCmdAdContentChange_result((err !== null || typeof err === 'undefined') ? err : {success: result});
+        output.writeMessageBegin("pushCmdAdContentChange", Thrift.MessageType.REPLY, seqid);
+      } else {
+        result_obj = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+        output.writeMessageBegin("pushCmdAdContentChange", Thrift.MessageType.EXCEPTION, seqid);
       }
       result_obj.write(output);
       output.writeMessageEnd();
@@ -1688,47 +1747,6 @@ PushServiceProcessor.prototype.process_page = function(seqid, input, output) {
       } else {
         result_obj = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
         output.writeMessageBegin("page", Thrift.MessageType.EXCEPTION, seqid);
-      }
-      result_obj.write(output);
-      output.writeMessageEnd();
-      output.flush();
-    });
-  }
-};
-PushServiceProcessor.prototype.process_adFeedback = function(seqid, input, output) {
-  var args = new PushService_adFeedback_args();
-  args.read(input);
-  input.readMessageEnd();
-  if (this._handler.adFeedback.length === 3) {
-    Q.fcall(this._handler.adFeedback, args.push, args.type, args.c)
-      .then(function(result) {
-        var result_obj = new PushService_adFeedback_result({success: result});
-        output.writeMessageBegin("adFeedback", Thrift.MessageType.REPLY, seqid);
-        result_obj.write(output);
-        output.writeMessageEnd();
-        output.flush();
-      }, function (err) {
-        var result;
-        if (err instanceof PublicStruct_ttypes.InvalidOperation) {
-          result = new PushService_adFeedback_result(err);
-          output.writeMessageBegin("adFeedback", Thrift.MessageType.REPLY, seqid);
-        } else {
-          result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
-          output.writeMessageBegin("adFeedback", Thrift.MessageType.EXCEPTION, seqid);
-        }
-        result.write(output);
-        output.writeMessageEnd();
-        output.flush();
-      });
-  } else {
-    this._handler.adFeedback(args.push, args.type, args.c, function (err, result) {
-      var result_obj;
-      if ((err === null || typeof err === 'undefined') || err instanceof PublicStruct_ttypes.InvalidOperation) {
-        result_obj = new PushService_adFeedback_result((err !== null || typeof err === 'undefined') ? err : {success: result});
-        output.writeMessageBegin("adFeedback", Thrift.MessageType.REPLY, seqid);
-      } else {
-        result_obj = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
-        output.writeMessageBegin("adFeedback", Thrift.MessageType.EXCEPTION, seqid);
       }
       result_obj.write(output);
       output.writeMessageEnd();

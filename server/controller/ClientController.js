@@ -22,6 +22,10 @@ module.exports = class ClientController {
             method: 'post',
             path: '/client/check',
             value: ClientController.check
+        }, {
+            method: 'post',
+            path: '/client/remove',
+            value: ClientController.remove
         }]
     }
 
@@ -54,5 +58,11 @@ module.exports = class ClientController {
             access_id: res.access_id,
             access_key: res.access_key
         }).json;
+    }
+
+    static async remove(ctx) {
+        let params = ctx.request.body;
+        let res = await clientService.remove(params.id);
+        ctx.body = new Result(!!res).json;
     }
 };

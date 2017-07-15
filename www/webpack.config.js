@@ -86,8 +86,7 @@ module.exports = {
     },
     resolve: {
         alias: {
-            'vue$': 'vue/dist/vue.esm.js',
-            'datatables': 'admin-lte/plugins/datatables/jquery.dataTables.min'
+            'vue$': 'vue/dist/vue.esm.js'
         }
     },
     plugins: [

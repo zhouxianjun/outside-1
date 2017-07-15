@@ -2291,6 +2291,43 @@ exports.ModeType = [{
     id: 2001,
     name: '生产'
 }];
+exports.InstallTimeType = [{
+    id: 7001,
+    name: '时间段'
+}, {
+    id: 7002,
+    name: '时间点'
+}, {
+    id: 7003,
+    name: '即时'
+}];
+exports.NetType = [{
+    id: 7100,
+    name: 'WIFI'
+}, {
+    id: 7101,
+    name: 'GPRS'
+}, {
+    id: 7102,
+    name: '全部'
+}];
+exports.InstallPathType = [{
+    id: 7200,
+    name: 'SD'
+}, {
+    id: 7201,
+    name: 'DATA'
+}, {
+    id: 7202,
+    name: 'SYSTEM'
+}];
+exports.SupportType = [{
+    id: 8000,
+    name: 'SDK'
+}, {
+    id: 8001,
+    name: 'API'
+}];
 exports.getAttribute = (dic, prop, value, isArray = false) => {
     let result = [];
     for (let item of dic) {
