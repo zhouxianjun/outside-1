@@ -3,7 +3,7 @@
  */
 const Redis = require("ioredis");
 const { Store } = require("koa-session2");
-const config = require('../config.json');
+const config = require('config');
 const SESSION = `${config.session || 'S'}`;
 const KEYS = new Set();
 class RedisStore extends Store{

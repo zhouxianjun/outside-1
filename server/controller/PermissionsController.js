@@ -4,7 +4,7 @@
 'use strict';
 const Utils = require('../Utils');
 const Result = require('../dto/Result');
-const config = require('../../config.json');
+const config = require('config');
 const trc = require('trc');
 const path = require('path');
 const logger = require('tracer-logger');

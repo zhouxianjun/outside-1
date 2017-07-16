@@ -3,7 +3,7 @@
  */
 'use strict';
 const path = require('path');
-const config = require('./config.json');
+const config = require('config');
 
 // trc
 const thrift = require('thrift');

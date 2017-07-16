@@ -1,0 +1,42 @@
+{
+  "domain": "http://120.77.42.41",
+  "base_path": "/",
+  "port": 3000,
+  "session": "SESSION",
+  "session_ttl": 1800000,
+  "ignoreUrl": [
+    "/permissions/user/logout",
+    "/permissions/user/login",
+    "/",
+    "/resources/callback",
+    "/resources/download",
+    "/client/activate",
+    "/client/check"
+  ],
+  "loginUrl": [
+    "/permissions/menu/list",
+    "/permissions/user/info",
+    "/code/**/*"
+  ],
+  "loggerPath": [
+    "/permissions/**/*"
+  ],
+  "api": [
+    "/api/**/*"
+  ],
+  "qiniu": {
+    "ACCESS_KEY": "qZq3Y85XBAWIWvwZpbl-REEd3SfSlOrjc55gcgxO",
+    "SECRET_KEY": "kdW-1Ynd-1H5nw-gfHi-BKgDodsVSdcaZi_GUhpZ",
+    "bucket": "android-desk",
+    "domain": "http://osxdszjh7.bkt.clouddn.com"
+  },
+  "zookeeper": "127.0.0.1:2181",
+  "mailer": {
+    "service": "QQex",
+    "auth": {
+      "user": "alone@cn-face.com",
+      "pass": "Zxj19910611"
+    },
+    "debug": true
+  }
+}
