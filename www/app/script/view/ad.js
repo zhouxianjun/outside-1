@@ -4,8 +4,8 @@
 'use strict';
 import Table from "../../components/i-table.vue";
 import Common from "../common";
-import $ from 'jquery';
-import {getAttribute, TempleType, ModeType, PositionType, ResourcesType} from "../dic";
+import $ from "jquery";
+import {getAttribute, ModeType, PositionType, ResourcesType, TempleType} from "../dic";
 export default {
     data() {
         return {
@@ -227,7 +227,27 @@ export default {
                 filter: [{required: true, trigger: 'blur' }]
             },
             ads: null,
-            selectedAd: new Map()
+            selectedAd: new Map(),
+            rePushModel: false,
+            rePushVo: {
+                mode: 2000,
+                description: null,
+                filter: null,
+                max_send_num: 1,
+                type: 1003,
+                fault_click_rate: 0,
+                show_day: 1,
+                count_down: 3
+            },
+            rePushValidate: {
+                max_send_num: [{type: 'number', required: true, trigger: 'blur' }],
+                mode: [{type: 'number', required: true, trigger: 'change' }],
+                filter: [{required: true, trigger: 'blur' }],
+                type: [{type: 'number', required: true, trigger: 'change' }],
+                fault_click_rate: [{type: 'number', required: true, trigger: 'blur' }],
+                show_day: [{type: 'number', required: true, trigger: 'blur' }],
+                count_down: [{type: 'number', required: true, trigger: 'blur' }]
+            }
         }
     },
     async mounted() {
@@ -235,6 +255,7 @@ export default {
         Common.slimScroll(this.$refs['form'].$el);
         Common.slimScroll($('#selectDiv'));
         Common.slimScroll($('#pushDiv'));
+        Common.slimScroll($('#rePushDiv'));
     },
     components: {
         Table
@@ -247,7 +268,7 @@ export default {
             this.$refs['pushForm'].validate(async (valid) => {
                 if (valid) {
                     let date = this.$refs['pushStartDate'].currentValue;
-                    let success = await this.fetch('push/ad', {method: 'post', data: {
+                    let success = await this.fetch('/push/ad', {method: 'post', data: {
                         push: Object.assign({
                             start_time: date ? date.getTime() : null,
                             type: 1000
@@ -266,6 +287,49 @@ export default {
                 }
             });
         },
+        async reSendPush() {
+            this.$refs['rePushForm'].validate(async (valid) => {
+                if (valid) {
+                    let date = this.$refs['rePushStartDate'].currentValue;
+                    const {fault_click_rate, show_day, count_down} = this.rePushVo;
+                    let body = [];
+                    this.ads.forEach(ad => {
+                        switch (this.rePushVo.type) {
+                            case 1003:
+                                body.push({ad_id: ad, fault_click_rate});
+                                break;
+                            case 1004:
+                                let showTime = this.$refs['rePushShowDate'].currentValue;
+                                let showTimes = this.$refs['rePushDate'].currentValue;
+                                body.push({ad_id: ad, show_day,
+                                    show_time: showTime ? showTime.getTime() : null,
+                                    show_time_start: showTimes[0] ? showTimes[0].getTime() : null,
+                                    show_time_end: showTimes[1] ? showTimes[1].getTime() : null
+                                });
+                                break;
+                            case 1005:
+                                body.push({ad_id: ad, count_down});
+                                break;
+                        }
+                    });
+                    let success = await this.fetch('/push/ad/change', {method: 'post', data: {
+                        push: Object.assign({
+                            start_time: date ? date.getTime() : null
+                        }, this.rePushVo),
+                        body
+                    }});
+                    if (success === false) {
+                        this.resetLoadingBtn();
+                        return;
+                    }
+                    this.rePushModel = false;
+                    setTimeout(() => this.doQuery(), 500);
+                } else {
+                    this.resetLoadingBtn();
+                    this.$Message.error('表单验证失败!');
+                }
+            });
+        },
         showPush() {
             if (!this.ads || this.ads.length <= 0) {
                 this.$Message.error('请选择要推送的内容!');
@@ -274,6 +338,19 @@ export default {
             this.pushModel = true;
             this.loadingBtn = true;
             this.$refs['pushForm'].resetFields();
+            this.$refs['pushStartDate'].currentValue = null;
+        },
+        showRePush() {
+            if (!this.ads || this.ads.length <= 0) {
+                this.$Message.error('请选择要推送的内容!');
+                return;
+            }
+            this.rePushModel = true;
+            this.loadingBtn = true;
+            this.$refs['rePushForm'].resetFields();
+            this.$refs['rePushStartDate'].currentValue = null;
+            this.$refs['rePushShowDate'].currentValue = null;
+            this.$refs['rePushDate'].currentValue = [null, null];
         },
         async addOrUpdate() {
             this.$refs['form'].validate(async (valid) => {
@@ -392,6 +469,9 @@ export default {
         resetLoadingBtn() {
             this.loadingBtn = false;
             this.$nextTick(() => this.loadingBtn = true);
+        },
+        percentFormat(val) {
+            return`${val}%`;
         }
     }
 }

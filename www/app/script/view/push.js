@@ -28,7 +28,14 @@ export default {
                     key: 'username'
                 }, {
                     title: 'UUID',
-                    key: 'uuid'
+                    key: 'uuid',
+                    ellipsis: true,
+                    render: Common.RENDER.POPTIP
+                }, {
+                    title: '友盟ID',
+                    key: 'msg_id',
+                    ellipsis: true,
+                    render: Common.RENDER.POPTIP
                 }, {
                     title: '类型',
                     key: 'type',

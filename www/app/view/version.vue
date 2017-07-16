@@ -85,6 +85,43 @@
                 </Form-item>
             </Form>
         </Modal>
+
+        <Modal v-model="useModel" title="使用广告位" :loading="loadingBtn" @on-ok="useSupport" @on-cancel="cancel">
+            <Form ref="useForm" :model="useVo" :label-width="80" :rules="useValidate" style="max-height: 400px;overflow: hidden">
+                <Form-item label="广告位" prop="position">
+                    <Select v-model="useVo.position">
+                        <Option v-for="item in PositionType" :value="item.id" :key="item">{{ item.name }}</Option>
+                    </Select>
+                </Form-item>
+                <Form-item label="SDK" prop="sdk">
+                    <Select v-model="useVo.sdk">
+                        <Option v-for="item in haveSdks" :value="item.id" :key="item">{{ item.name }}</Option>
+                    </Select>
+                </Form-item>
+                <Form-item label="API" prop="api">
+                    <Select v-model="useVo.api">
+                        <Option v-for="item in haveApis" :value="item.id" :key="item">{{ item.name }}</Option>
+                    </Select>
+                </Form-item>
+                <Form-item label="过滤" prop="filter">
+                    <Input v-model="useVo.filter"/>
+                </Form-item>
+                <Form-item label="发送时间">
+                    <Date-picker ref="pushStartDate" type="datetime" placeholder="选择日期和时间"></Date-picker>
+                </Form-item>
+                <Form-item label="发送频率" prop="max_send_num">
+                    <Input-number :min="1" :max="100" v-model="useVo.max_send_num"></Input-number>
+                </Form-item>
+                <Form-item label="模式" prop="mode">
+                    <Select v-model="useVo.mode">
+                        <Option v-for="item in ModeType" :value="item.id" :key="item">{{ item.name }}</Option>
+                    </Select>
+                </Form-item>
+                <Form-item label="描述" prop="description">
+                    <Input v-model="useVo.description"/>
+                </Form-item>
+            </Form>
+        </Modal>
     </div>
 </template>
 <script>

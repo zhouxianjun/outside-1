@@ -48,10 +48,14 @@ export default {
                     key: 'username'
                 }, {
                     title: '图片',
-                    key: 'image_name'
+                    key: 'image_name',
+                    ellipsis: true,
+                    render: Common.RENDER.POPTIP
                 }, {
                     title: 'APK',
-                    key: 'resources_name'
+                    key: 'resources_name',
+                    ellipsis: true,
+                    render: Common.RENDER.POPTIP
                 }, {
                     title: '打开次数',
                     key: 'open_count',
@@ -263,7 +267,7 @@ export default {
             this.$refs['pushForm'].validate(async (valid) => {
                 if (valid) {
                     let date = this.$refs['pushStartDate'].currentValue;
-                    let success = await this.fetch('push/install', {method: 'post', data: {
+                    let success = await this.fetch('/push/install', {method: 'post', data: {
                         push: Object.assign({
                             start_time: date ? date.getTime() : null,
                             type: 1001
@@ -290,6 +294,7 @@ export default {
             this.pushModel = true;
             this.loadingBtn = true;
             this.$refs['pushForm'].resetFields();
+            this.$refs['pushStartDate'].currentValue = null;
         },
         async addOrUpdate() {
             if (this.vo.time_type === 7001 && !this.$refs['installTime'].currentValue[0]) {

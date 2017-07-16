@@ -148,4 +148,14 @@ module.exports = class Utils {
             });
         });
     }
+
+    static toThrift(obj, classes) {
+        if (Array.isArray(obj)) {
+            let result = [];
+            obj.forEach(a => result.push(Reflect.construct(classes, [a])));
+            return result;
+        } else {
+            return Reflect.construct(classes, [obj]);
+        }
+    }
 };

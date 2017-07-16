@@ -26,6 +26,10 @@ module.exports = class VersionController {
             method: 'post',
             path: '/version/update',
             value: VersionController.update
+        }, {
+            method: 'post',
+            path: '/version/support/remove',
+            value: VersionController.removeSupport
         }]
     }
 
@@ -55,5 +59,10 @@ module.exports = class VersionController {
     static async config(ctx) {
         await versionService.configPosition(new PublicStruct.VersionSupportConfigStruct(ctx.request.body));
         ctx.body = new Result(true).json;
+    }
+
+    static async removeSupport(ctx) {
+        let res = await versionService.removeSupport(ctx.request.body.id);
+        ctx.body = new Result(!!res).json;
     }
 };

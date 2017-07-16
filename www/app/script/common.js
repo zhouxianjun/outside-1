@@ -85,6 +85,17 @@ const Common = {
             return function (trueTxt = '启用', falseTxt = '禁用') {
                 return h('span', {class: status === true ? 'text-green' : 'text-muted'}, status === true ? trueTxt : falseTxt);
             };
+        },
+        POPTIP(h, params) {
+            return h('Poptip', {
+                props: {
+                    trigger: 'hover',
+                    content: params.row[params.column.key],
+                    placement: 'top-start'
+                }
+            }, [
+                h('span', params.row[params.column.key])
+            ]);
         }
     },
     clearVo(vo) {

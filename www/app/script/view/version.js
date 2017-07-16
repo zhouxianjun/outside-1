@@ -5,7 +5,7 @@
 import Table from "../../components/i-table.vue";
 import VersionDetail from '../../components/version-detail.vue';
 import Common from '../common';
-import {PositionType} from '../dic';
+import {PositionType, ModeType} from '../dic';
 export default {
     data() {
         return {
@@ -20,9 +20,11 @@ export default {
                 }
             },
             PositionType,
+            ModeType,
             model: false,
             modelTitle: '',
             adPositionModel: false,
+            useModel: false,
             loadingBtn: false,
             version: null,
             table: {
@@ -34,6 +36,12 @@ export default {
                             props: {
                                 detail: params.row,
                                 support: params.row['support']
+                            },
+                            on: {
+                                'on-remove': async id => {
+                                    let success = await this.fetch('/version/support', {method: 'post', data: {id}});
+                                    success && setTimeout(() => this.doQuery(), 500);
+                                }
                             }
                         })
                     }
@@ -56,7 +64,7 @@ export default {
                 }, {
                     title: '操作',
                     key: 'action',
-                    width: 200,
+                    width: 250,
                     align: 'center',
                     render: (h, params) => {
                         return h('div', [
@@ -84,6 +92,9 @@ export default {
                                     size: 'small',
                                     loading: this.loadingBtn
                                 },
+                                style: {
+                                    marginRight: '5px'
+                                },
                                 on: {
                                     click: async () => {
                                         this.adPositionModel = true;
@@ -92,7 +103,23 @@ export default {
                                         this.$refs['positionForm'].resetFields();
                                     }
                                 }
-                            }, '配置广告位')
+                            }, '广告位'),
+                            h('Button', {
+                                props: {
+                                    type: 'primary',
+                                    size: 'small',
+                                    loading: this.loadingBtn
+                                },
+                                on: {
+                                    click: async () => {
+                                        this.useModel = true;
+                                        this.version = params.row;
+                                        this.loadingBtn = true;
+                                        this.$refs['useForm'].resetFields();
+                                        this.$refs['pushStartDate'].currentValue = null;
+                                    }
+                                }
+                            }, '内容切换')
                         ]);
                     }
                 }],
@@ -122,13 +149,33 @@ export default {
                 sdk: [{type: 'number', required: true, trigger: 'change' }],
                 api: [{type: 'number', required: true, trigger: 'change' }]
             },
+            useVo: {
+                position: null,
+                sdk: null,
+                api: null,
+                mode: 2000,
+                description: null,
+                filter: null,
+                max_send_num: 1
+            },
+            useValidate: {
+                position: [{type: 'number', required: true, trigger: 'change' }],
+                sdk: [{type: 'number', required: true, trigger: 'change' }],
+                api: [{type: 'number', required: true, trigger: 'change' }],
+                max_send_num: [{type: 'number', required: true, trigger: 'blur' }],
+                mode: [{type: 'number', required: true, trigger: 'change' }],
+                filter: [{required: true, trigger: 'blur' }]
+            },
             Sdks: [],
             Apis: [],
+            haveSdks: [],
+            haveApis: [],
             supports: []
         }
     },
     async mounted() {
         await this.doQuery();
+        Common.slimScroll(this.$refs['useForm'].$el);
         let res = await this.fetch('/support/list/all');
         this.supports = res.list;
     },
@@ -145,8 +192,28 @@ export default {
             });
             this.Sdks = [];
             this.Apis = [];
-            this.supports.forEach(sup => (sup.type === 8000 && array.find(s => s.support === sup.id)) || this.Sdks.push(sup));
-            this.supports.forEach(sup => (sup.type === 8001 && array.find(s => s.support === sup.id)) || this.Apis.push(sup));
+            this.haveSdks = [];
+            this.haveApis = [];
+            this.supports.forEach(sup => {
+                let find = array.find(s => s.support === sup.id);
+                (!find && sup.type === 8000) && this.Sdks.push(sup);
+                (!find && sup.type === 8001) && this.Apis.push(sup);
+            });
+        },
+        'useVo.position'(position) {
+            let array = [];
+            this.table.data.forEach(item => {
+                if (item.id === this.version.id && item.support && Array.isArray(item.support)) {
+                    item.support.forEach(s => s.position === position && array.push(s));
+                }
+            });
+            this.haveSdks = [];
+            this.haveApis = [];
+            this.supports.forEach(sup => {
+                let find = array.find(s => s.support === sup.id);
+                (find && sup.type === 8000) && this.haveSdks.push(sup);
+                (find && sup.type === 8001) && this.haveApis.push(sup);
+            });
         }
     },
     methods: {
@@ -183,6 +250,29 @@ export default {
             this.version = null;
             this.adPositionModel = false;
             setTimeout(() => this.doQuery(), 500);
+        },
+        async useSupport() {
+            this.$refs['useForm'].validate(async (valid) => {
+                if (valid) {
+                    let date = this.$refs['pushStartDate'].currentValue;
+                    let success = await this.fetch('/push/change/support', {method: 'post', data: {
+                        push: Object.assign({
+                            start_time: date ? date.getTime() : null,
+                            type: 1002
+                        }, this.useVo),
+                        change: Object.assign({version: this.version.id}, this.useVo)
+                    }});
+                    if (success === false) {
+                        this.resetLoadingBtn();
+                        return;
+                    }
+                    this.useModel = false;
+                    setTimeout(() => this.doQuery(), 500);
+                } else {
+                    this.resetLoadingBtn();
+                    this.$Message.error('表单验证失败!');
+                }
+            });
         },
         async doQuery() {
             let date = this.$refs['date'].currentValue;

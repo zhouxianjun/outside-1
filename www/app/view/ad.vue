@@ -59,6 +59,9 @@
                 <button type="button" class="btn btn-default btn-sm pull-right margin-r-5" @click="showPush">
                     <span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> 推送
                 </button>
+                <button type="button" class="btn btn-default btn-sm pull-right margin-r-5" @click="showRePush">
+                    <span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> 变更推送
+                </button>
             </div>
             <div class="panel-body">
                 <Table :columns="table.columns" :data="table.data" :headerColor="`#fff`" @on-selection-change="selectionChangeAd" class="overflow-no-x"></Table>
@@ -85,7 +88,7 @@
                     </Select>
                 </Form-item>
                 <Form-item label="误点率" prop="fault_click_rate">
-                    <Input-number :min="0" :max="100" v-model="vo.fault_click_rate"></Input-number>
+                    <Slider v-model="vo.fault_click_rate" :tip-format="percentFormat"></Slider>
                 </Form-item>
                 <Form-item label="展示频率" prop="show_day">
                     <Input-number :min="1" :max="100" v-model="vo.show_day"></Input-number>
@@ -196,8 +199,54 @@
                             <Option v-for="item in ModeType" :value="item.id" :key="item">{{ item.name }}</Option>
                         </Select>
                     </Form-item>
-                    <Form-item label="描述">
+                    <Form-item label="描述" prop="description">
                         <Input v-model="pushVo.description"/>
+                    </Form-item>
+                </Form>
+            </div>
+        </Modal>
+
+        <Modal v-model="rePushModel" title="变更推送" :loading="loadingBtn" @on-ok="reSendPush" @on-cancel="cancel">
+            <div id="rePushDiv" style="max-height: 400px; overflow: hidden">
+                <Form ref="rePushForm" :model="rePushVo" :label-width="80" :rules="rePushValidate">
+                    <Form-item label="过滤" prop="filter">
+                        <Input v-model="rePushVo.filter"/>
+                    </Form-item>
+                    <Form-item label="发送时间">
+                        <Date-picker ref="rePushStartDate" type="datetime" placeholder="选择日期和时间"></Date-picker>
+                    </Form-item>
+                    <Form-item label="发送频率" prop="max_send_num">
+                        <Input-number :min="1" :max="100" v-model="rePushVo.max_send_num"></Input-number>
+                    </Form-item>
+                    <Form-item label="模式" prop="mode">
+                        <Select v-model="rePushVo.mode">
+                            <Option v-for="item in ModeType" :value="item.id" :key="item">{{ item.name }}</Option>
+                        </Select>
+                    </Form-item>
+                    <Form-item label="描述" prop="description">
+                        <Input v-model="rePushVo.description"/>
+                    </Form-item>
+                    <Form-item label="类型" prop="type">
+                        <Select v-model="rePushVo.type">
+                            <Option :value="1003">误点率</Option>
+                            <Option :value="1004">展示频率</Option>
+                            <Option :value="1005">倒计时</Option>
+                        </Select>
+                    </Form-item>
+                    <Form-item label="误点率" prop="fault_click_rate" v-show="rePushVo.type === 1003">
+                        <Slider v-model="rePushVo.fault_click_rate" :tip-format="percentFormat"></Slider>
+                    </Form-item>
+                    <Form-item label="展示频率" prop="show_day" v-show="rePushVo.type === 1004">
+                        <Input-number :min="1" :max="100" v-model="rePushVo.show_day"></Input-number>
+                    </Form-item>
+                    <Form-item label="展示时间" v-show="rePushVo.type === 1004">
+                        <Date-picker placement="top" ref="rePushShowDate" type="datetime" placeholder="选择日期和时间"></Date-picker>
+                    </Form-item>
+                    <Form-item label="展示时间段" v-show="rePushVo.type === 1004">
+                        <Date-picker placement="top" ref="rePushDate" style="width: 100%" type="datetimerange" placeholder="选择日期和时间"></Date-picker>
+                    </Form-item>
+                    <Form-item label="倒计时" prop="count_down" v-show="rePushVo.type === 1005">
+                        <Input-number :min="0" :max="100" v-model="rePushVo.count_down"></Input-number>
                     </Form-item>
                 </Form>
             </div>

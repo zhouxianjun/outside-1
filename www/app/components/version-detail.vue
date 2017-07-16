@@ -13,17 +13,20 @@
                 <div :id="`collapse_${detail.id}_${item.id}`" class="panel-collapse collapse" :class="{'in': index === 0}" :aria-expanded="index === 0 ? 'true' : 'false'" :style="index === 0 ? {} : {height: '0px'}">
                     <div class="box-body">
                         <div class="row" v-for="sup in item.sups" :key="sup">
-                            <div class="col-md-4">
-                                <label>类型:</label>
-                                <span v-html="sup.type + index"></span>
+                            <div class="col-md-3">
+                                <label class="margin-r-5">类型:</label>
+                                <span v-html="sup.type"></span>
                             </div>
-                            <div class="col-md-4">
-                                <label>名称:</label>
+                            <div class="col-md-3">
+                                <label class="margin-r-5">名称:</label>
                                 <span v-html="sup.name"></span>
                             </div>
-                            <div class="col-md-4">
-                                <label>使用:</label>
+                            <div class="col-md-3">
+                                <label class="margin-r-5">使用:</label>
                                 <span v-html="sup.use"></span>
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-link btn-sm margin-r-5" @click.stop="handleRemove(sup.id)">删除</button>
                             </div>
                         </div>
                     </div>
@@ -46,6 +49,9 @@
             }
         },
         methods: {
+            handleRemove(id) {
+                this.$emit('on-remove', id);
+            }
         },
         mounted() {
             let map = new Map();
@@ -58,10 +64,12 @@
                     });
                 }
                 map.get(sup.position).sups.push({
-                    id: sup.support,
+                    support: sup.support,
                     name: sup.name,
                     type: getAttribute(SupportType, 'id', sup.type).name,
-                    use: Common.statusFormat(sup.use_now, '目前使用', '未使用')
+                    use: Common.statusFormat(sup.use_now, '使用中', '未使用'),
+                    use_now: sup.use_now,
+                    id: sup.id
                 });
             });
 
