@@ -2048,6 +2048,7 @@ var ClientStruct = module.exports.ClientStruct = function(args) {
   this.umeng_token = null;
   this.ip = null;
   this.version = null;
+  this.channel = null;
   this.create_time = null;
   if (args) {
     if (args.id !== undefined && args.id !== null) {
@@ -2079,6 +2080,9 @@ var ClientStruct = module.exports.ClientStruct = function(args) {
     }
     if (args.version !== undefined && args.version !== null) {
       this.version = args.version;
+    }
+    if (args.channel !== undefined && args.channel !== null) {
+      this.channel = args.channel;
     }
     if (args.create_time !== undefined && args.create_time !== null) {
       this.create_time = args.create_time;
@@ -2170,6 +2174,13 @@ ClientStruct.prototype.read = function(input) {
       }
       break;
       case 11:
+      if (ftype == Thrift.Type.I32) {
+        this.channel = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 12:
       if (ftype == Thrift.Type.I64) {
         this.create_time = input.readI64();
       } else {
@@ -2237,8 +2248,13 @@ ClientStruct.prototype.write = function(output) {
     output.writeI32(this.version);
     output.writeFieldEnd();
   }
+  if (this.channel !== null && this.channel !== undefined) {
+    output.writeFieldBegin('channel', Thrift.Type.I32, 11);
+    output.writeI32(this.channel);
+    output.writeFieldEnd();
+  }
   if (this.create_time !== null && this.create_time !== undefined) {
-    output.writeFieldBegin('create_time', Thrift.Type.I64, 11);
+    output.writeFieldBegin('create_time', Thrift.Type.I64, 12);
     output.writeI64(this.create_time);
     output.writeFieldEnd();
   }

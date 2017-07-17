@@ -1,7 +1,7 @@
 <template>
     <div class="login-box">
         <div class="login-logo">
-            <a href="#">数据管理系统</a>
+            <a href="#">AS云引擎</a>
         </div>
         <!-- /.login-logo -->
         <div class="login-box-body">

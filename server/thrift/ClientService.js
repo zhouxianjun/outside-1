@@ -17,9 +17,13 @@ var ttypes = require('./ClientService_types');
 
 var ClientService_activate_args = function(args) {
   this.bean = null;
+  this.channel = null;
   if (args) {
     if (args.bean !== undefined && args.bean !== null) {
       this.bean = new PublicStruct_ttypes.ClientStruct(args.bean);
+    }
+    if (args.channel !== undefined && args.channel !== null) {
+      this.channel = args.channel;
     }
   }
 };
@@ -45,9 +49,13 @@ ClientService_activate_args.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
-      case 0:
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.channel = input.readString();
+      } else {
         input.skip(ftype);
-        break;
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -62,6 +70,11 @@ ClientService_activate_args.prototype.write = function(output) {
   if (this.bean !== null && this.bean !== undefined) {
     output.writeFieldBegin('bean', Thrift.Type.STRUCT, 1);
     this.bean.write(output);
+    output.writeFieldEnd();
+  }
+  if (this.channel !== null && this.channel !== undefined) {
+    output.writeFieldBegin('channel', Thrift.Type.STRING, 2);
+    output.writeString(this.channel);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
@@ -679,7 +692,7 @@ var ClientServiceClient = exports.Client = function(output, pClass) {
 ClientServiceClient.prototype = {};
 ClientServiceClient.prototype.seqid = function() { return this._seqid; };
 ClientServiceClient.prototype.new_seqid = function() { return this._seqid += 1; };
-ClientServiceClient.prototype.activate = function(bean, callback) {
+ClientServiceClient.prototype.activate = function(bean, channel, callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
     var _defer = Q.defer();
@@ -690,19 +703,20 @@ ClientServiceClient.prototype.activate = function(bean, callback) {
         _defer.resolve(result);
       }
     };
-    this.send_activate(bean);
+    this.send_activate(bean, channel);
     return _defer.promise;
   } else {
     this._reqs[this.seqid()] = callback;
-    this.send_activate(bean);
+    this.send_activate(bean, channel);
   }
 };
 
-ClientServiceClient.prototype.send_activate = function(bean) {
+ClientServiceClient.prototype.send_activate = function(bean, channel) {
   var output = new this.pClass(this.output);
   output.writeMessageBegin('activate', Thrift.MessageType.CALL, this.seqid());
   var args = new ClientService_activate_args();
   args.bean = bean;
+  args.channel = channel;
   args.write(output);
   output.writeMessageEnd();
   return this.output.flush();
@@ -954,8 +968,8 @@ ClientServiceProcessor.prototype.process_activate = function(seqid, input, outpu
   var args = new ClientService_activate_args();
   args.read(input);
   input.readMessageEnd();
-  if (this._handler.activate.length === 1) {
-    Q.fcall(this._handler.activate, args.bean)
+  if (this._handler.activate.length === 2) {
+    Q.fcall(this._handler.activate, args.bean, args.channel)
       .then(function(result) {
         var result_obj = new ClientService_activate_result({success: result});
         output.writeMessageBegin("activate", Thrift.MessageType.REPLY, seqid);
@@ -976,7 +990,7 @@ ClientServiceProcessor.prototype.process_activate = function(seqid, input, outpu
         output.flush();
       });
   } else {
-    this._handler.activate(args.bean, function (err, result) {
+    this._handler.activate(args.bean, args.channel, function (err, result) {
       var result_obj;
       if ((err === null || typeof err === 'undefined') || err instanceof PublicStruct_ttypes.InvalidOperation) {
         result_obj = new ClientService_activate_result((err !== null || typeof err === 'undefined') ? err : {success: result});

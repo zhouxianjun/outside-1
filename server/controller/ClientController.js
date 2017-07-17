@@ -40,7 +40,10 @@ module.exports = class ClientController {
     }
 
     static async activate(ctx) {
-        let res = await clientService.activate(new PublicStruct.ClientStruct(Object.assign({ip: ctx.request.ip}, ctx.request.body)));
+        let body = Object.assign({}, ctx.request.body);
+        const channel = body['channel'];
+        Reflect.deleteProperty(body, 'channel');
+        let res = await clientService.activate(new PublicStruct.ClientStruct(Object.assign({ip: ctx.request.ip}, body)), channel);
         ctx.body = new Result(true, {
             access_id: res.access_id,
             access_key: res.access_key

@@ -73,8 +73,8 @@ module.exports = class AdController {
     }
 
     static async feedback(ctx) {
-        const {push, ad, type} = ctx.request.body;
-        await adService.feedback(push, ad, type, ctx._client.id);
+        const {push, ad, type, count} = ctx.request.body;
+        await adService.feedback(push, ad, type, ctx._client.id, count);
         ctx.body = new Result(true).json;
     }
 };

@@ -3,9 +3,9 @@
         <header class="main-header">
             <a href="#" class="logo">
                 <!-- mini logo for sidebar mini 50x50 pixels -->
-                <span class="logo-mini">TRC</span>
+                <span class="logo-mini">AS</span>
                 <!-- logo for regular state and mobile devices -->
-                <span class="logo-lg">Thrift Register Center Admin</span>
+                <span class="logo-lg">AS云引擎</span>
             </a>
 
             <!-- Header Navbar: style can be found in header.less -->

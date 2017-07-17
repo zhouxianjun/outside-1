@@ -679,6 +679,7 @@ var AdService_feedback_args = function(args) {
   this.ad = null;
   this.type = null;
   this.c = null;
+  this.count = null;
   if (args) {
     if (args.push !== undefined && args.push !== null) {
       this.push = args.push;
@@ -691,6 +692,9 @@ var AdService_feedback_args = function(args) {
     }
     if (args.c !== undefined && args.c !== null) {
       this.c = args.c;
+    }
+    if (args.count !== undefined && args.count !== null) {
+      this.count = args.count;
     }
   }
 };
@@ -736,6 +740,13 @@ AdService_feedback_args.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 5:
+      if (ftype == Thrift.Type.I32) {
+        this.count = input.readI32();
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -765,6 +776,11 @@ AdService_feedback_args.prototype.write = function(output) {
   if (this.c !== null && this.c !== undefined) {
     output.writeFieldBegin('c', Thrift.Type.I32, 4);
     output.writeI32(this.c);
+    output.writeFieldEnd();
+  }
+  if (this.count !== null && this.count !== undefined) {
+    output.writeFieldBegin('count', Thrift.Type.I32, 5);
+    output.writeI32(this.count);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
@@ -1090,7 +1106,7 @@ AdServiceClient.prototype.recv_remove = function(input,mtype,rseqid) {
   }
   return callback('remove failed: unknown result');
 };
-AdServiceClient.prototype.feedback = function(push, ad, type, c, callback) {
+AdServiceClient.prototype.feedback = function(push, ad, type, c, count, callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
     var _defer = Q.defer();
@@ -1101,15 +1117,15 @@ AdServiceClient.prototype.feedback = function(push, ad, type, c, callback) {
         _defer.resolve(result);
       }
     };
-    this.send_feedback(push, ad, type, c);
+    this.send_feedback(push, ad, type, c, count);
     return _defer.promise;
   } else {
     this._reqs[this.seqid()] = callback;
-    this.send_feedback(push, ad, type, c);
+    this.send_feedback(push, ad, type, c, count);
   }
 };
 
-AdServiceClient.prototype.send_feedback = function(push, ad, type, c) {
+AdServiceClient.prototype.send_feedback = function(push, ad, type, c, count) {
   var output = new this.pClass(this.output);
   output.writeMessageBegin('feedback', Thrift.MessageType.CALL, this.seqid());
   var args = new AdService_feedback_args();
@@ -1117,6 +1133,7 @@ AdServiceClient.prototype.send_feedback = function(push, ad, type, c) {
   args.ad = ad;
   args.type = type;
   args.c = c;
+  args.count = count;
   args.write(output);
   output.writeMessageEnd();
   return this.output.flush();
@@ -1368,8 +1385,8 @@ AdServiceProcessor.prototype.process_feedback = function(seqid, input, output) {
   var args = new AdService_feedback_args();
   args.read(input);
   input.readMessageEnd();
-  if (this._handler.feedback.length === 4) {
-    Q.fcall(this._handler.feedback, args.push, args.ad, args.type, args.c)
+  if (this._handler.feedback.length === 5) {
+    Q.fcall(this._handler.feedback, args.push, args.ad, args.type, args.c, args.count)
       .then(function(result) {
         var result_obj = new AdService_feedback_result({success: result});
         output.writeMessageBegin("feedback", Thrift.MessageType.REPLY, seqid);
@@ -1390,7 +1407,7 @@ AdServiceProcessor.prototype.process_feedback = function(seqid, input, output) {
         output.flush();
       });
   } else {
-    this._handler.feedback(args.push, args.ad, args.type, args.c, function (err, result) {
+    this._handler.feedback(args.push, args.ad, args.type, args.c, args.count, function (err, result) {
       var result_obj;
       if ((err === null || typeof err === 'undefined') || err instanceof PublicStruct_ttypes.InvalidOperation) {
         result_obj = new AdService_feedback_result((err !== null || typeof err === 'undefined') ? err : {success: result});
