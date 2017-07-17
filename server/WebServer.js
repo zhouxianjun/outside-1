@@ -97,6 +97,8 @@ app.use(async (ctx, next) => {
             if (!ACCESS_KEY.has(access_id)) {
                 client = await clientService.getByAccessId(access_id);
                 ACCESS_KEY.set(access_id, client);
+            } else {
+                client = ACCESS_KEY.get(access_id);
             }
             const raw = QS.stringify(ctx.request.body, '&', '=', {encodeURIComponent: val => {return val}});
             const checkSign = Utils.md5(`${raw}${client.access_key}`);
