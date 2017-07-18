@@ -69,5 +69,10 @@
     "vue-style-loader": "3.0.1",
     "vue-template-compiler": "2.3.3",
     "webpack": "2.5.1"
+  },
+  "babel": {
+    "presets": [
+      "es2015"
+    ]
   }
 }
