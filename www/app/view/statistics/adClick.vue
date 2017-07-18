@@ -64,7 +64,7 @@
                     <div class="col-sm-3">
                         <label>创建时间</label>
                         <div class="form-group">
-                            <Date-picker ref="date" style="width: 100%" type="datetimerange" placeholder="选择日期和时间"></Date-picker>
+                            <Date-picker ref="date" placement="bottom-end" style="width: 100%" type="datetimerange" placeholder="选择日期和时间"></Date-picker>
                         </div>
                     </div>
                 </div>
