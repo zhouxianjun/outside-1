@@ -79,9 +79,15 @@ export default {
             this.vo.status = false;
         },
         update(data) {
-            this.modelTitle = '修改接口';
+            this.modelTitle = '修改菜单';
             this.$refs['form'].resetFields();
-            Object.keys(this.vo).forEach(key => this.vo[key] = data[key]);
+            Object.keys(this.vo).forEach(key => {
+                if (key === 'icon') {
+                    this.vo[key] = data['_icon'];
+                } else {
+                    this.vo[key] = data[key];
+                }
+            });
             this.menuModel = true;
             this.loadingBtn = true;
         },
@@ -143,7 +149,7 @@ export default {
         async doQuery() {
             Common.clearVo(this.vo);
             let result = await this.fetch('/permissions/menu/list/mgr');
-            Common.renderTree(result.tree, item => item.title = item.name);
+            Common.renderTree(result.tree, item => {item.title = item.name;item._icon = item.icon});
             this.tree = result.tree;
             $('#menu-grid').fancytree('option', 'source', result.tree);
             this.loadingBtn = false;
@@ -160,7 +166,7 @@ export default {
                     let node = data.node,
                         $tdList = $(node.tr).find(">td");
                     $tdList.eq(1).text(node.data.seq);
-                    $tdList.eq(2).html(`<i class="fa ${node.data.icon}"></i>`);
+                    $tdList.eq(2).html(`<i class="fa ${node.data._icon}"></i>`);
                     $tdList.eq(3).text(node.data.path);
                     $tdList.eq(4).html(Common.statusFormat(node.data.show, '显示', '隐藏'));
                     $tdList.eq(5).html(Common.statusFormat(node.data.status));

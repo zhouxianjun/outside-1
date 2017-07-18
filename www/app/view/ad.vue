@@ -27,6 +27,7 @@
                         <label>模板</label>
                         <div class="form-group">
                             <Select v-model="search.query.temple" class="pull-right">
+                                <Option value="">全部</Option>
                                 <Option v-for="item in TempleType" :value="item.id" :key="item">{{ item.name }}</Option>
                             </Select>
                         </div>
@@ -37,6 +38,7 @@
                         <label>广告位</label>
                         <div class="form-group">
                             <Select v-model="search.query.position" class="pull-right">
+                                <Option value="">全部</Option>
                                 <Option v-for="item in PositionType" :value="item.id" :key="item">{{ item.name }}</Option>
                             </Select>
                         </div>

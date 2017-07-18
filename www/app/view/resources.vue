@@ -21,6 +21,7 @@
                         <label>类型</label>
                         <div class="form-group">
                             <Select v-model="search.query.type" class="pull-right">
+                                <Option value="">全部</Option>
                                 <Option v-for="item in ResourcesType" :value="item.id" :key="item">{{ item.name }}</Option>
                             </Select>
                         </div>
