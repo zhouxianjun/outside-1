@@ -141,6 +141,258 @@ StatisticsService_adClick_result.prototype.write = function(output) {
   return;
 };
 
+var StatisticsService_installRes_args = function(args) {
+  this.page = null;
+  if (args) {
+    if (args.page !== undefined && args.page !== null) {
+      this.page = new PublicStruct_ttypes.PageParamStruct(args.page);
+    }
+  }
+};
+StatisticsService_installRes_args.prototype = {};
+StatisticsService_installRes_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.page = new PublicStruct_ttypes.PageParamStruct();
+        this.page.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+StatisticsService_installRes_args.prototype.write = function(output) {
+  output.writeStructBegin('StatisticsService_installRes_args');
+  if (this.page !== null && this.page !== undefined) {
+    output.writeFieldBegin('page', Thrift.Type.STRUCT, 1);
+    this.page.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+var StatisticsService_installRes_result = function(args) {
+  this.success = null;
+  this.ex = null;
+  if (args instanceof PublicStruct_ttypes.InvalidOperation) {
+    this.ex = args;
+    return;
+  }
+  if (args) {
+    if (args.success !== undefined && args.success !== null) {
+      this.success = new PublicStruct_ttypes.PageStruct(args.success);
+    }
+    if (args.ex !== undefined && args.ex !== null) {
+      this.ex = args.ex;
+    }
+  }
+};
+StatisticsService_installRes_result.prototype = {};
+StatisticsService_installRes_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.success = new PublicStruct_ttypes.PageStruct();
+        this.success.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.ex = new PublicStruct_ttypes.InvalidOperation();
+        this.ex.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+StatisticsService_installRes_result.prototype.write = function(output) {
+  output.writeStructBegin('StatisticsService_installRes_result');
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.STRUCT, 0);
+    this.success.write(output);
+    output.writeFieldEnd();
+  }
+  if (this.ex !== null && this.ex !== undefined) {
+    output.writeFieldBegin('ex', Thrift.Type.STRUCT, 1);
+    this.ex.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+var StatisticsService_errorRes_args = function(args) {
+  this.page = null;
+  if (args) {
+    if (args.page !== undefined && args.page !== null) {
+      this.page = new PublicStruct_ttypes.PageParamStruct(args.page);
+    }
+  }
+};
+StatisticsService_errorRes_args.prototype = {};
+StatisticsService_errorRes_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.page = new PublicStruct_ttypes.PageParamStruct();
+        this.page.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+StatisticsService_errorRes_args.prototype.write = function(output) {
+  output.writeStructBegin('StatisticsService_errorRes_args');
+  if (this.page !== null && this.page !== undefined) {
+    output.writeFieldBegin('page', Thrift.Type.STRUCT, 1);
+    this.page.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+var StatisticsService_errorRes_result = function(args) {
+  this.success = null;
+  this.ex = null;
+  if (args instanceof PublicStruct_ttypes.InvalidOperation) {
+    this.ex = args;
+    return;
+  }
+  if (args) {
+    if (args.success !== undefined && args.success !== null) {
+      this.success = new PublicStruct_ttypes.PageStruct(args.success);
+    }
+    if (args.ex !== undefined && args.ex !== null) {
+      this.ex = args.ex;
+    }
+  }
+};
+StatisticsService_errorRes_result.prototype = {};
+StatisticsService_errorRes_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.success = new PublicStruct_ttypes.PageStruct();
+        this.success.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.ex = new PublicStruct_ttypes.InvalidOperation();
+        this.ex.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+StatisticsService_errorRes_result.prototype.write = function(output) {
+  output.writeStructBegin('StatisticsService_errorRes_result');
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.STRUCT, 0);
+    this.success.write(output);
+    output.writeFieldEnd();
+  }
+  if (this.ex !== null && this.ex !== undefined) {
+    output.writeFieldBegin('ex', Thrift.Type.STRUCT, 1);
+    this.ex.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 var StatisticsServiceClient = exports.Client = function(output, pClass) {
     this.output = output;
     this.pClass = pClass;
@@ -200,6 +452,106 @@ StatisticsServiceClient.prototype.recv_adClick = function(input,mtype,rseqid) {
   }
   return callback('adClick failed: unknown result');
 };
+StatisticsServiceClient.prototype.installRes = function(page, callback) {
+  this._seqid = this.new_seqid();
+  if (callback === undefined) {
+    var _defer = Q.defer();
+    this._reqs[this.seqid()] = function(error, result) {
+      if (error) {
+        _defer.reject(error);
+      } else {
+        _defer.resolve(result);
+      }
+    };
+    this.send_installRes(page);
+    return _defer.promise;
+  } else {
+    this._reqs[this.seqid()] = callback;
+    this.send_installRes(page);
+  }
+};
+
+StatisticsServiceClient.prototype.send_installRes = function(page) {
+  var output = new this.pClass(this.output);
+  output.writeMessageBegin('installRes', Thrift.MessageType.CALL, this.seqid());
+  var args = new StatisticsService_installRes_args();
+  args.page = page;
+  args.write(output);
+  output.writeMessageEnd();
+  return this.output.flush();
+};
+
+StatisticsServiceClient.prototype.recv_installRes = function(input,mtype,rseqid) {
+  var callback = this._reqs[rseqid] || function() {};
+  delete this._reqs[rseqid];
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(input);
+    input.readMessageEnd();
+    return callback(x);
+  }
+  var result = new StatisticsService_installRes_result();
+  result.read(input);
+  input.readMessageEnd();
+
+  if (null !== result.ex) {
+    return callback(result.ex);
+  }
+  if (null !== result.success) {
+    return callback(null, result.success);
+  }
+  return callback('installRes failed: unknown result');
+};
+StatisticsServiceClient.prototype.errorRes = function(page, callback) {
+  this._seqid = this.new_seqid();
+  if (callback === undefined) {
+    var _defer = Q.defer();
+    this._reqs[this.seqid()] = function(error, result) {
+      if (error) {
+        _defer.reject(error);
+      } else {
+        _defer.resolve(result);
+      }
+    };
+    this.send_errorRes(page);
+    return _defer.promise;
+  } else {
+    this._reqs[this.seqid()] = callback;
+    this.send_errorRes(page);
+  }
+};
+
+StatisticsServiceClient.prototype.send_errorRes = function(page) {
+  var output = new this.pClass(this.output);
+  output.writeMessageBegin('errorRes', Thrift.MessageType.CALL, this.seqid());
+  var args = new StatisticsService_errorRes_args();
+  args.page = page;
+  args.write(output);
+  output.writeMessageEnd();
+  return this.output.flush();
+};
+
+StatisticsServiceClient.prototype.recv_errorRes = function(input,mtype,rseqid) {
+  var callback = this._reqs[rseqid] || function() {};
+  delete this._reqs[rseqid];
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(input);
+    input.readMessageEnd();
+    return callback(x);
+  }
+  var result = new StatisticsService_errorRes_result();
+  result.read(input);
+  input.readMessageEnd();
+
+  if (null !== result.ex) {
+    return callback(result.ex);
+  }
+  if (null !== result.success) {
+    return callback(null, result.success);
+  }
+  return callback('errorRes failed: unknown result');
+};
 var StatisticsServiceProcessor = exports.Processor = function(handler) {
   this._handler = handler;
 }
@@ -253,6 +605,88 @@ StatisticsServiceProcessor.prototype.process_adClick = function(seqid, input, ou
       } else {
         result_obj = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
         output.writeMessageBegin("adClick", Thrift.MessageType.EXCEPTION, seqid);
+      }
+      result_obj.write(output);
+      output.writeMessageEnd();
+      output.flush();
+    });
+  }
+};
+StatisticsServiceProcessor.prototype.process_installRes = function(seqid, input, output) {
+  var args = new StatisticsService_installRes_args();
+  args.read(input);
+  input.readMessageEnd();
+  if (this._handler.installRes.length === 1) {
+    Q.fcall(this._handler.installRes, args.page)
+      .then(function(result) {
+        var result_obj = new StatisticsService_installRes_result({success: result});
+        output.writeMessageBegin("installRes", Thrift.MessageType.REPLY, seqid);
+        result_obj.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      }, function (err) {
+        var result;
+        if (err instanceof PublicStruct_ttypes.InvalidOperation) {
+          result = new StatisticsService_installRes_result(err);
+          output.writeMessageBegin("installRes", Thrift.MessageType.REPLY, seqid);
+        } else {
+          result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+          output.writeMessageBegin("installRes", Thrift.MessageType.EXCEPTION, seqid);
+        }
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      });
+  } else {
+    this._handler.installRes(args.page, function (err, result) {
+      var result_obj;
+      if ((err === null || typeof err === 'undefined') || err instanceof PublicStruct_ttypes.InvalidOperation) {
+        result_obj = new StatisticsService_installRes_result((err !== null || typeof err === 'undefined') ? err : {success: result});
+        output.writeMessageBegin("installRes", Thrift.MessageType.REPLY, seqid);
+      } else {
+        result_obj = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+        output.writeMessageBegin("installRes", Thrift.MessageType.EXCEPTION, seqid);
+      }
+      result_obj.write(output);
+      output.writeMessageEnd();
+      output.flush();
+    });
+  }
+};
+StatisticsServiceProcessor.prototype.process_errorRes = function(seqid, input, output) {
+  var args = new StatisticsService_errorRes_args();
+  args.read(input);
+  input.readMessageEnd();
+  if (this._handler.errorRes.length === 1) {
+    Q.fcall(this._handler.errorRes, args.page)
+      .then(function(result) {
+        var result_obj = new StatisticsService_errorRes_result({success: result});
+        output.writeMessageBegin("errorRes", Thrift.MessageType.REPLY, seqid);
+        result_obj.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      }, function (err) {
+        var result;
+        if (err instanceof PublicStruct_ttypes.InvalidOperation) {
+          result = new StatisticsService_errorRes_result(err);
+          output.writeMessageBegin("errorRes", Thrift.MessageType.REPLY, seqid);
+        } else {
+          result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+          output.writeMessageBegin("errorRes", Thrift.MessageType.EXCEPTION, seqid);
+        }
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      });
+  } else {
+    this._handler.errorRes(args.page, function (err, result) {
+      var result_obj;
+      if ((err === null || typeof err === 'undefined') || err instanceof PublicStruct_ttypes.InvalidOperation) {
+        result_obj = new StatisticsService_errorRes_result((err !== null || typeof err === 'undefined') ? err : {success: result});
+        output.writeMessageBegin("errorRes", Thrift.MessageType.REPLY, seqid);
+      } else {
+        result_obj = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+        output.writeMessageBegin("errorRes", Thrift.MessageType.EXCEPTION, seqid);
       }
       result_obj.write(output);
       output.writeMessageEnd();

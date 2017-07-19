@@ -14,6 +14,14 @@ module.exports = class StatisticsController {
             method: 'get',
             path: '/statistics/ad/click',
             value: StatisticsController.adClick
+        }, {
+            method: 'get',
+            path: '/statistics/resources/install',
+            value: StatisticsController.installRes
+        }, {
+            method: 'get',
+            path: '/statistics/resources/error',
+            value: StatisticsController.errorRes
         }]
     }
 
@@ -21,6 +29,26 @@ module.exports = class StatisticsController {
         let params = Object.assign({}, ctx.query);
         Reflect.set(params, 'query', JSON.parse(decodeURIComponent(ctx.query.query)));
         let res = await statisticsService.adClick(new PublicStruct.PageParamStruct(params));
+        ctx.body = new Result(true, {
+            key: 'page',
+            value: res
+        }).json;
+    }
+
+    static async installRes(ctx) {
+        let params = Object.assign({}, ctx.query);
+        Reflect.set(params, 'query', JSON.parse(decodeURIComponent(ctx.query.query)));
+        let res = await statisticsService.installRes(new PublicStruct.PageParamStruct(params));
+        ctx.body = new Result(true, {
+            key: 'page',
+            value: res
+        }).json;
+    }
+
+    static async errorRes(ctx) {
+        let params = Object.assign({}, ctx.query);
+        Reflect.set(params, 'query', JSON.parse(decodeURIComponent(ctx.query.query)));
+        let res = await statisticsService.errorRes(new PublicStruct.PageParamStruct(params));
         ctx.body = new Result(true, {
             key: 'page',
             value: res

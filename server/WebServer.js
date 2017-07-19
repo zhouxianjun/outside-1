@@ -100,7 +100,7 @@ app.use(async (ctx, next) => {
             } else {
                 client = ACCESS_KEY.get(access_id);
             }
-            const raw = QS.stringify(ctx.request.body, '&', '=', {encodeURIComponent: val => {return val}});
+            const raw = JSON.stringify(ctx.request.body).replace(/"/g, '').replace(/'/g, '').replace('/\\/g', '');
             const checkSign = Utils.md5(`${raw}${client.access_key}`);
             if (checkSign !== sign) {
                 ctx.body = new Result(Result.CODE.NO_ACCESS).json;
