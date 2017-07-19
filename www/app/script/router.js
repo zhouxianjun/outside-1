@@ -17,6 +17,9 @@ import Client from '../view/client.vue';
 import Support from '../view/support.vue';
 import Version from '../view/version.vue';
 import AdClick from '../view/statistics/adClick.vue';
+import installStatistics from '../view/statistics/install.vue';
+import errorStatistics from '../view/statistics/error.vue';
+import clientActive from '../view/statistics/active.vue';
 export default [{
     path: '/login',
     component: Login
@@ -65,5 +68,14 @@ export default [{
     }, {
         path: 'ad/click',
         component: AdClick
+    }, {
+        path: 'resources/install',
+        component: installStatistics
+    }, {
+        path: 'resources/error',
+        component: errorStatistics
+    }, {
+        path: 'client/active',
+        component: clientActive
     }]
 }]

@@ -22,6 +22,10 @@ module.exports = class StatisticsController {
             method: 'get',
             path: '/statistics/resources/error',
             value: StatisticsController.errorRes
+        }, {
+            method: 'get',
+            path: '/statistics/client/active',
+            value: StatisticsController.activeClient
         }]
     }
 
@@ -49,6 +53,16 @@ module.exports = class StatisticsController {
         let params = Object.assign({}, ctx.query);
         Reflect.set(params, 'query', JSON.parse(decodeURIComponent(ctx.query.query)));
         let res = await statisticsService.errorRes(new PublicStruct.PageParamStruct(params));
+        ctx.body = new Result(true, {
+            key: 'page',
+            value: res
+        }).json;
+    }
+
+    static async activeClient(ctx) {
+        let params = Object.assign({}, ctx.query);
+        Reflect.set(params, 'query', JSON.parse(decodeURIComponent(ctx.query.query)));
+        let res = await statisticsService.activeClient(new PublicStruct.PageParamStruct(params));
         ctx.body = new Result(true, {
             key: 'page',
             value: res

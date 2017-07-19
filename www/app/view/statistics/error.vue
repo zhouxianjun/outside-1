@@ -38,9 +38,12 @@
                         </div>
                     </div>
                     <div class="col-sm-4">
-                        <label>包名</label>
+                        <label>类型</label>
                         <div class="form-group">
-                            <input type="text" v-model="search.query.pkg" class="form-control pull-right">
+                            <Select v-model="search.query.type" class="pull-right">
+                                <Option value="">全部</Option>
+                                <Option v-for="item in ResourcesType" :value="item.id" :key="item">{{ item.name }}</Option>
+                            </Select>
                         </div>
                     </div>
                     <div class="col-sm-4">
@@ -54,7 +57,7 @@
         </div>
         <div class="panel panel-default i-panel-default">
             <div class="panel-heading">
-                <span>静默安装统计</span>
+                <span>资源错误统计</span>
             </div>
             <div class="panel-body">
                 <Table :columns="table.columns" :data="table.data" :headerColor="`#fff`"></Table>
@@ -68,6 +71,6 @@
     </div>
 </template>
 <script>
-    import view from '../../script/view/statistics/install';
+    import view from '../../script/view/statistics/error';
     export default view;
 </script>
