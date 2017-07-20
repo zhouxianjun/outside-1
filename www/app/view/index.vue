@@ -261,7 +261,7 @@
                                         <a href="javascript:;" class="btn btn-default btn-flat" @click="showModify">修改密码</a>
                                     </div>
                                     <div class="pull-right">
-                                        <a href="/permissions/user/logout" class="btn btn-default btn-flat">退出</a>
+                                        <a href="#" @click.stop="logout" class="btn btn-default btn-flat">退出</a>
                                     </div>
                                 </li>
                             </ul>

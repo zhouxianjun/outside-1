@@ -254,7 +254,8 @@ module.exports = class PermissionsController {
     }
     static async logout(ctx) {
         ctx.session = null;
-        ctx.redirect('/');
+        ctx.query.redirect && ctx.redirect('/');
+        ctx.query.redirect || (ctx.body = new Result(true).json);
     }
     static async login(ctx) {
         let param = ctx.request.body;

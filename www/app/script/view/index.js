@@ -97,6 +97,10 @@ export default {
 
     },
     methods: {
+        async logout() {
+            await this.fetch('/permissions/user/logout');
+            this.$router.replace('/login');
+        },
         closeTab(name) {
             let index = this.tabs.findIndex(tab => {
                 if (tab.id === parseInt(name)) {
@@ -171,7 +175,7 @@ export default {
                 if (res) {
                     res = await this.fetch('/permissions/user/update', {method: 'post', data: {password: this.modify.newPassword}});
                     if (res) {
-                        window.location.href = '/permissions/user/logout';
+                        await this.logout();
                     } else {
                         this.resetLoadingBtn();
                     }
