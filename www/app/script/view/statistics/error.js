@@ -29,6 +29,9 @@ export default {
                     ellipsis: true,
                     render: Common.RENDER.POPTIP
                 }, {
+                    title: '错误次数',
+                    key: 'error_count'
+                }, {
                     title: '地址',
                     key: 'path',
                     ellipsis: true,
