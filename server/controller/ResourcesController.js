@@ -38,6 +38,10 @@ module.exports = class ResourcesController {
         }, {
             method: 'post',
             path: '/api/resources/download',
+            value: ResourcesController.downloadApk
+        }, {
+            method: 'get',
+            path: '/resources/download',
             value: ResourcesController.download
         }, {
             method: 'post',
@@ -106,7 +110,7 @@ module.exports = class ResourcesController {
         }
     }
 
-    static async download(ctx) {
+    static async downloadApk(ctx) {
         const body = ctx.request.body;
         if (!body.id) {
             ctx.throw(400);
@@ -121,6 +125,10 @@ module.exports = class ResourcesController {
             ctx.throw(400);
             return;
         }
+        ctx.redirect(ResourcesController.getUrl(ctx.query.key));
+    }
+
+    static async download(ctx) {
         ctx.redirect(ResourcesController.getUrl(ctx.query.key));
     }
 
@@ -151,7 +159,7 @@ module.exports = class ResourcesController {
     }
 
     static getUrl(key) {
-        let deadline = parseInt(Date.now() / 1000) + 3 * 60;
+        let deadline = parseInt(Date.now() / 1000) + 2 * 60;
         const url = BucketManager.privateDownloadUrl(config.qiniu.domain, key, deadline);
         logger.debug(`download timeout: ${moment(deadline * 1000).format('YYYY-MM-DD HH:mm:ss')} url: ${url}`);
         return url;
