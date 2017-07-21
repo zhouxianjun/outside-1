@@ -112,17 +112,16 @@ module.exports = class ResourcesController {
             ctx.throw(400);
             return;
         }
-        const url = ResourcesController.getUrl(ctx.query.key);
         if (body.repeat) {
-            ctx.redirect(url);
+            ctx.redirect(ResourcesController.getUrl(ctx.query.key));
             return;
         }
-        let res = resourcesService.download(body.id);
+        let res = await resourcesService.download(body.id);
         if (!res) {
             ctx.throw(400);
             return;
         }
-        ctx.redirect(url);
+        ctx.redirect(ResourcesController.getUrl(ctx.query.key));
     }
 
     static async add(ctx) {

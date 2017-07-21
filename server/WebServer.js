@@ -7,7 +7,6 @@ const logger = require('tracer-logger');
 const Result = require('./dto/Result');
 const config = require('config');
 const path = require('path');
-const QS = require('querystring');
 const Router = require('koa-router');
 const Static = require('koa-static');
 const bodyParser = require('koa-bodyparser');
@@ -35,11 +34,13 @@ app.use(async (ctx, next) => {
     const ms = new Date() - start;
     logger.debug(`Web Method: ${ctx.method} Url: ${ctx.url} Time: ${ms}`);
     if (Utils.filter(ctx.url, config.loggerPath) && ctx.session && ctx.session.user) {
+        let body = ctx.request.body;
+        if (ctx.path === '/permissions/user/login') body.password = 'pwd';
         loggerService.admin(new PublicStruct.AdminLoggerStruct({
             user: ctx.session.user.id,
             ip: ctx.request.ip,
             path: ctx.path,
-            body: JSON.stringify(ctx.request.body),
+            body: JSON.stringify(body),
             params: JSON.stringify(ctx.query),
             method: ctx.method,
             ms
