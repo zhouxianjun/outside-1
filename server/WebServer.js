@@ -73,7 +73,11 @@ app.use(session({
 app.use(async (ctx, next) => {
     await next();
     // ignore favicon
-    if (this.path === '/favicon.ico' || !ctx.session) return;
+    if (ctx.path === '/favicon.ico' || !ctx.session) return;
+    if (ctx.path === '/heartbeat') {
+        ctx.body = 'ok';
+        return;
+    }
 
     let n = ctx.session.views || 0;
     ctx.session.views = ++n;
