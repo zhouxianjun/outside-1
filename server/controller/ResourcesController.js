@@ -36,8 +36,8 @@ module.exports = class ResourcesController {
             path: '/resources/ad/page',
             value: ResourcesController.pageByAd
         }, {
-            method: 'get',
-            path: '/resources/download',
+            method: 'post',
+            path: '/api/resources/download',
             value: ResourcesController.download
         }, {
             method: 'post',
@@ -107,9 +107,21 @@ module.exports = class ResourcesController {
     }
 
     static async download(ctx) {
-        let deadline = parseInt(Date.now() / 1000) + 5 * 60;
-        const url = BucketManager.privateDownloadUrl(config.qiniu.domain, ctx.query.key, deadline);
-        logger.debug(`download timeout: ${moment(deadline * 1000).format('YYYY-MM-DD HH:mm:ss')} url: ${url}`);
+        const body = ctx.request.body;
+        if (!body.id) {
+            ctx.throw(400);
+            return;
+        }
+        const url = ResourcesController.getUrl(ctx.query.key);
+        if (body.repeat) {
+            ctx.redirect(url);
+            return;
+        }
+        let res = resourcesService.download(body.id);
+        if (!res) {
+            ctx.throw(400);
+            return;
+        }
         ctx.redirect(url);
     }
 
@@ -137,5 +149,12 @@ module.exports = class ResourcesController {
         resources.forEach(r => rs.push(new PublicStruct.ResourcesFeedbackReqStruct(r)));
         await resourcesService.feedback(push, ad, rs, ctx._client.id);
         ctx.body = new Result(true).json;
+    }
+
+    static getUrl(key) {
+        let deadline = parseInt(Date.now() / 1000) + 3 * 60;
+        const url = BucketManager.privateDownloadUrl(config.qiniu.domain, key, deadline);
+        logger.debug(`download timeout: ${moment(deadline * 1000).format('YYYY-MM-DD HH:mm:ss')} url: ${url}`);
+        return url;
     }
 };
