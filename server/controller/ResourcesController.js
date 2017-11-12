@@ -98,7 +98,7 @@ module.exports = class ResourcesController {
             }
             const body = ctx.request.body;
             const res = resourcesService.add(new PublicStruct.ResourcesStruct(Object.assign({
-                path: `${config.domain}/resources/download?key=${body.md5}`
+                path: `${config.domain}/api/resources/download?key=${body.md5}`
             }, body)));
             ctx.body = new Result(true, {
                 key: 'res',
