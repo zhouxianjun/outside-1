@@ -4,7 +4,8 @@
 'use strict';
 const path = require('path');
 const config = require('config');
-
+const logger = require('tracer-logger');
+logger.info(`startup domain ${config.domain}`);
 // trc
 const thrift = require('thrift');
 const trc = require('trc');

@@ -1,0 +1,10 @@
+{
+  "name" : "outside",
+  "script" : "index.js",
+  "env" : {
+
+  },
+  "env_test": {
+    "NODE_ENV": "test"
+  }
+}
